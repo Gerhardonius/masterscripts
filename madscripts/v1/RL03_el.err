@@ -1,0 +1,6 @@
+/bin/luac: cannot read /users/gerhard.ungersbaeck/.lmod.d/__cache__/spiderT.x86_64_Linux.lua: Stale file handle
+stty: 'standard input': Inappropriate ioctl for device
+stty: 'standard input': Inappropriate ioctl for device
+stty: 'standard input': Inappropriate ioctl for device
+Unable to init server: Broadway display type not supported: localhost:10.0
+Error: cannot open display: localhost:10.0

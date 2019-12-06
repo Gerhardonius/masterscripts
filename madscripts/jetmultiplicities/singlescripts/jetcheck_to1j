@@ -1,0 +1,15 @@
+import model sm-no_b_mass
+# Specify process(es) to run
+generate p p > mu+ mu- / h @0
+add process p p > mu+ mu- j / h @1
+# Output processes to MadEvent directory
+output /mnt/hephy/pheno/gerhard/jetcheck_to1j
+launch -i
+	generate_events
+	shower=Pythia8
+	#detector=Delphes
+	#/users/gerhard.ungersbaeck/MG5_aMC_v2_6_7/Delphes/cards/delphes_card_CMS.tcl
+	set nevents 10000
+	set ebeam1 6500
+	set ebeam2 6500
+done

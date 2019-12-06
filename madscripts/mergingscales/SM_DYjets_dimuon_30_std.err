@@ -1,0 +1,10 @@
+stty: 'standard input': Inappropriate ioctl for device
+stty: 'standard input': Inappropriate ioctl for device
+stty: 'standard input': Inappropriate ioctl for device
+Error: no DISPLAY environment variable specified
+[1;31mCommand "import /users/gerhard.ungersbaeck/madskripts/SM_DYjets_dimuon_30" interrupted in sub-command:
+"generate_events mll50to500" with error:
+ValueError : could not convert string to float: 
+Please report this bug on https://bugs.launchpad.net/mg5amcnlo
+More information is found in '/mnt/hephy/pheno/gerhard/SM_DYjets_dimuon_qCut15/mll50to500_tag_1_debug.log'.
+Please attach this file to your report.[0m

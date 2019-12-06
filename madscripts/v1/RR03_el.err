@@ -1,0 +1,5 @@
+stty: 'standard input': Inappropriate ioctl for device
+stty: 'standard input': Inappropriate ioctl for device
+stty: 'standard input': Inappropriate ioctl for device
+Unable to init server: Broadway display type not supported: localhost:10.0
+Error: cannot open display: localhost:10.0

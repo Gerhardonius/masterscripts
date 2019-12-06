@@ -1,0 +1,6 @@
+[1;31mCommand "import /users/gerhard.ungersbaeck/madskripts/SM_DYjets_dimuon_15" interrupted in sub-command:
+"launch -i" with error:
+AlreadyRunning : Another instance of the program is currently running.
+	                (for this exact same directory) Please wait that this is instance is 
+	                closed. If no instance is running, you can delete the file
+	                /mnt/hephy/pheno/gerhard/SM_DYjets_dimuon_qCut15/RunWeb and try again.[0m

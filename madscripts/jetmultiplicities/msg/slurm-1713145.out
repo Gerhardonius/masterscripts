@@ -1,0 +1,766 @@
+************************************************************
+*                                                          *
+*                     W E L C O M E to                     *
+*              M A D G R A P H 5 _ a M C @ N L O           *
+*                                                          *
+*                                                          *
+*                 *                       *                *
+*                   *        * *        *                  *
+*                     * * * * 5 * * * *                    *
+*                   *        * *        *                  *
+*                 *                       *                *
+*                                                          *
+*         VERSION 2.6.7                 2019-10-16         *
+*                                                          *
+*    The MadGraph5_aMC@NLO Development Team - Find us at   *
+*    https://server06.fynu.ucl.ac.be/projects/madgraph     *
+*                            and                           *
+*            http://amcatnlo.web.cern.ch/amcatnlo/         *
+*                                                          *
+*               Type 'help' for in-line help.              *
+*           Type 'tutorial' to learn how MG5 works         *
+*    Type 'tutorial aMCatNLO' to learn how aMC@NLO works   *
+*    Type 'tutorial MadLoop' to learn how MadLoop works    *
+*                                                          *
+************************************************************
+load MG5 configuration from ../../MG5_aMC_v2_6_7/input/mg5_configuration.txt 
+set fastjet to /users/gerhard.ungersbaeck/MG5_aMC_v2_6_7/HEPTools/fastjet-3.3.2/fastjet-config
+set lhapdf to /users/gerhard.ungersbaeck/MG5_aMC_v2_6_7/HEPTools/lhapdf6/bin/lhapdf-config
+Using default text editor "vi". Set another one in ./input/mg5_configuration.txt
+Using default eps viewer "evince". Set another one in ./input/mg5_configuration.txt
+Using default web browser "firefox". Set another one in ./input/mg5_configuration.txt
+import /users/gerhard.ungersbaeck/madskripts/checkjet/jetcheck_2j
+The import format was not given, so we guess it as command
+import model sm-no_b_mass
+INFO: Restrict model sm with file ../../MG5_aMC_v2_6_7/models/sm/restrict_no_b_mass.dat . 
+INFO: Run "set stdout_level DEBUG" before import for more information. 
+INFO: Change particles name to pass to MG5 convention 
+Defined multiparticle p = g u c d s u~ c~ d~ s~
+Defined multiparticle j = g u c d s u~ c~ d~ s~
+Defined multiparticle l+ = e+ mu+
+Defined multiparticle l- = e- mu-
+Defined multiparticle vl = ve vm vt
+Defined multiparticle vl~ = ve~ vm~ vt~
+[1;34mPass the definition of 'j' and 'p' to 5 flavour scheme.[0m
+Defined multiparticle all = g u c d s b u~ c~ d~ s~ b~ a ve vm vt e- mu- ve~ vm~ vt~ e+ mu+ t t~ z w+ h w- ta- ta+
+generate p p > mu+ mu- j j / h @0
+INFO: Checking for minimal orders which gives processes. 
+INFO: Please specify coupling orders to bypass this step. 
+INFO: Trying coupling order WEIGHTED<=6: WEIGTHED IS 2*QED+QCD 
+INFO: Trying process: g g > mu+ mu- g g WEIGHTED<=6 / h  
+INFO: Trying process: g g > mu+ mu- u u~ WEIGHTED<=6 / h  
+INFO: Process has 16 diagrams 
+INFO: Trying process: g g > mu+ mu- u c~ WEIGHTED<=6 / h  
+INFO: Trying process: g g > mu+ mu- c u~ WEIGHTED<=6 / h  
+INFO: Trying process: g g > mu+ mu- c c~ WEIGHTED<=6 / h  
+INFO: Process has 16 diagrams 
+INFO: Trying process: g g > mu+ mu- d d~ WEIGHTED<=6 / h  
+INFO: Process has 16 diagrams 
+INFO: Trying process: g g > mu+ mu- d s~ WEIGHTED<=6 / h  
+INFO: Trying process: g g > mu+ mu- d b~ WEIGHTED<=6 / h  
+INFO: Trying process: g g > mu+ mu- s d~ WEIGHTED<=6 / h  
+INFO: Trying process: g g > mu+ mu- s s~ WEIGHTED<=6 / h  
+INFO: Process has 16 diagrams 
+INFO: Trying process: g g > mu+ mu- s b~ WEIGHTED<=6 / h  
+INFO: Trying process: g g > mu+ mu- d~ b WEIGHTED<=6 / h  
+INFO: Trying process: g g > mu+ mu- s~ b WEIGHTED<=6 / h  
+INFO: Trying process: g g > mu+ mu- b b~ WEIGHTED<=6 / h  
+INFO: Process has 16 diagrams 
+INFO: Crossed process found for g u > mu+ mu- g u, reuse diagrams. 
+INFO: Crossed process found for g c > mu+ mu- g c, reuse diagrams. 
+INFO: Crossed process found for g d > mu+ mu- g d, reuse diagrams. 
+INFO: Crossed process found for g s > mu+ mu- g s, reuse diagrams. 
+INFO: Crossed process found for g u~ > mu+ mu- g u~, reuse diagrams. 
+INFO: Crossed process found for g c~ > mu+ mu- g c~, reuse diagrams. 
+INFO: Crossed process found for g d~ > mu+ mu- g d~, reuse diagrams. 
+INFO: Crossed process found for g s~ > mu+ mu- g s~, reuse diagrams. 
+INFO: Crossed process found for g b > mu+ mu- g b, reuse diagrams. 
+INFO: Crossed process found for g b~ > mu+ mu- g b~, reuse diagrams. 
+INFO: Process u g > mu+ mu- g u added to mirror process g u > mu+ mu- g u 
+INFO: Trying process: u u > mu+ mu- u u WEIGHTED<=6 / h  
+INFO: Process has 16 diagrams 
+INFO: Trying process: u u > mu+ mu- u c WEIGHTED<=6 / h  
+INFO: Trying process: u u > mu+ mu- c c WEIGHTED<=6 / h  
+INFO: Trying process: u c > mu+ mu- u u WEIGHTED<=6 / h  
+INFO: Trying process: u c > mu+ mu- u c WEIGHTED<=6 / h  
+INFO: Process has 8 diagrams 
+INFO: Trying process: u c > mu+ mu- c c WEIGHTED<=6 / h  
+INFO: Trying process: u d > mu+ mu- u d WEIGHTED<=6 / h  
+INFO: Process has 8 diagrams 
+INFO: Trying process: u d > mu+ mu- u s WEIGHTED<=6 / h  
+INFO: Trying process: u d > mu+ mu- u b WEIGHTED<=6 / h  
+INFO: Trying process: u d > mu+ mu- c d WEIGHTED<=6 / h  
+INFO: Trying process: u d > mu+ mu- c s WEIGHTED<=6 / h  
+INFO: Trying process: u d > mu+ mu- c b WEIGHTED<=6 / h  
+INFO: Trying process: u s > mu+ mu- u d WEIGHTED<=6 / h  
+INFO: Trying process: u s > mu+ mu- u s WEIGHTED<=6 / h  
+INFO: Process has 8 diagrams 
+INFO: Trying process: u s > mu+ mu- u b WEIGHTED<=6 / h  
+INFO: Trying process: u s > mu+ mu- c d WEIGHTED<=6 / h  
+INFO: Trying process: u s > mu+ mu- c s WEIGHTED<=6 / h  
+INFO: Trying process: u s > mu+ mu- c b WEIGHTED<=6 / h  
+INFO: Crossed process found for u u~ > mu+ mu- g g, reuse diagrams. 
+INFO: Crossed process found for u u~ > mu+ mu- u u~, reuse diagrams. 
+INFO: Crossed process found for u u~ > mu+ mu- c c~, reuse diagrams. 
+INFO: Crossed process found for u u~ > mu+ mu- d d~, reuse diagrams. 
+INFO: Trying process: u u~ > mu+ mu- d b~ WEIGHTED<=6 / h  
+INFO: Crossed process found for u u~ > mu+ mu- s s~, reuse diagrams. 
+INFO: Trying process: u u~ > mu+ mu- s b~ WEIGHTED<=6 / h  
+INFO: Trying process: u u~ > mu+ mu- b b~ WEIGHTED<=6 / h  
+INFO: Process has 8 diagrams 
+INFO: Crossed process found for u c~ > mu+ mu- u c~, reuse diagrams. 
+INFO: Trying process: u c~ > mu+ mu- d b~ WEIGHTED<=6 / h  
+INFO: Trying process: u c~ > mu+ mu- s b~ WEIGHTED<=6 / h  
+INFO: Trying process: u c~ > mu+ mu- b b~ WEIGHTED<=6 / h  
+INFO: Crossed process found for u d~ > mu+ mu- u d~, reuse diagrams. 
+INFO: Crossed process found for u s~ > mu+ mu- u s~, reuse diagrams. 
+INFO: Crossed process found for u b > mu+ mu- u b, reuse diagrams. 
+INFO: Crossed process found for u b~ > mu+ mu- u b~, reuse diagrams. 
+INFO: Process c g > mu+ mu- g c added to mirror process g c > mu+ mu- g c 
+INFO: Process c u > mu+ mu- u c added to mirror process u c > mu+ mu- u c 
+INFO: Trying process: c c > mu+ mu- u u WEIGHTED<=6 / h  
+INFO: Trying process: c c > mu+ mu- u c WEIGHTED<=6 / h  
+INFO: Trying process: c c > mu+ mu- c c WEIGHTED<=6 / h  
+INFO: Process has 16 diagrams 
+INFO: Trying process: c d > mu+ mu- u d WEIGHTED<=6 / h  
+INFO: Trying process: c d > mu+ mu- u s WEIGHTED<=6 / h  
+INFO: Trying process: c d > mu+ mu- u b WEIGHTED<=6 / h  
+INFO: Trying process: c d > mu+ mu- c d WEIGHTED<=6 / h  
+INFO: Process has 8 diagrams 
+INFO: Trying process: c d > mu+ mu- c s WEIGHTED<=6 / h  
+INFO: Trying process: c d > mu+ mu- c b WEIGHTED<=6 / h  
+INFO: Trying process: c s > mu+ mu- u d WEIGHTED<=6 / h  
+INFO: Trying process: c s > mu+ mu- u s WEIGHTED<=6 / h  
+INFO: Trying process: c s > mu+ mu- u b WEIGHTED<=6 / h  
+INFO: Trying process: c s > mu+ mu- c d WEIGHTED<=6 / h  
+INFO: Trying process: c s > mu+ mu- c s WEIGHTED<=6 / h  
+INFO: Process has 8 diagrams 
+INFO: Trying process: c s > mu+ mu- c b WEIGHTED<=6 / h  
+INFO: Crossed process found for c u~ > mu+ mu- c u~, reuse diagrams. 
+INFO: Trying process: c u~ > mu+ mu- d b~ WEIGHTED<=6 / h  
+INFO: Trying process: c u~ > mu+ mu- s b~ WEIGHTED<=6 / h  
+INFO: Trying process: c u~ > mu+ mu- b b~ WEIGHTED<=6 / h  
+INFO: Crossed process found for c c~ > mu+ mu- g g, reuse diagrams. 
+INFO: Crossed process found for c c~ > mu+ mu- u u~, reuse diagrams. 
+INFO: Crossed process found for c c~ > mu+ mu- c c~, reuse diagrams. 
+INFO: Crossed process found for c c~ > mu+ mu- d d~, reuse diagrams. 
+INFO: Trying process: c c~ > mu+ mu- d b~ WEIGHTED<=6 / h  
+INFO: Crossed process found for c c~ > mu+ mu- s s~, reuse diagrams. 
+INFO: Trying process: c c~ > mu+ mu- s b~ WEIGHTED<=6 / h  
+INFO: Trying process: c c~ > mu+ mu- b b~ WEIGHTED<=6 / h  
+INFO: Process has 8 diagrams 
+INFO: Crossed process found for c d~ > mu+ mu- c d~, reuse diagrams. 
+INFO: Crossed process found for c s~ > mu+ mu- c s~, reuse diagrams. 
+INFO: Crossed process found for c b > mu+ mu- c b, reuse diagrams. 
+INFO: Crossed process found for c b~ > mu+ mu- c b~, reuse diagrams. 
+INFO: Process d g > mu+ mu- g d added to mirror process g d > mu+ mu- g d 
+INFO: Process d u > mu+ mu- u d added to mirror process u d > mu+ mu- u d 
+INFO: Process d c > mu+ mu- c d added to mirror process c d > mu+ mu- c d 
+INFO: Trying process: d d > mu+ mu- d d WEIGHTED<=6 / h  
+INFO: Process has 16 diagrams 
+INFO: Trying process: d d > mu+ mu- d s WEIGHTED<=6 / h  
+INFO: Trying process: d d > mu+ mu- d b WEIGHTED<=6 / h  
+INFO: Trying process: d d > mu+ mu- s s WEIGHTED<=6 / h  
+INFO: Trying process: d d > mu+ mu- s b WEIGHTED<=6 / h  
+INFO: Trying process: d d > mu+ mu- b b WEIGHTED<=6 / h  
+INFO: Trying process: d s > mu+ mu- d d WEIGHTED<=6 / h  
+INFO: Trying process: d s > mu+ mu- d s WEIGHTED<=6 / h  
+INFO: Process has 8 diagrams 
+INFO: Trying process: d s > mu+ mu- d b WEIGHTED<=6 / h  
+INFO: Trying process: d s > mu+ mu- s s WEIGHTED<=6 / h  
+INFO: Trying process: d s > mu+ mu- s b WEIGHTED<=6 / h  
+INFO: Trying process: d s > mu+ mu- b b WEIGHTED<=6 / h  
+INFO: Crossed process found for d u~ > mu+ mu- d u~, reuse diagrams. 
+INFO: Crossed process found for d c~ > mu+ mu- d c~, reuse diagrams. 
+INFO: Crossed process found for d d~ > mu+ mu- g g, reuse diagrams. 
+INFO: Crossed process found for d d~ > mu+ mu- u u~, reuse diagrams. 
+INFO: Crossed process found for d d~ > mu+ mu- c c~, reuse diagrams. 
+INFO: Crossed process found for d d~ > mu+ mu- d d~, reuse diagrams. 
+INFO: Trying process: d d~ > mu+ mu- d b~ WEIGHTED<=6 / h  
+INFO: Crossed process found for d d~ > mu+ mu- s s~, reuse diagrams. 
+INFO: Trying process: d d~ > mu+ mu- s b~ WEIGHTED<=6 / h  
+INFO: Trying process: d d~ > mu+ mu- b b~ WEIGHTED<=6 / h  
+INFO: Process has 8 diagrams 
+INFO: Crossed process found for d s~ > mu+ mu- d s~, reuse diagrams. 
+INFO: Trying process: d s~ > mu+ mu- s b~ WEIGHTED<=6 / h  
+INFO: Trying process: d s~ > mu+ mu- b b~ WEIGHTED<=6 / h  
+INFO: Crossed process found for d b > mu+ mu- d b, reuse diagrams. 
+INFO: Trying process: d b > mu+ mu- b b WEIGHTED<=6 / h  
+INFO: Crossed process found for d b~ > mu+ mu- d b~, reuse diagrams. 
+INFO: Process s g > mu+ mu- g s added to mirror process g s > mu+ mu- g s 
+INFO: Process s u > mu+ mu- u s added to mirror process u s > mu+ mu- u s 
+INFO: Process s c > mu+ mu- c s added to mirror process c s > mu+ mu- c s 
+INFO: Process s d > mu+ mu- d s added to mirror process d s > mu+ mu- d s 
+INFO: Trying process: s s > mu+ mu- d d WEIGHTED<=6 / h  
+INFO: Trying process: s s > mu+ mu- d s WEIGHTED<=6 / h  
+INFO: Trying process: s s > mu+ mu- d b WEIGHTED<=6 / h  
+INFO: Trying process: s s > mu+ mu- s s WEIGHTED<=6 / h  
+INFO: Process has 16 diagrams 
+INFO: Trying process: s s > mu+ mu- s b WEIGHTED<=6 / h  
+INFO: Trying process: s s > mu+ mu- b b WEIGHTED<=6 / h  
+INFO: Crossed process found for s u~ > mu+ mu- s u~, reuse diagrams. 
+INFO: Crossed process found for s c~ > mu+ mu- s c~, reuse diagrams. 
+INFO: Trying process: s d~ > mu+ mu- d b~ WEIGHTED<=6 / h  
+INFO: Crossed process found for s d~ > mu+ mu- s d~, reuse diagrams. 
+INFO: Trying process: s d~ > mu+ mu- s b~ WEIGHTED<=6 / h  
+INFO: Trying process: s d~ > mu+ mu- b b~ WEIGHTED<=6 / h  
+INFO: Crossed process found for s s~ > mu+ mu- g g, reuse diagrams. 
+INFO: Crossed process found for s s~ > mu+ mu- u u~, reuse diagrams. 
+INFO: Crossed process found for s s~ > mu+ mu- c c~, reuse diagrams. 
+INFO: Crossed process found for s s~ > mu+ mu- d d~, reuse diagrams. 
+INFO: Crossed process found for s s~ > mu+ mu- s s~, reuse diagrams. 
+INFO: Trying process: s s~ > mu+ mu- s b~ WEIGHTED<=6 / h  
+INFO: Trying process: s s~ > mu+ mu- b b~ WEIGHTED<=6 / h  
+INFO: Process has 8 diagrams 
+INFO: Crossed process found for s b > mu+ mu- s b, reuse diagrams. 
+INFO: Trying process: s b > mu+ mu- b b WEIGHTED<=6 / h  
+INFO: Crossed process found for s b~ > mu+ mu- s b~, reuse diagrams. 
+INFO: Process u~ g > mu+ mu- g u~ added to mirror process g u~ > mu+ mu- g u~ 
+INFO: Process u~ u > mu+ mu- g g added to mirror process u u~ > mu+ mu- g g 
+INFO: Process u~ u > mu+ mu- u u~ added to mirror process u u~ > mu+ mu- u u~ 
+INFO: Process u~ u > mu+ mu- c c~ added to mirror process u u~ > mu+ mu- c c~ 
+INFO: Process u~ u > mu+ mu- d d~ added to mirror process u u~ > mu+ mu- d d~ 
+INFO: Process u~ u > mu+ mu- s s~ added to mirror process u u~ > mu+ mu- s s~ 
+INFO: Process u~ u > mu+ mu- b b~ added to mirror process u u~ > mu+ mu- b b~ 
+INFO: Process u~ c > mu+ mu- c u~ added to mirror process c u~ > mu+ mu- c u~ 
+INFO: Process u~ d > mu+ mu- d u~ added to mirror process d u~ > mu+ mu- d u~ 
+INFO: Process u~ s > mu+ mu- s u~ added to mirror process s u~ > mu+ mu- s u~ 
+INFO: Crossed process found for u~ u~ > mu+ mu- u~ u~, reuse diagrams. 
+INFO: Crossed process found for u~ c~ > mu+ mu- u~ c~, reuse diagrams. 
+INFO: Crossed process found for u~ d~ > mu+ mu- u~ d~, reuse diagrams. 
+INFO: Crossed process found for u~ s~ > mu+ mu- u~ s~, reuse diagrams. 
+INFO: Crossed process found for u~ b > mu+ mu- u~ b, reuse diagrams. 
+INFO: Crossed process found for u~ b~ > mu+ mu- u~ b~, reuse diagrams. 
+INFO: Process c~ g > mu+ mu- g c~ added to mirror process g c~ > mu+ mu- g c~ 
+INFO: Process c~ u > mu+ mu- u c~ added to mirror process u c~ > mu+ mu- u c~ 
+INFO: Process c~ c > mu+ mu- g g added to mirror process c c~ > mu+ mu- g g 
+INFO: Process c~ c > mu+ mu- u u~ added to mirror process c c~ > mu+ mu- u u~ 
+INFO: Process c~ c > mu+ mu- c c~ added to mirror process c c~ > mu+ mu- c c~ 
+INFO: Process c~ c > mu+ mu- d d~ added to mirror process c c~ > mu+ mu- d d~ 
+INFO: Process c~ c > mu+ mu- s s~ added to mirror process c c~ > mu+ mu- s s~ 
+INFO: Process c~ c > mu+ mu- b b~ added to mirror process c c~ > mu+ mu- b b~ 
+INFO: Process c~ d > mu+ mu- d c~ added to mirror process d c~ > mu+ mu- d c~ 
+INFO: Process c~ s > mu+ mu- s c~ added to mirror process s c~ > mu+ mu- s c~ 
+INFO: Process c~ u~ > mu+ mu- u~ c~ added to mirror process u~ c~ > mu+ mu- u~ c~ 
+INFO: Crossed process found for c~ c~ > mu+ mu- c~ c~, reuse diagrams. 
+INFO: Crossed process found for c~ d~ > mu+ mu- c~ d~, reuse diagrams. 
+INFO: Crossed process found for c~ s~ > mu+ mu- c~ s~, reuse diagrams. 
+INFO: Crossed process found for c~ b > mu+ mu- c~ b, reuse diagrams. 
+INFO: Crossed process found for c~ b~ > mu+ mu- c~ b~, reuse diagrams. 
+INFO: Process d~ g > mu+ mu- g d~ added to mirror process g d~ > mu+ mu- g d~ 
+INFO: Process d~ u > mu+ mu- u d~ added to mirror process u d~ > mu+ mu- u d~ 
+INFO: Process d~ c > mu+ mu- c d~ added to mirror process c d~ > mu+ mu- c d~ 
+INFO: Process d~ d > mu+ mu- g g added to mirror process d d~ > mu+ mu- g g 
+INFO: Process d~ d > mu+ mu- u u~ added to mirror process d d~ > mu+ mu- u u~ 
+INFO: Process d~ d > mu+ mu- c c~ added to mirror process d d~ > mu+ mu- c c~ 
+INFO: Process d~ d > mu+ mu- d d~ added to mirror process d d~ > mu+ mu- d d~ 
+INFO: Process d~ d > mu+ mu- s s~ added to mirror process d d~ > mu+ mu- s s~ 
+INFO: Process d~ d > mu+ mu- b b~ added to mirror process d d~ > mu+ mu- b b~ 
+INFO: Process d~ s > mu+ mu- s d~ added to mirror process s d~ > mu+ mu- s d~ 
+INFO: Process d~ u~ > mu+ mu- u~ d~ added to mirror process u~ d~ > mu+ mu- u~ d~ 
+INFO: Process d~ c~ > mu+ mu- c~ d~ added to mirror process c~ d~ > mu+ mu- c~ d~ 
+INFO: Crossed process found for d~ d~ > mu+ mu- d~ d~, reuse diagrams. 
+INFO: Trying process: d~ d~ > mu+ mu- b~ b~ WEIGHTED<=6 / h  
+INFO: Crossed process found for d~ s~ > mu+ mu- d~ s~, reuse diagrams. 
+INFO: Trying process: d~ s~ > mu+ mu- b~ b~ WEIGHTED<=6 / h  
+INFO: Crossed process found for d~ b > mu+ mu- d~ b, reuse diagrams. 
+INFO: Trying process: d~ b > mu+ mu- b b~ WEIGHTED<=6 / h  
+INFO: Crossed process found for d~ b~ > mu+ mu- d~ b~, reuse diagrams. 
+INFO: Process s~ g > mu+ mu- g s~ added to mirror process g s~ > mu+ mu- g s~ 
+INFO: Process s~ u > mu+ mu- u s~ added to mirror process u s~ > mu+ mu- u s~ 
+INFO: Process s~ c > mu+ mu- c s~ added to mirror process c s~ > mu+ mu- c s~ 
+INFO: Process s~ d > mu+ mu- d s~ added to mirror process d s~ > mu+ mu- d s~ 
+INFO: Process s~ s > mu+ mu- g g added to mirror process s s~ > mu+ mu- g g 
+INFO: Process s~ s > mu+ mu- u u~ added to mirror process s s~ > mu+ mu- u u~ 
+INFO: Process s~ s > mu+ mu- c c~ added to mirror process s s~ > mu+ mu- c c~ 
+INFO: Process s~ s > mu+ mu- d d~ added to mirror process s s~ > mu+ mu- d d~ 
+INFO: Process s~ s > mu+ mu- s s~ added to mirror process s s~ > mu+ mu- s s~ 
+INFO: Process s~ s > mu+ mu- b b~ added to mirror process s s~ > mu+ mu- b b~ 
+INFO: Process s~ u~ > mu+ mu- u~ s~ added to mirror process u~ s~ > mu+ mu- u~ s~ 
+INFO: Process s~ c~ > mu+ mu- c~ s~ added to mirror process c~ s~ > mu+ mu- c~ s~ 
+INFO: Process s~ d~ > mu+ mu- d~ s~ added to mirror process d~ s~ > mu+ mu- d~ s~ 
+INFO: Crossed process found for s~ s~ > mu+ mu- s~ s~, reuse diagrams. 
+INFO: Trying process: s~ s~ > mu+ mu- b~ b~ WEIGHTED<=6 / h  
+INFO: Crossed process found for s~ b > mu+ mu- s~ b, reuse diagrams. 
+INFO: Trying process: s~ b > mu+ mu- b b~ WEIGHTED<=6 / h  
+INFO: Crossed process found for s~ b~ > mu+ mu- s~ b~, reuse diagrams. 
+INFO: Process b g > mu+ mu- g b added to mirror process g b > mu+ mu- g b 
+INFO: Process b u > mu+ mu- u b added to mirror process u b > mu+ mu- u b 
+INFO: Process b c > mu+ mu- c b added to mirror process c b > mu+ mu- c b 
+INFO: Process b d > mu+ mu- d b added to mirror process d b > mu+ mu- d b 
+INFO: Process b s > mu+ mu- s b added to mirror process s b > mu+ mu- s b 
+INFO: Process b u~ > mu+ mu- u~ b added to mirror process u~ b > mu+ mu- u~ b 
+INFO: Process b c~ > mu+ mu- c~ b added to mirror process c~ b > mu+ mu- c~ b 
+INFO: Process b d~ > mu+ mu- d~ b added to mirror process d~ b > mu+ mu- d~ b 
+INFO: Process b s~ > mu+ mu- s~ b added to mirror process s~ b > mu+ mu- s~ b 
+INFO: Trying process: b b > mu+ mu- b b WEIGHTED<=6 / h  
+INFO: Process has 16 diagrams 
+INFO: Crossed process found for b b~ > mu+ mu- g g, reuse diagrams. 
+INFO: Crossed process found for b b~ > mu+ mu- u u~, reuse diagrams. 
+INFO: Crossed process found for b b~ > mu+ mu- c c~, reuse diagrams. 
+INFO: Crossed process found for b b~ > mu+ mu- d d~, reuse diagrams. 
+INFO: Crossed process found for b b~ > mu+ mu- s s~, reuse diagrams. 
+INFO: Crossed process found for b b~ > mu+ mu- b b~, reuse diagrams. 
+INFO: Process b~ g > mu+ mu- g b~ added to mirror process g b~ > mu+ mu- g b~ 
+INFO: Process b~ u > mu+ mu- u b~ added to mirror process u b~ > mu+ mu- u b~ 
+INFO: Process b~ c > mu+ mu- c b~ added to mirror process c b~ > mu+ mu- c b~ 
+INFO: Process b~ d > mu+ mu- d b~ added to mirror process d b~ > mu+ mu- d b~ 
+INFO: Process b~ s > mu+ mu- s b~ added to mirror process s b~ > mu+ mu- s b~ 
+INFO: Process b~ u~ > mu+ mu- u~ b~ added to mirror process u~ b~ > mu+ mu- u~ b~ 
+INFO: Process b~ c~ > mu+ mu- c~ b~ added to mirror process c~ b~ > mu+ mu- c~ b~ 
+INFO: Process b~ d~ > mu+ mu- d~ b~ added to mirror process d~ b~ > mu+ mu- d~ b~ 
+INFO: Process b~ s~ > mu+ mu- s~ b~ added to mirror process s~ b~ > mu+ mu- s~ b~ 
+INFO: Process b~ b > mu+ mu- g g added to mirror process b b~ > mu+ mu- g g 
+INFO: Process b~ b > mu+ mu- u u~ added to mirror process b b~ > mu+ mu- u u~ 
+INFO: Process b~ b > mu+ mu- c c~ added to mirror process b b~ > mu+ mu- c c~ 
+INFO: Process b~ b > mu+ mu- d d~ added to mirror process b b~ > mu+ mu- d d~ 
+INFO: Process b~ b > mu+ mu- s s~ added to mirror process b b~ > mu+ mu- s s~ 
+INFO: Process b~ b > mu+ mu- b b~ added to mirror process b b~ > mu+ mu- b b~ 
+INFO: Crossed process found for b~ b~ > mu+ mu- b~ b~, reuse diagrams. 
+95 processes with 1040 diagrams generated in 2.906 s
+Total: 95 processes with 1040 diagrams
+output /mnt/hephy/pheno/gerhard/jetcheck_2j
+INFO: initialize a new directory: jetcheck_2j 
+INFO: remove old information in jetcheck_2j 
+INFO: Organizing processes into subprocess groups 
+INFO: Generating Helas calls for process: g g > mu+ mu- u u~ WEIGHTED<=6 / h 
+INFO: Processing color information for process: g g > mu+ mu- u u~ / h 
+INFO: Combined process g g > mu+ mu- c c~ WEIGHTED<=6 / h with process g g > mu+ mu- u u~ WEIGHTED<=6 / h 
+INFO: Generating Helas calls for process: g g > mu+ mu- d d~ WEIGHTED<=6 / h 
+INFO: Reusing existing color information for process: g g > mu+ mu- d d~ / h 
+INFO: Combined process g g > mu+ mu- s s~ WEIGHTED<=6 / h with process g g > mu+ mu- d d~ WEIGHTED<=6 / h 
+INFO: Combined process g g > mu+ mu- b b~ WEIGHTED<=6 / h with process g g > mu+ mu- d d~ WEIGHTED<=6 / h 
+INFO: Generating Helas calls for process: g u > mu+ mu- g u WEIGHTED<=6 / h 
+INFO: Processing color information for process: g u > mu+ mu- g u / h 
+INFO: Combined process g c > mu+ mu- g c WEIGHTED<=6 / h with process g u > mu+ mu- g u WEIGHTED<=6 / h 
+INFO: Generating Helas calls for process: g d > mu+ mu- g d WEIGHTED<=6 / h 
+INFO: Reusing existing color information for process: g d > mu+ mu- g d / h 
+INFO: Combined process g s > mu+ mu- g s WEIGHTED<=6 / h with process g d > mu+ mu- g d WEIGHTED<=6 / h 
+INFO: Generating Helas calls for process: g u~ > mu+ mu- g u~ WEIGHTED<=6 / h 
+INFO: Processing color information for process: g u~ > mu+ mu- g u~ / h 
+INFO: Combined process g c~ > mu+ mu- g c~ WEIGHTED<=6 / h with process g u~ > mu+ mu- g u~ WEIGHTED<=6 / h 
+INFO: Generating Helas calls for process: g d~ > mu+ mu- g d~ WEIGHTED<=6 / h 
+INFO: Reusing existing color information for process: g d~ > mu+ mu- g d~ / h 
+INFO: Combined process g s~ > mu+ mu- g s~ WEIGHTED<=6 / h with process g d~ > mu+ mu- g d~ WEIGHTED<=6 / h 
+INFO: Combined process g b > mu+ mu- g b WEIGHTED<=6 / h with process g d > mu+ mu- g d WEIGHTED<=6 / h 
+INFO: Combined process g b~ > mu+ mu- g b~ WEIGHTED<=6 / h with process g d~ > mu+ mu- g d~ WEIGHTED<=6 / h 
+INFO: Generating Helas calls for process: u u > mu+ mu- u u WEIGHTED<=6 / h 
+INFO: Processing color information for process: u u > mu+ mu- u u / h 
+INFO: Generating Helas calls for process: u u~ > mu+ mu- u u~ WEIGHTED<=6 / h 
+INFO: Processing color information for process: u u~ > mu+ mu- u u~ / h 
+INFO: Combined process c c > mu+ mu- c c WEIGHTED<=6 / h with process u u > mu+ mu- u u WEIGHTED<=6 / h 
+INFO: Combined process c c~ > mu+ mu- c c~ WEIGHTED<=6 / h with process u u~ > mu+ mu- u u~ WEIGHTED<=6 / h 
+INFO: Generating Helas calls for process: d d > mu+ mu- d d WEIGHTED<=6 / h 
+INFO: Reusing existing color information for process: d d > mu+ mu- d d / h 
+INFO: Generating Helas calls for process: d d~ > mu+ mu- d d~ WEIGHTED<=6 / h 
+INFO: Reusing existing color information for process: d d~ > mu+ mu- d d~ / h 
+INFO: Combined process s s > mu+ mu- s s WEIGHTED<=6 / h with process d d > mu+ mu- d d WEIGHTED<=6 / h 
+INFO: Combined process s s~ > mu+ mu- s s~ WEIGHTED<=6 / h with process d d~ > mu+ mu- d d~ WEIGHTED<=6 / h 
+INFO: Generating Helas calls for process: u~ u~ > mu+ mu- u~ u~ WEIGHTED<=6 / h 
+INFO: Processing color information for process: u~ u~ > mu+ mu- u~ u~ / h 
+INFO: Combined process c~ c~ > mu+ mu- c~ c~ WEIGHTED<=6 / h with process u~ u~ > mu+ mu- u~ u~ WEIGHTED<=6 / h 
+INFO: Generating Helas calls for process: d~ d~ > mu+ mu- d~ d~ WEIGHTED<=6 / h 
+INFO: Reusing existing color information for process: d~ d~ > mu+ mu- d~ d~ / h 
+INFO: Combined process s~ s~ > mu+ mu- s~ s~ WEIGHTED<=6 / h with process d~ d~ > mu+ mu- d~ d~ WEIGHTED<=6 / h 
+INFO: Combined process b b > mu+ mu- b b WEIGHTED<=6 / h with process d d > mu+ mu- d d WEIGHTED<=6 / h 
+INFO: Combined process b b~ > mu+ mu- b b~ WEIGHTED<=6 / h with process d d~ > mu+ mu- d d~ WEIGHTED<=6 / h 
+INFO: Combined process b~ b~ > mu+ mu- b~ b~ WEIGHTED<=6 / h with process d~ d~ > mu+ mu- d~ d~ WEIGHTED<=6 / h 
+INFO: Generating Helas calls for process: u c > mu+ mu- u c WEIGHTED<=6 / h 
+INFO: Processing color information for process: u c > mu+ mu- u c / h 
+INFO: Generating Helas calls for process: u d > mu+ mu- u d WEIGHTED<=6 / h 
+INFO: Reusing existing color information for process: u d > mu+ mu- u d / h 
+INFO: Combined process u s > mu+ mu- u s WEIGHTED<=6 / h with process u d > mu+ mu- u d WEIGHTED<=6 / h 
+INFO: Generating Helas calls for process: u u~ > mu+ mu- c c~ WEIGHTED<=6 / h 
+INFO: Processing color information for process: u u~ > mu+ mu- c c~ / h 
+INFO: Generating Helas calls for process: u u~ > mu+ mu- d d~ WEIGHTED<=6 / h 
+INFO: Reusing existing color information for process: u u~ > mu+ mu- d d~ / h 
+INFO: Combined process u u~ > mu+ mu- s s~ WEIGHTED<=6 / h with process u u~ > mu+ mu- d d~ WEIGHTED<=6 / h 
+INFO: Combined process u u~ > mu+ mu- b b~ WEIGHTED<=6 / h with process u u~ > mu+ mu- d d~ WEIGHTED<=6 / h 
+INFO: Generating Helas calls for process: u c~ > mu+ mu- u c~ WEIGHTED<=6 / h 
+INFO: Processing color information for process: u c~ > mu+ mu- u c~ / h 
+INFO: Generating Helas calls for process: u d~ > mu+ mu- u d~ WEIGHTED<=6 / h 
+INFO: Reusing existing color information for process: u d~ > mu+ mu- u d~ / h 
+INFO: Combined process u s~ > mu+ mu- u s~ WEIGHTED<=6 / h with process u d~ > mu+ mu- u d~ WEIGHTED<=6 / h 
+INFO: Combined process u b > mu+ mu- u b WEIGHTED<=6 / h with process u d > mu+ mu- u d WEIGHTED<=6 / h 
+INFO: Combined process u b~ > mu+ mu- u b~ WEIGHTED<=6 / h with process u d~ > mu+ mu- u d~ WEIGHTED<=6 / h 
+INFO: Combined process c d > mu+ mu- c d WEIGHTED<=6 / h with process u d > mu+ mu- u d WEIGHTED<=6 / h 
+INFO: Combined process c s > mu+ mu- c s WEIGHTED<=6 / h with process u d > mu+ mu- u d WEIGHTED<=6 / h 
+INFO: Combined process c u~ > mu+ mu- c u~ WEIGHTED<=6 / h with process u c~ > mu+ mu- u c~ WEIGHTED<=6 / h 
+INFO: Combined process c c~ > mu+ mu- u u~ WEIGHTED<=6 / h with process u u~ > mu+ mu- c c~ WEIGHTED<=6 / h 
+INFO: Combined process c c~ > mu+ mu- d d~ WEIGHTED<=6 / h with process u u~ > mu+ mu- d d~ WEIGHTED<=6 / h 
+INFO: Combined process c c~ > mu+ mu- s s~ WEIGHTED<=6 / h with process u u~ > mu+ mu- d d~ WEIGHTED<=6 / h 
+INFO: Combined process c c~ > mu+ mu- b b~ WEIGHTED<=6 / h with process u u~ > mu+ mu- d d~ WEIGHTED<=6 / h 
+INFO: Combined process c d~ > mu+ mu- c d~ WEIGHTED<=6 / h with process u d~ > mu+ mu- u d~ WEIGHTED<=6 / h 
+INFO: Combined process c s~ > mu+ mu- c s~ WEIGHTED<=6 / h with process u d~ > mu+ mu- u d~ WEIGHTED<=6 / h 
+INFO: Combined process c b > mu+ mu- c b WEIGHTED<=6 / h with process u d > mu+ mu- u d WEIGHTED<=6 / h 
+INFO: Combined process c b~ > mu+ mu- c b~ WEIGHTED<=6 / h with process u d~ > mu+ mu- u d~ WEIGHTED<=6 / h 
+INFO: Generating Helas calls for process: d s > mu+ mu- d s WEIGHTED<=6 / h 
+INFO: Reusing existing color information for process: d s > mu+ mu- d s / h 
+INFO: Generating Helas calls for process: d u~ > mu+ mu- d u~ WEIGHTED<=6 / h 
+INFO: Processing color information for process: d u~ > mu+ mu- d u~ / h 
+INFO: Combined process d c~ > mu+ mu- d c~ WEIGHTED<=6 / h with process d u~ > mu+ mu- d u~ WEIGHTED<=6 / h 
+INFO: Generating Helas calls for process: d d~ > mu+ mu- u u~ WEIGHTED<=6 / h 
+INFO: Processing color information for process: d d~ > mu+ mu- u u~ / h 
+INFO: Combined process d d~ > mu+ mu- c c~ WEIGHTED<=6 / h with process d d~ > mu+ mu- u u~ WEIGHTED<=6 / h 
+INFO: Generating Helas calls for process: d d~ > mu+ mu- s s~ WEIGHTED<=6 / h 
+INFO: Reusing existing color information for process: d d~ > mu+ mu- s s~ / h 
+INFO: Combined process d d~ > mu+ mu- b b~ WEIGHTED<=6 / h with process d d~ > mu+ mu- s s~ WEIGHTED<=6 / h 
+INFO: Generating Helas calls for process: d s~ > mu+ mu- d s~ WEIGHTED<=6 / h 
+INFO: Reusing existing color information for process: d s~ > mu+ mu- d s~ / h 
+INFO: Combined process d b > mu+ mu- d b WEIGHTED<=6 / h with process d s > mu+ mu- d s WEIGHTED<=6 / h 
+INFO: Combined process d b~ > mu+ mu- d b~ WEIGHTED<=6 / h with process d s~ > mu+ mu- d s~ WEIGHTED<=6 / h 
+INFO: Combined process s u~ > mu+ mu- s u~ WEIGHTED<=6 / h with process d u~ > mu+ mu- d u~ WEIGHTED<=6 / h 
+INFO: Combined process s c~ > mu+ mu- s c~ WEIGHTED<=6 / h with process d u~ > mu+ mu- d u~ WEIGHTED<=6 / h 
+INFO: Combined process s d~ > mu+ mu- s d~ WEIGHTED<=6 / h with process d s~ > mu+ mu- d s~ WEIGHTED<=6 / h 
+INFO: Combined process s s~ > mu+ mu- u u~ WEIGHTED<=6 / h with process d d~ > mu+ mu- u u~ WEIGHTED<=6 / h 
+INFO: Combined process s s~ > mu+ mu- c c~ WEIGHTED<=6 / h with process d d~ > mu+ mu- u u~ WEIGHTED<=6 / h 
+INFO: Combined process s s~ > mu+ mu- d d~ WEIGHTED<=6 / h with process d d~ > mu+ mu- s s~ WEIGHTED<=6 / h 
+INFO: Combined process s s~ > mu+ mu- b b~ WEIGHTED<=6 / h with process d d~ > mu+ mu- s s~ WEIGHTED<=6 / h 
+INFO: Combined process s b > mu+ mu- s b WEIGHTED<=6 / h with process d s > mu+ mu- d s WEIGHTED<=6 / h 
+INFO: Combined process s b~ > mu+ mu- s b~ WEIGHTED<=6 / h with process d s~ > mu+ mu- d s~ WEIGHTED<=6 / h 
+INFO: Generating Helas calls for process: u~ c~ > mu+ mu- u~ c~ WEIGHTED<=6 / h 
+INFO: Processing color information for process: u~ c~ > mu+ mu- u~ c~ / h 
+INFO: Generating Helas calls for process: u~ d~ > mu+ mu- u~ d~ WEIGHTED<=6 / h 
+INFO: Reusing existing color information for process: u~ d~ > mu+ mu- u~ d~ / h 
+INFO: Combined process u~ s~ > mu+ mu- u~ s~ WEIGHTED<=6 / h with process u~ d~ > mu+ mu- u~ d~ WEIGHTED<=6 / h 
+INFO: Generating Helas calls for process: u~ b > mu+ mu- u~ b WEIGHTED<=6 / h 
+INFO: Processing color information for process: u~ b > mu+ mu- u~ b / h 
+INFO: Combined process u~ b~ > mu+ mu- u~ b~ WEIGHTED<=6 / h with process u~ d~ > mu+ mu- u~ d~ WEIGHTED<=6 / h 
+INFO: Combined process c~ d~ > mu+ mu- c~ d~ WEIGHTED<=6 / h with process u~ d~ > mu+ mu- u~ d~ WEIGHTED<=6 / h 
+INFO: Combined process c~ s~ > mu+ mu- c~ s~ WEIGHTED<=6 / h with process u~ d~ > mu+ mu- u~ d~ WEIGHTED<=6 / h 
+INFO: Combined process c~ b > mu+ mu- c~ b WEIGHTED<=6 / h with process u~ b > mu+ mu- u~ b WEIGHTED<=6 / h 
+INFO: Combined process c~ b~ > mu+ mu- c~ b~ WEIGHTED<=6 / h with process u~ d~ > mu+ mu- u~ d~ WEIGHTED<=6 / h 
+INFO: Generating Helas calls for process: d~ s~ > mu+ mu- d~ s~ WEIGHTED<=6 / h 
+INFO: Reusing existing color information for process: d~ s~ > mu+ mu- d~ s~ / h 
+INFO: Generating Helas calls for process: d~ b > mu+ mu- d~ b WEIGHTED<=6 / h 
+INFO: Reusing existing color information for process: d~ b > mu+ mu- d~ b / h 
+INFO: Combined process d~ b~ > mu+ mu- d~ b~ WEIGHTED<=6 / h with process d~ s~ > mu+ mu- d~ s~ WEIGHTED<=6 / h 
+INFO: Combined process s~ b > mu+ mu- s~ b WEIGHTED<=6 / h with process d~ b > mu+ mu- d~ b WEIGHTED<=6 / h 
+INFO: Combined process s~ b~ > mu+ mu- s~ b~ WEIGHTED<=6 / h with process d~ s~ > mu+ mu- d~ s~ WEIGHTED<=6 / h 
+INFO: Combined process b b~ > mu+ mu- u u~ WEIGHTED<=6 / h with process d d~ > mu+ mu- u u~ WEIGHTED<=6 / h 
+INFO: Combined process b b~ > mu+ mu- c c~ WEIGHTED<=6 / h with process d d~ > mu+ mu- u u~ WEIGHTED<=6 / h 
+INFO: Combined process b b~ > mu+ mu- d d~ WEIGHTED<=6 / h with process d d~ > mu+ mu- s s~ WEIGHTED<=6 / h 
+INFO: Combined process b b~ > mu+ mu- s s~ WEIGHTED<=6 / h with process d d~ > mu+ mu- s s~ WEIGHTED<=6 / h 
+INFO: Generating Helas calls for process: u u~ > mu+ mu- g g WEIGHTED<=6 / h 
+INFO: Processing color information for process: u u~ > mu+ mu- g g / h 
+INFO: Combined process c c~ > mu+ mu- g g WEIGHTED<=6 / h with process u u~ > mu+ mu- g g WEIGHTED<=6 / h 
+INFO: Generating Helas calls for process: d d~ > mu+ mu- g g WEIGHTED<=6 / h 
+INFO: Reusing existing color information for process: d d~ > mu+ mu- g g / h 
+INFO: Combined process s s~ > mu+ mu- g g WEIGHTED<=6 / h with process d d~ > mu+ mu- g g WEIGHTED<=6 / h 
+INFO: Combined process b b~ > mu+ mu- g g WEIGHTED<=6 / h with process d d~ > mu+ mu- g g WEIGHTED<=6 / h 
+INFO: Creating files in directory P0_gg_llqq 
+INFO: Generating Feynman diagrams for Process: g g > mu+ mu- u u~ WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: g g > mu+ mu- d d~ WEIGHTED<=6 / h 
+INFO: Finding symmetric diagrams for subprocess group gg_llqq 
+INFO: Creating files in directory P0_gq_llgq 
+INFO: Generating Feynman diagrams for Process: g u > mu+ mu- g u WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: g d > mu+ mu- g d WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: g u~ > mu+ mu- g u~ WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: g d~ > mu+ mu- g d~ WEIGHTED<=6 / h 
+INFO: Finding symmetric diagrams for subprocess group gq_llgq 
+INFO: Creating files in directory P0_qq_llqq 
+INFO: Generating Feynman diagrams for Process: u u > mu+ mu- u u WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: u u~ > mu+ mu- u u~ WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: d d > mu+ mu- d d WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: d d~ > mu+ mu- d d~ WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: u~ u~ > mu+ mu- u~ u~ WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: d~ d~ > mu+ mu- d~ d~ WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: u c > mu+ mu- u c WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: u d > mu+ mu- u d WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: u u~ > mu+ mu- c c~ WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: u u~ > mu+ mu- d d~ WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: u c~ > mu+ mu- u c~ WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: u d~ > mu+ mu- u d~ WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: d s > mu+ mu- d s WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: d u~ > mu+ mu- d u~ WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: d d~ > mu+ mu- u u~ WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: d d~ > mu+ mu- s s~ WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: d s~ > mu+ mu- d s~ WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: u~ c~ > mu+ mu- u~ c~ WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: u~ d~ > mu+ mu- u~ d~ WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: u~ b > mu+ mu- u~ b WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: d~ s~ > mu+ mu- d~ s~ WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: d~ b > mu+ mu- d~ b WEIGHTED<=6 / h 
+INFO: Finding symmetric diagrams for subprocess group qq_llqq 
+INFO: Creating files in directory P0_qq_llgg 
+INFO: Generating Feynman diagrams for Process: u u~ > mu+ mu- g g WEIGHTED<=6 / h 
+INFO: Generating Feynman diagrams for Process: d d~ > mu+ mu- g g WEIGHTED<=6 / h 
+INFO: Finding symmetric diagrams for subprocess group qq_llgg 
+Generated helas calls for 30 subprocesses (352 diagrams) in 1.074 s
+Wrote files for 864 helas calls in 1.412 s
+ALOHA: aloha creates VVV1 set of routines with options: P0
+ALOHA: aloha creates FFV2 routines
+ALOHA: aloha creates FFV3 routines
+ALOHA: aloha creates FFV1 routines
+ALOHA: aloha creates FFV4 routines
+ALOHA: aloha creates FFV5 routines
+save configuration file to /mnt/hephy/pheno/gerhard/jetcheck_2j/Cards/me5_configuration.txt
+INFO: Use Fortran compiler gfortran 
+INFO: Use c++ compiler g++ 
+INFO: Generate jpeg diagrams 
+INFO: Generate web pages 
+INFO: Generating MadAnalysis5 default cards tailored to this process 
+INFO: Cards created in 1.36s 
+Output to directory /mnt/hephy/pheno/gerhard/jetcheck_2j done.
+Type "launch" to generate events from this process, or see
+/mnt/hephy/pheno/gerhard/jetcheck_2j/README
+Run "open index.html" to see more information about this process.
+done
+[1;34mCommand "done" not recognized, please try again[0m
+launch -i
+************************************************************
+*                                                          *
+*                      W E L C O M E to                    *
+*             M A D G R A P H 5 _ a M C @ N L O            *
+*                      M A D E V E N T                     *
+*                                                          *
+*                 *                       *                *
+*                   *        * *        *                  *
+*                     * * * * 5 * * * *                    *
+*                   *        * *        *                  *
+*                 *                       *                *
+*                                                          *
+*         VERSION 2.6.7                 2019-10-16         *
+*                                                          *
+*    The MadGraph5_aMC@NLO Development Team - Find us at   *
+*    https://server06.fynu.ucl.ac.be/projects/madgraph     *
+*                                                          *
+*               Type 'help' for in-line help.              *
+*                                                          *
+************************************************************
+INFO: load configuration from /mnt/hephy/pheno/gerhard/jetcheck_2j/Cards/me5_configuration.txt  
+INFO: load configuration from /users/gerhard.ungersbaeck/MG5_aMC_v2_6_7/input/mg5_configuration.txt  
+INFO: load configuration from /mnt/hephy/pheno/gerhard/jetcheck_2j/Cards/me5_configuration.txt  
+Using default text editor "vi". Set another one in ./input/mg5_configuration.txt
+generate_events
+stty: 'standard input': Inappropriate ioctl for device
+stty: 'standard input': Inappropriate ioctl for device
+The following switches determine which programs are run:
+/==============================================================================\
+| 1. Choose the shower/hadronization program   [1m  shower[0m = [31mOFF[0m                  |
+| 2. Choose the detector simulation program    [1mdetector[0m = [31mOFF[0m                  |
+| 3. Choose an analysis package (plot/convert) [1manalysis[0m = [32mMadAnalysis5[0m         |
+| 4. Decay onshell particles                   [1m madspin[0m = [31mOFF[0m                  |
+| 5. Add weights to events for new hypp.       [1mreweight[0m = [31mOFF[0m                  |
+\==============================================================================/
+Either type the switch number (1 to 5) to change its setting,
+Set any switch explicitly (e.g. type 'shower=Pythia8' at the prompt)
+Type 'help' for the list of all valid option
+Type '0', 'auto', 'done' or just press enter when you are done.
+The following switches determine which programs are run:
+/==============================================================================\
+| 1. Choose the shower/hadronization program   [1m  shower[0m = [32mPythia8[0m              |
+| 2. Choose the detector simulation program    [1mdetector[0m = [31mOFF[0m                  |
+| 3. Choose an analysis package (plot/convert) [1manalysis[0m = [32mMadAnalysis5[0m         |
+| 4. Decay onshell particles                   [1m madspin[0m = [31mOFF[0m                  |
+| 5. Add weights to events for new hypp.       [1mreweight[0m = [31mOFF[0m                  |
+\==============================================================================/
+Either type the switch number (1 to 5) to change its setting,
+Set any switch explicitly (e.g. type 'shower=OFF' at the prompt)
+Type 'help' for the list of all valid option
+Type '0', 'auto', 'done' or just press enter when you are done.
+set nevents 20000
+[1mINFO: modify parameter nevents of the run_card.dat to 20000 [0m
+set ebeam1 6500
+[1mINFO: modify parameter ebeam1 of the run_card.dat to 6500.0 [0m
+set ebeam2 6500
+[1mINFO: modify parameter ebeam2 of the run_card.dat to 6500.0 [0m
+INFO: Update the dependent parameter of the param_card.dat 
+Generating 20000 events with run name run_01
+survey  run_01 
+INFO: compile directory 
+compile Source Directory
+Error: no DISPLAY environment variable specified
+Using random number seed offset = 21
+INFO: Running Survey 
+Creating Jobs
+Working on SubProcesses
+INFO:     P0_gg_llqq  
+INFO:     P0_gq_llgq  
+INFO:     P0_qq_llqq  
+INFO:     P0_qq_llgg  
+INFO:  Idle: 0,  Running: 17,  Completed: 7 [ current time: 16h50 ] 
+INFO:  Idle: 0,  Running: 16,  Completed: 8 [  0.076s  ] 
+INFO:  Idle: 0,  Running: 2,  Completed: 22 [  3.2s  ] 
+INFO:  Idle: 0,  Running: 0,  Completed: 24 [  4.6s  ] 
+INFO: End survey 
+refine 20000
+Creating Jobs
+INFO: Refine results to 20000 
+INFO: Generating 20000.0 unweigthed events. 
+INFO: Effective Luminosity 209.881601853 pb^-1 
+INFO: need to improve 19 channels 
+Current estimate of cross-section: 114.350185 +- 1.4716850428
+    P0_gg_llqq 
+    P0_gq_llgq 
+    P0_qq_llqq 
+    P0_qq_llgg 
+INFO:  Idle: 1,  Running: 31,  Completed: 0 [ current time: 16h50 ] 
+INFO:  Idle: 0,  Running: 30,  Completed: 2 [  1.6s  ] 
+INFO:  Idle: 0,  Running: 20,  Completed: 12 [  5.2s  ] 
+INFO:  Idle: 0,  Running: 12,  Completed: 20 [  9.4s  ] 
+INFO:  Idle: 0,  Running: 9,  Completed: 23 [  14s  ] 
+INFO:  Idle: 0,  Running: 4,  Completed: 28 [  20.8s  ] 
+INFO:  Idle: 0,  Running: 2,  Completed: 30 [  47s  ] 
+INFO:  Idle: 0,  Running: 0,  Completed: 32 [  1m 22s  ] 
+INFO:  Idle: 0,  Running: 0,  Completed: 32 [  1m 22s  ] 
+INFO: Combining runs 
+INFO: finish refine 
+refine 20000
+Creating Jobs
+INFO: Refine results to 20000 
+INFO: Generating 20000.0 unweigthed events. 
+INFO: Effective Luminosity 210.60729799 pb^-1 
+INFO: need to improve 0 channels 
+Current estimate of cross-section: 113.956165 +- 0.235452030397
+    P0_gg_llqq 
+    P0_gq_llgq 
+    P0_qq_llqq 
+    P0_qq_llgg 
+INFO:  Idle: 0,  Running: 0,  Completed: 0 [ current time: 16h51 ] 
+INFO: Combining runs 
+INFO: finish refine 
+INFO: Combining Events 
+  === Results Summary for run: run_01 tag: tag_1 ===
+
+     Cross-section :   114 +- 0.2355 pb
+     Nb of events :  20000
+ 
+INFO: Running Systematics computation 
+INFO:  Idle: 2,  Running: 6,  Completed: 0 [ current time: 16h52 ] 
+INFO:  Idle: 0,  Running: 6,  Completed: 2 [  15.9s  ] 
+INFO: # events generated with PDF: NNPDF23_lo_as_0130_qed (247000) 
+INFO: #Will Compute 145 weights per event. 
+INFO: #***************************************************************************
+#
+# original cross-section: 113.916301288
+#     scale variation: +27.8% -20.6%
+#     central scheme variation: +7.83% -19.8%
+# PDF variation: +1.58% -1.58%
+#
+# dynamical scheme # 1 : 102.852 +24.6% -18.5% # \sum ET
+# dynamical scheme # 2 : 102.852 +24.6% -18.5% # \sum\sqrt{m^2+pt^2}
+# dynamical scheme # 3 : 122.84 +30% -22.1% # 0.5 \sum\sqrt{m^2+pt^2}
+# dynamical scheme # 4 : 91.3051 +21.9% -17% # \sqrt{\hat s}
+#***************************************************************************
+ 
+INFO: End of systematics computation 
+store_events
+INFO: Storing parton level results 
+INFO: End Parton 
+reweight -from_cards
+decay_events -from_cards
+INFO: [92mRunning MadAnalysis5 [arXiv:1206.1599][0m 
+INFO: Parton input file considered: 
+INFO:   --> /mnt/hephy/pheno/gerhard/jetcheck_2j/Events/run_01/unweighted_events.lhe.gz 
+[1;32mINFO: MadAnalysis5 now running the 'analysis1' analysis... [0m
+INFO: Follow Madanalysis5 run with the following command in a separate terminal: 
+INFO:   tail -f /mnt/hephy/pheno/gerhard/jetcheck_2j/Events/run_01/tag_1_MA5_analysis1.log 
+INFO: MadAnalysis5 successfully completed the analysis 'analysis1'. Reported results are placed in: 
+INFO:   --> /mnt/hephy/pheno/gerhard/jetcheck_2j/Events/run_01/tag_1_MA5_parton_analysis_analysis1.pdf 
+INFO: Finished MA5 analyses. 
+INFO: [92mRunning Pythia8 [arXiv:1410.3012][0m 
+Splitting .lhe event file for PY8 parallelization...
+Submitting Pythia8 jobs...
+Pythia8 shower jobs: 1 Idle, 75 Running, 0 Done [31 seconds]
+Pythia8 shower jobs: 0 Idle, 75 Running, 1 Done [1m30s]
+Pythia8 shower jobs: 0 Idle, 74 Running, 2 Done [1m31s]
+Pythia8 shower jobs: 0 Idle, 73 Running, 3 Done [1m32s]
+Pythia8 shower jobs: 0 Idle, 72 Running, 4 Done [1m33s]
+Pythia8 shower jobs: 0 Idle, 71 Running, 5 Done [1m33s]
+Pythia8 shower jobs: 0 Idle, 70 Running, 6 Done [1m34s]
+Pythia8 shower jobs: 0 Idle, 69 Running, 7 Done [1m34s]
+Pythia8 shower jobs: 0 Idle, 68 Running, 8 Done [1m34s]
+Pythia8 shower jobs: 0 Idle, 66 Running, 10 Done [1m35s]
+Pythia8 shower jobs: 0 Idle, 65 Running, 11 Done [1m35s]
+Pythia8 shower jobs: 0 Idle, 64 Running, 12 Done [1m35s]
+Pythia8 shower jobs: 0 Idle, 63 Running, 13 Done [1m35s]
+Pythia8 shower jobs: 0 Idle, 62 Running, 14 Done [1m36s]
+Pythia8 shower jobs: 0 Idle, 61 Running, 15 Done [1m36s]
+Pythia8 shower jobs: 0 Idle, 60 Running, 16 Done [1m36s]
+Pythia8 shower jobs: 0 Idle, 59 Running, 17 Done [1m36s]
+Pythia8 shower jobs: 0 Idle, 58 Running, 18 Done [1m36s]
+Pythia8 shower jobs: 0 Idle, 57 Running, 19 Done [1m37s]
+Pythia8 shower jobs: 0 Idle, 56 Running, 20 Done [1m37s]
+Pythia8 shower jobs: 0 Idle, 55 Running, 21 Done [1m37s]
+Pythia8 shower jobs: 0 Idle, 54 Running, 22 Done [1m37s]
+Pythia8 shower jobs: 0 Idle, 53 Running, 23 Done [1m37s]
+Pythia8 shower jobs: 0 Idle, 52 Running, 24 Done [1m38s]
+Pythia8 shower jobs: 0 Idle, 51 Running, 25 Done [1m38s]
+Pythia8 shower jobs: 0 Idle, 50 Running, 26 Done [1m38s]
+Pythia8 shower jobs: 0 Idle, 49 Running, 27 Done [1m38s]
+Pythia8 shower jobs: 0 Idle, 48 Running, 28 Done [1m39s]
+Pythia8 shower jobs: 0 Idle, 47 Running, 29 Done [1m40s]
+Pythia8 shower jobs: 0 Idle, 46 Running, 30 Done [1m40s]
+Pythia8 shower jobs: 0 Idle, 44 Running, 32 Done [1m41s]
+Pythia8 shower jobs: 0 Idle, 43 Running, 33 Done [1m41s]
+Pythia8 shower jobs: 0 Idle, 42 Running, 34 Done [1m41s]
+Pythia8 shower jobs: 0 Idle, 40 Running, 36 Done [1m41s]
+Pythia8 shower jobs: 0 Idle, 39 Running, 37 Done [1m41s]
+Pythia8 shower jobs: 0 Idle, 38 Running, 38 Done [1m42s]
+Pythia8 shower jobs: 0 Idle, 37 Running, 39 Done [1m42s]
+Pythia8 shower jobs: 0 Idle, 36 Running, 40 Done [1m42s]
+Pythia8 shower jobs: 0 Idle, 35 Running, 41 Done [1m42s]
+Pythia8 shower jobs: 0 Idle, 33 Running, 43 Done [1m43s]
+Pythia8 shower jobs: 0 Idle, 32 Running, 44 Done [1m43s]
+Pythia8 shower jobs: 0 Idle, 31 Running, 45 Done [1m43s]
+Pythia8 shower jobs: 0 Idle, 30 Running, 46 Done [1m44s]
+Pythia8 shower jobs: 0 Idle, 29 Running, 47 Done [1m45s]
+Pythia8 shower jobs: 0 Idle, 28 Running, 48 Done [1m45s]
+Pythia8 shower jobs: 0 Idle, 27 Running, 49 Done [1m45s]
+Pythia8 shower jobs: 0 Idle, 26 Running, 50 Done [1m46s]
+Pythia8 shower jobs: 0 Idle, 25 Running, 51 Done [1m47s]
+Pythia8 shower jobs: 0 Idle, 24 Running, 52 Done [1m47s]
+Pythia8 shower jobs: 0 Idle, 23 Running, 53 Done [1m47s]
+Pythia8 shower jobs: 0 Idle, 22 Running, 54 Done [1m47s]
+Pythia8 shower jobs: 0 Idle, 21 Running, 55 Done [1m47s]
+Pythia8 shower jobs: 0 Idle, 20 Running, 56 Done [1m47s]
+Pythia8 shower jobs: 0 Idle, 19 Running, 57 Done [1m47s]
+Pythia8 shower jobs: 0 Idle, 18 Running, 58 Done [1m48s]
+Pythia8 shower jobs: 0 Idle, 17 Running, 59 Done [1m48s]
+Pythia8 shower jobs: 0 Idle, 16 Running, 60 Done [1m49s]
+Pythia8 shower jobs: 0 Idle, 15 Running, 61 Done [1m49s]
+Pythia8 shower jobs: 0 Idle, 14 Running, 62 Done [1m49s]
+Pythia8 shower jobs: 0 Idle, 13 Running, 63 Done [1m49s]
+Pythia8 shower jobs: 0 Idle, 12 Running, 64 Done [1m50s]
+Pythia8 shower jobs: 0 Idle, 11 Running, 65 Done [1m50s]
+Pythia8 shower jobs: 0 Idle, 10 Running, 66 Done [1m50s]
+Pythia8 shower jobs: 0 Idle, 9 Running, 67 Done [1m51s]
+Pythia8 shower jobs: 0 Idle, 7 Running, 69 Done [1m51s]
+Pythia8 shower jobs: 0 Idle, 6 Running, 70 Done [1m51s]
+Pythia8 shower jobs: 0 Idle, 5 Running, 71 Done [1m52s]
+Pythia8 shower jobs: 0 Idle, 4 Running, 72 Done [1m52s]
+Pythia8 shower jobs: 0 Idle, 3 Running, 73 Done [1m52s]
+Pythia8 shower jobs: 0 Idle, 2 Running, 74 Done [1m53s]
+Pythia8 shower jobs: 0 Idle, 1 Running, 75 Done [1m53s]
+Pythia8 shower jobs: 0 Idle, 0 Running, 76 Done [1m56s]
+Merging results from the split PY8 runs...
+[1;34mWARNING: Install gnuplot to be able to view the plots generated at :
+    [0m
+INFO: Pythia8 shower finished after 3m44s. 
+INFO: No delphes_card detected, so not run Delphes 
+  === Results Summary for run: run_01 tag: tag_1 ===
+
+     Cross-section :   114 +- 0.2355 pb
+     Nb of events :  20000
+ 
+INFO: storing files of previous run 
+INFO: Storing Pythia8 files of previous run 
+INFO: Done 
+INFO: [92mRunning MadAnalysis5 [arXiv:1206.1599][0m 
+INFO: Hadron input files considered: 
+INFO:   --> /mnt/hephy/pheno/gerhard/jetcheck_2j/Events/run_01/tag_1_pythia8_events.hepmc.gz 
+[1;32mINFO: MadAnalysis5 now running the reconstruction 'BasicReco'... [0m
+INFO: Follow Madanalysis5 run with the following command in a separate terminal: 
+INFO:   tail -f /mnt/hephy/pheno/gerhard/jetcheck_2j/Events/run_01/tag_1_MA5__reco_BasicReco.log 
+INFO: MadAnalysis5 successfully completed the reconstruction 'BasicReco'. Links to the reconstructed event files are: 
+INFO:   --> /mnt/hephy/pheno/gerhard/jetcheck_2j/Events/run_01/tag_1_pythia8_BasicReco.lhe.gz 
+[1;32mINFO: MadAnalysis5 now running the 'analysis2_BasicReco' analysis... [0m
+INFO: Follow Madanalysis5 run with the following command in a separate terminal: 
+INFO:   tail -f /mnt/hephy/pheno/gerhard/jetcheck_2j/Events/run_01/tag_1_MA5_analysis2_BasicReco.log 
+INFO: MadAnalysis5 successfully completed the analysis 'analysis2_BasicReco'. Reported results are placed in: 
+INFO:   --> /mnt/hephy/pheno/gerhard/jetcheck_2j/Events/run_01/tag_1_MA5_hadron_analysis_analysis2_BasicReco.pdf 
+INFO: Finished MA5 analyses. 
+quit
+INFO:  
+quit

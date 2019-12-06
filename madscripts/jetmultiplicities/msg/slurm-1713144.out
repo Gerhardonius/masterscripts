@@ -1,0 +1,387 @@
+************************************************************
+*                                                          *
+*                     W E L C O M E to                     *
+*              M A D G R A P H 5 _ a M C @ N L O           *
+*                                                          *
+*                                                          *
+*                 *                       *                *
+*                   *        * *        *                  *
+*                     * * * * 5 * * * *                    *
+*                   *        * *        *                  *
+*                 *                       *                *
+*                                                          *
+*         VERSION 2.6.7                 2019-10-16         *
+*                                                          *
+*    The MadGraph5_aMC@NLO Development Team - Find us at   *
+*    https://server06.fynu.ucl.ac.be/projects/madgraph     *
+*                            and                           *
+*            http://amcatnlo.web.cern.ch/amcatnlo/         *
+*                                                          *
+*               Type 'help' for in-line help.              *
+*           Type 'tutorial' to learn how MG5 works         *
+*    Type 'tutorial aMCatNLO' to learn how aMC@NLO works   *
+*    Type 'tutorial MadLoop' to learn how MadLoop works    *
+*                                                          *
+************************************************************
+load MG5 configuration from ../../MG5_aMC_v2_6_7/input/mg5_configuration.txt 
+set fastjet to /users/gerhard.ungersbaeck/MG5_aMC_v2_6_7/HEPTools/fastjet-3.3.2/fastjet-config
+set lhapdf to /users/gerhard.ungersbaeck/MG5_aMC_v2_6_7/HEPTools/lhapdf6/bin/lhapdf-config
+Using default text editor "vi". Set another one in ./input/mg5_configuration.txt
+Using default eps viewer "evince". Set another one in ./input/mg5_configuration.txt
+Using default web browser "firefox". Set another one in ./input/mg5_configuration.txt
+import /users/gerhard.ungersbaeck/madskripts/checkjet/jetcheck_1j
+The import format was not given, so we guess it as command
+import model sm-no_b_mass
+INFO: Restrict model sm with file ../../MG5_aMC_v2_6_7/models/sm/restrict_no_b_mass.dat . 
+INFO: Run "set stdout_level DEBUG" before import for more information. 
+INFO: Change particles name to pass to MG5 convention 
+Defined multiparticle p = g u c d s u~ c~ d~ s~
+Defined multiparticle j = g u c d s u~ c~ d~ s~
+Defined multiparticle l+ = e+ mu+
+Defined multiparticle l- = e- mu-
+Defined multiparticle vl = ve vm vt
+Defined multiparticle vl~ = ve~ vm~ vt~
+[1;34mPass the definition of 'j' and 'p' to 5 flavour scheme.[0m
+Defined multiparticle all = g u c d s b u~ c~ d~ s~ b~ a ve vm vt e- mu- ve~ vm~ vt~ e+ mu+ t t~ z w+ h w- ta- ta+
+generate p p > mu+ mu- j / h @0
+INFO: Checking for minimal orders which gives processes. 
+INFO: Please specify coupling orders to bypass this step. 
+INFO: Trying coupling order WEIGHTED<=5: WEIGTHED IS 2*QED+QCD 
+INFO: Trying process: g g > mu+ mu- g WEIGHTED<=5 / h  
+INFO: Trying process: g u > mu+ mu- u WEIGHTED<=5 / h  
+INFO: Process has 4 diagrams 
+INFO: Trying process: g u > mu+ mu- c WEIGHTED<=5 / h  
+INFO: Trying process: g c > mu+ mu- u WEIGHTED<=5 / h  
+INFO: Trying process: g c > mu+ mu- c WEIGHTED<=5 / h  
+INFO: Process has 4 diagrams 
+INFO: Trying process: g d > mu+ mu- d WEIGHTED<=5 / h  
+INFO: Process has 4 diagrams 
+INFO: Trying process: g d > mu+ mu- s WEIGHTED<=5 / h  
+INFO: Trying process: g d > mu+ mu- b WEIGHTED<=5 / h  
+INFO: Trying process: g s > mu+ mu- d WEIGHTED<=5 / h  
+INFO: Trying process: g s > mu+ mu- s WEIGHTED<=5 / h  
+INFO: Process has 4 diagrams 
+INFO: Trying process: g s > mu+ mu- b WEIGHTED<=5 / h  
+INFO: Crossed process found for g u~ > mu+ mu- u~, reuse diagrams. 
+INFO: Crossed process found for g c~ > mu+ mu- c~, reuse diagrams. 
+INFO: Crossed process found for g d~ > mu+ mu- d~, reuse diagrams. 
+INFO: Trying process: g d~ > mu+ mu- b~ WEIGHTED<=5 / h  
+INFO: Crossed process found for g s~ > mu+ mu- s~, reuse diagrams. 
+INFO: Trying process: g s~ > mu+ mu- b~ WEIGHTED<=5 / h  
+INFO: Trying process: g b > mu+ mu- b WEIGHTED<=5 / h  
+INFO: Process has 4 diagrams 
+INFO: Crossed process found for g b~ > mu+ mu- b~, reuse diagrams. 
+INFO: Process u g > mu+ mu- u added to mirror process g u > mu+ mu- u 
+INFO: Crossed process found for u u~ > mu+ mu- g, reuse diagrams. 
+INFO: Process c g > mu+ mu- c added to mirror process g c > mu+ mu- c 
+INFO: Crossed process found for c c~ > mu+ mu- g, reuse diagrams. 
+INFO: Process d g > mu+ mu- d added to mirror process g d > mu+ mu- d 
+INFO: Crossed process found for d d~ > mu+ mu- g, reuse diagrams. 
+INFO: Process s g > mu+ mu- s added to mirror process g s > mu+ mu- s 
+INFO: Crossed process found for s s~ > mu+ mu- g, reuse diagrams. 
+INFO: Process u~ g > mu+ mu- u~ added to mirror process g u~ > mu+ mu- u~ 
+INFO: Process u~ u > mu+ mu- g added to mirror process u u~ > mu+ mu- g 
+INFO: Process c~ g > mu+ mu- c~ added to mirror process g c~ > mu+ mu- c~ 
+INFO: Process c~ c > mu+ mu- g added to mirror process c c~ > mu+ mu- g 
+INFO: Process d~ g > mu+ mu- d~ added to mirror process g d~ > mu+ mu- d~ 
+INFO: Process d~ d > mu+ mu- g added to mirror process d d~ > mu+ mu- g 
+INFO: Process s~ g > mu+ mu- s~ added to mirror process g s~ > mu+ mu- s~ 
+INFO: Process s~ s > mu+ mu- g added to mirror process s s~ > mu+ mu- g 
+INFO: Process b g > mu+ mu- b added to mirror process g b > mu+ mu- b 
+INFO: Crossed process found for b b~ > mu+ mu- g, reuse diagrams. 
+INFO: Process b~ g > mu+ mu- b~ added to mirror process g b~ > mu+ mu- b~ 
+INFO: Process b~ b > mu+ mu- g added to mirror process b b~ > mu+ mu- g 
+15 processes with 60 diagrams generated in 0.163 s
+Total: 15 processes with 60 diagrams
+output /mnt/hephy/pheno/gerhard/jetcheck_1j
+INFO: initialize a new directory: jetcheck_1j 
+INFO: remove old information in jetcheck_1j 
+INFO: Organizing processes into subprocess groups 
+INFO: Generating Helas calls for process: g u > mu+ mu- u WEIGHTED<=5 / h 
+INFO: Processing color information for process: g u > mu+ mu- u / h 
+INFO: Combined process g c > mu+ mu- c WEIGHTED<=5 / h with process g u > mu+ mu- u WEIGHTED<=5 / h 
+INFO: Generating Helas calls for process: g d > mu+ mu- d WEIGHTED<=5 / h 
+INFO: Reusing existing color information for process: g d > mu+ mu- d / h 
+INFO: Combined process g s > mu+ mu- s WEIGHTED<=5 / h with process g d > mu+ mu- d WEIGHTED<=5 / h 
+INFO: Generating Helas calls for process: g u~ > mu+ mu- u~ WEIGHTED<=5 / h 
+INFO: Processing color information for process: g u~ > mu+ mu- u~ / h 
+INFO: Combined process g c~ > mu+ mu- c~ WEIGHTED<=5 / h with process g u~ > mu+ mu- u~ WEIGHTED<=5 / h 
+INFO: Generating Helas calls for process: g d~ > mu+ mu- d~ WEIGHTED<=5 / h 
+INFO: Reusing existing color information for process: g d~ > mu+ mu- d~ / h 
+INFO: Combined process g s~ > mu+ mu- s~ WEIGHTED<=5 / h with process g d~ > mu+ mu- d~ WEIGHTED<=5 / h 
+INFO: Combined process g b > mu+ mu- b WEIGHTED<=5 / h with process g d > mu+ mu- d WEIGHTED<=5 / h 
+INFO: Combined process g b~ > mu+ mu- b~ WEIGHTED<=5 / h with process g d~ > mu+ mu- d~ WEIGHTED<=5 / h 
+INFO: Generating Helas calls for process: u u~ > mu+ mu- g WEIGHTED<=5 / h 
+INFO: Processing color information for process: u u~ > mu+ mu- g / h 
+INFO: Combined process c c~ > mu+ mu- g WEIGHTED<=5 / h with process u u~ > mu+ mu- g WEIGHTED<=5 / h 
+INFO: Generating Helas calls for process: d d~ > mu+ mu- g WEIGHTED<=5 / h 
+INFO: Reusing existing color information for process: d d~ > mu+ mu- g / h 
+INFO: Combined process s s~ > mu+ mu- g WEIGHTED<=5 / h with process d d~ > mu+ mu- g WEIGHTED<=5 / h 
+INFO: Combined process b b~ > mu+ mu- g WEIGHTED<=5 / h with process d d~ > mu+ mu- g WEIGHTED<=5 / h 
+INFO: Creating files in directory P0_gq_llq 
+INFO: Generating Feynman diagrams for Process: g u > mu+ mu- u WEIGHTED<=5 / h 
+INFO: Generating Feynman diagrams for Process: g d > mu+ mu- d WEIGHTED<=5 / h 
+INFO: Generating Feynman diagrams for Process: g u~ > mu+ mu- u~ WEIGHTED<=5 / h 
+INFO: Generating Feynman diagrams for Process: g d~ > mu+ mu- d~ WEIGHTED<=5 / h 
+INFO: Finding symmetric diagrams for subprocess group gq_llq 
+INFO: Creating files in directory P0_qq_llg 
+INFO: Generating Feynman diagrams for Process: u u~ > mu+ mu- g WEIGHTED<=5 / h 
+INFO: Generating Feynman diagrams for Process: d d~ > mu+ mu- g WEIGHTED<=5 / h 
+INFO: Finding symmetric diagrams for subprocess group qq_llg 
+Generated helas calls for 6 subprocesses (24 diagrams) in 0.052 s
+Wrote files for 78 helas calls in 0.267 s
+ALOHA: aloha creates FFV2 routines
+ALOHA: aloha creates FFV3 routines
+ALOHA: aloha creates FFV1 routines
+ALOHA: aloha creates FFV4 routines
+ALOHA: aloha creates FFV5 routines
+save configuration file to /mnt/hephy/pheno/gerhard/jetcheck_1j/Cards/me5_configuration.txt
+INFO: Use Fortran compiler gfortran 
+INFO: Use c++ compiler g++ 
+INFO: Generate jpeg diagrams 
+INFO: Generate web pages 
+INFO: Generating MadAnalysis5 default cards tailored to this process 
+INFO: Cards created in 1.39s 
+Output to directory /mnt/hephy/pheno/gerhard/jetcheck_1j done.
+Type "launch" to generate events from this process, or see
+/mnt/hephy/pheno/gerhard/jetcheck_1j/README
+Run "open index.html" to see more information about this process.
+launch -i
+************************************************************
+*                                                          *
+*                      W E L C O M E to                    *
+*             M A D G R A P H 5 _ a M C @ N L O            *
+*                      M A D E V E N T                     *
+*                                                          *
+*                 *                       *                *
+*                   *        * *        *                  *
+*                     * * * * 5 * * * *                    *
+*                   *        * *        *                  *
+*                 *                       *                *
+*                                                          *
+*         VERSION 2.6.7                 2019-10-16         *
+*                                                          *
+*    The MadGraph5_aMC@NLO Development Team - Find us at   *
+*    https://server06.fynu.ucl.ac.be/projects/madgraph     *
+*                                                          *
+*               Type 'help' for in-line help.              *
+*                                                          *
+************************************************************
+INFO: load configuration from /mnt/hephy/pheno/gerhard/jetcheck_1j/Cards/me5_configuration.txt  
+INFO: load configuration from /users/gerhard.ungersbaeck/MG5_aMC_v2_6_7/input/mg5_configuration.txt  
+INFO: load configuration from /mnt/hephy/pheno/gerhard/jetcheck_1j/Cards/me5_configuration.txt  
+Using default text editor "vi". Set another one in ./input/mg5_configuration.txt
+generate_events
+stty: 'standard input': Inappropriate ioctl for device
+stty: 'standard input': Inappropriate ioctl for device
+The following switches determine which programs are run:
+/==============================================================================\
+| 1. Choose the shower/hadronization program   [1m  shower[0m = [31mOFF[0m                  |
+| 2. Choose the detector simulation program    [1mdetector[0m = [31mOFF[0m                  |
+| 3. Choose an analysis package (plot/convert) [1manalysis[0m = [32mMadAnalysis5[0m         |
+| 4. Decay onshell particles                   [1m madspin[0m = [31mOFF[0m                  |
+| 5. Add weights to events for new hypp.       [1mreweight[0m = [31mOFF[0m                  |
+\==============================================================================/
+Either type the switch number (1 to 5) to change its setting,
+Set any switch explicitly (e.g. type 'shower=Pythia8' at the prompt)
+Type 'help' for the list of all valid option
+Type '0', 'auto', 'done' or just press enter when you are done.
+The following switches determine which programs are run:
+/==============================================================================\
+| 1. Choose the shower/hadronization program   [1m  shower[0m = [32mPythia8[0m              |
+| 2. Choose the detector simulation program    [1mdetector[0m = [31mOFF[0m                  |
+| 3. Choose an analysis package (plot/convert) [1manalysis[0m = [32mMadAnalysis5[0m         |
+| 4. Decay onshell particles                   [1m madspin[0m = [31mOFF[0m                  |
+| 5. Add weights to events for new hypp.       [1mreweight[0m = [31mOFF[0m                  |
+\==============================================================================/
+Either type the switch number (1 to 5) to change its setting,
+Set any switch explicitly (e.g. type 'shower=OFF' at the prompt)
+Type 'help' for the list of all valid option
+Type '0', 'auto', 'done' or just press enter when you are done.
+set nevents 10000
+[1mINFO: modify parameter nevents of the run_card.dat to 10000 [0m
+set ebeam1 6500
+[1mINFO: modify parameter ebeam1 of the run_card.dat to 6500.0 [0m
+set ebeam2 6500
+[1mINFO: modify parameter ebeam2 of the run_card.dat to 6500.0 [0m
+INFO: Update the dependent parameter of the param_card.dat 
+Generating 10000 events with run name run_01
+survey  run_01 
+INFO: compile directory 
+compile Source Directory
+Error: no DISPLAY environment variable specified
+Using random number seed offset = 21
+INFO: Running Survey 
+Creating Jobs
+Working on SubProcesses
+INFO:     P0_gq_llq  
+INFO:     P0_qq_llg  
+INFO:  Idle: 1,  Running: 3,  Completed: 0 [ current time: 16h49 ] 
+INFO:  Idle: 0,  Running: 3,  Completed: 1 [  0.34s  ] 
+INFO:  Idle: 0,  Running: 0,  Completed: 4 [  1.5s  ] 
+INFO: End survey 
+refine 10000
+Creating Jobs
+INFO: Refine results to 10000 
+INFO: Generating 10000.0 unweigthed events. 
+INFO: Effective Luminosity 43.7545646038 pb^-1 
+INFO: need to improve 4 channels 
+Current estimate of cross-section: 274.2571 +- 2.0764268968
+    P0_gq_llq 
+    P0_qq_llg 
+INFO:  Idle: 1,  Running: 10,  Completed: 0 [ current time: 16h49 ] 
+INFO:  Idle: 0,  Running: 0,  Completed: 11 [  3.7s  ] 
+INFO:  Idle: 0,  Running: 0,  Completed: 11 [  3.7s  ] 
+INFO: Combining runs 
+INFO: finish refine 
+refine 10000
+Creating Jobs
+INFO: Refine results to 10000 
+INFO: Generating 10000.0 unweigthed events. 
+INFO: Effective Luminosity 44.2203781506 pb^-1 
+INFO: need to improve 0 channels 
+Current estimate of cross-section: 271.3681 +- 1.19226018254
+    P0_gq_llq 
+    P0_qq_llg 
+INFO:  Idle: 0,  Running: 0,  Completed: 0 [ current time: 16h49 ] 
+INFO: Combining runs 
+INFO: finish refine 
+INFO: Combining Events 
+  === Results Summary for run: run_01 tag: tag_1 ===
+
+     Cross-section :   271.4 +- 1.192 pb
+     Nb of events :  10000
+ 
+INFO: Running Systematics computation 
+INFO:  Idle: 1,  Running: 3,  Completed: 0 [ current time: 16h50 ] 
+INFO:  Idle: 0,  Running: 3,  Completed: 1 [  13.8s  ] 
+INFO: # events generated with PDF: NNPDF23_lo_as_0130_qed (247000) 
+INFO: #Will Compute 145 weights per event. 
+INFO: #***************************************************************************
+#
+# original cross-section: 271.286722122
+#     scale variation: +21.1% -18.2%
+#     central scheme variation: +1.45% -1.8%
+# PDF variation: +2.31% -2.31%
+#
+# dynamical scheme # 1 : 270.112 +20.1% -17.4% # \sum ET
+# dynamical scheme # 2 : 270.112 +20.1% -17.4% # \sum\sqrt{m^2+pt^2}
+# dynamical scheme # 3 : 275.21 +24.7% -20.9% # 0.5 \sum\sqrt{m^2+pt^2}
+# dynamical scheme # 4 : 266.403 +18.7% -16.2% # \sqrt{\hat s}
+#***************************************************************************
+ 
+INFO: End of systematics computation 
+store_events
+INFO: Storing parton level results 
+INFO: End Parton 
+reweight -from_cards
+decay_events -from_cards
+INFO: [92mRunning MadAnalysis5 [arXiv:1206.1599][0m 
+INFO: Parton input file considered: 
+INFO:   --> /mnt/hephy/pheno/gerhard/jetcheck_1j/Events/run_01/unweighted_events.lhe.gz 
+[1;32mINFO: MadAnalysis5 now running the 'analysis1' analysis... [0m
+INFO: Follow Madanalysis5 run with the following command in a separate terminal: 
+INFO:   tail -f /mnt/hephy/pheno/gerhard/jetcheck_1j/Events/run_01/tag_1_MA5_analysis1.log 
+INFO: MadAnalysis5 successfully completed the analysis 'analysis1'. Reported results are placed in: 
+INFO:   --> /mnt/hephy/pheno/gerhard/jetcheck_1j/Events/run_01/tag_1_MA5_parton_analysis_analysis1.pdf 
+INFO: Finished MA5 analyses. 
+INFO: [92mRunning Pythia8 [arXiv:1410.3012][0m 
+Splitting .lhe event file for PY8 parallelization...
+Submitting Pythia8 jobs...
+Pythia8 shower jobs: 1 Idle, 75 Running, 0 Done [15 seconds]
+Pythia8 shower jobs: 0 Idle, 75 Running, 1 Done [43 seconds]
+Pythia8 shower jobs: 0 Idle, 74 Running, 2 Done [43 seconds]
+Pythia8 shower jobs: 0 Idle, 73 Running, 3 Done [47 seconds]
+Pythia8 shower jobs: 0 Idle, 72 Running, 4 Done [47 seconds]
+Pythia8 shower jobs: 0 Idle, 71 Running, 5 Done [48 seconds]
+Pythia8 shower jobs: 0 Idle, 70 Running, 6 Done [48 seconds]
+Pythia8 shower jobs: 0 Idle, 69 Running, 7 Done [48 seconds]
+Pythia8 shower jobs: 0 Idle, 68 Running, 8 Done [48 seconds]
+Pythia8 shower jobs: 0 Idle, 67 Running, 9 Done [48 seconds]
+Pythia8 shower jobs: 0 Idle, 65 Running, 11 Done [48 seconds]
+Pythia8 shower jobs: 0 Idle, 64 Running, 12 Done [48 seconds]
+Pythia8 shower jobs: 0 Idle, 63 Running, 13 Done [49 seconds]
+Pythia8 shower jobs: 0 Idle, 62 Running, 14 Done [49 seconds]
+Pythia8 shower jobs: 0 Idle, 61 Running, 15 Done [49 seconds]
+Pythia8 shower jobs: 0 Idle, 60 Running, 16 Done [49 seconds]
+Pythia8 shower jobs: 0 Idle, 58 Running, 18 Done [49 seconds]
+Pythia8 shower jobs: 0 Idle, 56 Running, 20 Done [50 seconds]
+Pythia8 shower jobs: 0 Idle, 55 Running, 21 Done [50 seconds]
+Pythia8 shower jobs: 0 Idle, 54 Running, 22 Done [50 seconds]
+Pythia8 shower jobs: 0 Idle, 53 Running, 23 Done [50 seconds]
+Pythia8 shower jobs: 0 Idle, 52 Running, 24 Done [50 seconds]
+Pythia8 shower jobs: 0 Idle, 51 Running, 25 Done [50 seconds]
+Pythia8 shower jobs: 0 Idle, 50 Running, 26 Done [50 seconds]
+Pythia8 shower jobs: 0 Idle, 49 Running, 27 Done [50 seconds]
+Pythia8 shower jobs: 0 Idle, 48 Running, 28 Done [51 seconds]
+Pythia8 shower jobs: 0 Idle, 47 Running, 29 Done [51 seconds]
+Pythia8 shower jobs: 0 Idle, 46 Running, 30 Done [51 seconds]
+Pythia8 shower jobs: 0 Idle, 43 Running, 33 Done [51 seconds]
+Pythia8 shower jobs: 0 Idle, 42 Running, 34 Done [51 seconds]
+Pythia8 shower jobs: 0 Idle, 40 Running, 36 Done [52 seconds]
+Pythia8 shower jobs: 0 Idle, 39 Running, 37 Done [52 seconds]
+Pythia8 shower jobs: 0 Idle, 38 Running, 38 Done [52 seconds]
+Pythia8 shower jobs: 0 Idle, 37 Running, 39 Done [52 seconds]
+Pythia8 shower jobs: 0 Idle, 36 Running, 40 Done [52 seconds]
+Pythia8 shower jobs: 0 Idle, 34 Running, 42 Done [52 seconds]
+Pythia8 shower jobs: 0 Idle, 32 Running, 44 Done [52 seconds]
+Pythia8 shower jobs: 0 Idle, 30 Running, 46 Done [52 seconds]
+Pythia8 shower jobs: 0 Idle, 28 Running, 48 Done [52 seconds]
+Pythia8 shower jobs: 0 Idle, 27 Running, 49 Done [52 seconds]
+Pythia8 shower jobs: 0 Idle, 26 Running, 50 Done [52 seconds]
+Pythia8 shower jobs: 0 Idle, 25 Running, 51 Done [53 seconds]
+Pythia8 shower jobs: 0 Idle, 24 Running, 52 Done [53 seconds]
+Pythia8 shower jobs: 0 Idle, 23 Running, 53 Done [53 seconds]
+Pythia8 shower jobs: 0 Idle, 22 Running, 54 Done [53 seconds]
+Pythia8 shower jobs: 0 Idle, 21 Running, 55 Done [53 seconds]
+Pythia8 shower jobs: 0 Idle, 20 Running, 56 Done [53 seconds]
+Pythia8 shower jobs: 0 Idle, 19 Running, 57 Done [53 seconds]
+Pythia8 shower jobs: 0 Idle, 18 Running, 58 Done [53 seconds]
+Pythia8 shower jobs: 0 Idle, 17 Running, 59 Done [53 seconds]
+Pythia8 shower jobs: 0 Idle, 16 Running, 60 Done [53 seconds]
+Pythia8 shower jobs: 0 Idle, 15 Running, 61 Done [54 seconds]
+Pythia8 shower jobs: 0 Idle, 14 Running, 62 Done [54 seconds]
+Pythia8 shower jobs: 0 Idle, 13 Running, 63 Done [54 seconds]
+Pythia8 shower jobs: 0 Idle, 12 Running, 64 Done [54 seconds]
+Pythia8 shower jobs: 0 Idle, 11 Running, 65 Done [54 seconds]
+Pythia8 shower jobs: 0 Idle, 10 Running, 66 Done [54 seconds]
+Pythia8 shower jobs: 0 Idle, 9 Running, 67 Done [54 seconds]
+Pythia8 shower jobs: 0 Idle, 8 Running, 68 Done [54 seconds]
+Pythia8 shower jobs: 0 Idle, 7 Running, 69 Done [55 seconds]
+Pythia8 shower jobs: 0 Idle, 6 Running, 70 Done [55 seconds]
+Pythia8 shower jobs: 0 Idle, 5 Running, 71 Done [55 seconds]
+Pythia8 shower jobs: 0 Idle, 4 Running, 72 Done [55 seconds]
+Pythia8 shower jobs: 0 Idle, 3 Running, 73 Done [55 seconds]
+Pythia8 shower jobs: 0 Idle, 2 Running, 74 Done [56 seconds]
+Pythia8 shower jobs: 0 Idle, 1 Running, 75 Done [58 seconds]
+Pythia8 shower jobs: 0 Idle, 0 Running, 76 Done [59 seconds]
+Merging results from the split PY8 runs...
+[1;34mWARNING: Install gnuplot to be able to view the plots generated at :
+    [0m
+INFO: Pythia8 shower finished after 2m01s. 
+INFO: No delphes_card detected, so not run Delphes 
+  === Results Summary for run: run_01 tag: tag_1 ===
+
+     Cross-section :   271.4 +- 1.192 pb
+     Nb of events :  10000
+ 
+INFO: storing files of previous run 
+INFO: Storing Pythia8 files of previous run 
+INFO: Done 
+INFO: [92mRunning MadAnalysis5 [arXiv:1206.1599][0m 
+INFO: Hadron input files considered: 
+INFO:   --> /mnt/hephy/pheno/gerhard/jetcheck_1j/Events/run_01/tag_1_pythia8_events.hepmc.gz 
+[1;32mINFO: MadAnalysis5 now running the reconstruction 'BasicReco'... [0m
+INFO: Follow Madanalysis5 run with the following command in a separate terminal: 
+INFO:   tail -f /mnt/hephy/pheno/gerhard/jetcheck_1j/Events/run_01/tag_1_MA5__reco_BasicReco.log 
+INFO: MadAnalysis5 successfully completed the reconstruction 'BasicReco'. Links to the reconstructed event files are: 
+INFO:   --> /mnt/hephy/pheno/gerhard/jetcheck_1j/Events/run_01/tag_1_pythia8_BasicReco.lhe.gz 
+[1;32mINFO: MadAnalysis5 now running the 'analysis2_BasicReco' analysis... [0m
+INFO: Follow Madanalysis5 run with the following command in a separate terminal: 
+INFO:   tail -f /mnt/hephy/pheno/gerhard/jetcheck_1j/Events/run_01/tag_1_MA5_analysis2_BasicReco.log 
+INFO: MadAnalysis5 successfully completed the analysis 'analysis2_BasicReco'. Reported results are placed in: 
+INFO:   --> /mnt/hephy/pheno/gerhard/jetcheck_1j/Events/run_01/tag_1_MA5_hadron_analysis_analysis2_BasicReco.pdf 
+INFO: Finished MA5 analyses. 
+quit
+INFO:  
+quit
