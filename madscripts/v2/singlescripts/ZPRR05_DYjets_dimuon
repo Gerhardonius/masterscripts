@@ -1,0 +1,109 @@
+import model zPrime_UFO_LO_mod-newparam
+# include photo induced processes
+define p = g u c d s u~ c~ d~ s~ a
+# Specify process(es) to run
+generate p p > mu+ mu- / h @0
+add process p p > mu+ mu- j / h @1
+add process p p > mu+ mu- j j / h @2
+add process p p > mu+ mu- j j j / h @3
+add process p p > mu+ mu- j j j j / h @4
+# Output processes to MadEvent directory
+output /mnt/hephy/pheno/gerhard/Madresults/v3/dimuon/ZP/ZPRR05_DYjets_dimuon_v3
+launch -i
+generate_events
+	shower=Pythia8
+	detector=Delphes
+	/users/gerhard.ungersbaeck/MG5_aMC_v2_6_7/Delphes/cards/delphes_card_CMS.tcl
+	set nevents 50000
+	set ebeam1 6500
+	set ebeam2 6500
+	set mmll 500
+	set mmllmax -1
+	# Lukas
+	set pdflabel lhapdf
+	#set lhaid 230000, this does not include photons
+	set lhaid 325100
+	set fixed_ren_scale F
+	set fixed_fac_scale F
+	set ickkw 1  
+	set highestmult 1
+	set ktscheme 1   
+	set alpsfact 1   
+	set chcluster F  
+	set pdfwgt T      
+	set asrwgtflavor 5
+	set clusinfo T     
+	set lhe_version 3.0
+	set auto_ptj_mjj T
+	set ptj 0.01
+	set ptl 0
+	set ptonium 1
+	set etal 1d2
+	set etab 1d2
+	set etaonium 0.6
+	set drjj 0
+	set drll 0
+	set drjl 0
+	set maxjetflavor 5
+	set xqcut 10
+	# Pythia
+	#set JetMatching:qCut 15
+    	#couplings VV01
+    	set gVl1x1 0.5 
+    	set gVl2x2 1. 
+    	set gVl3x3 0. 
+    	set gAl1x1 0.5
+    	set gAl2x2 1.
+    	set gAl3x3 0.
+    	set g1p 1
+    	set MZp scan:[1500,2000,3000,4000,5000,6000]
+    	set wzp Auto
+generate_events
+	shower=Pythia8
+	detector=Delphes
+	/users/gerhard.ungersbaeck/MG5_aMC_v2_6_7/Delphes/cards/delphes_card_CMS.tcl
+	set nevents 50000
+	set ebeam1 6500
+	set ebeam2 6500
+	set mmll 50
+	set mmllmax 500
+	# Lukas
+	set pdflabel lhapdf
+	#set lhaid 230000, this does not include photons
+	set lhaid 325100
+	set fixed_ren_scale F
+	set fixed_fac_scale F
+	set ickkw 1  
+	set highestmult 1
+	set ktscheme 1   
+	set alpsfact 1   
+	set chcluster F  
+	set pdfwgt T      
+	set asrwgtflavor 5
+	set clusinfo T     
+	set lhe_version 3.0
+	set auto_ptj_mjj T
+	set ptj 0.01
+	set ptl 0
+	set ptonium 1
+	set etal 1d2
+	set etab 1d2
+	set etaonium 0.6
+	set drjj 0
+	set drll 0
+	set drjl 0
+	set maxjetflavor 5
+	set xqcut 10
+	# Pythia
+	#set JetMatching:qCut 15
+    	#couplings VV01
+    	set gVl1x1 0.5 
+    	set gVl2x2 1. 
+    	set gVl3x3 0. 
+    	set gAl1x1 0.5
+    	set gAl2x2 1.
+    	set gAl3x3 0.
+    	set g1p 1
+    	set MZp scan:[1500,2000,3000,4000,5000,6000]
+    	set wzp Auto
+done

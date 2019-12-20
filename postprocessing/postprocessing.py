@@ -1,14 +1,13 @@
 '''
 TO DO:  - scan over model dir and banner files is very slow
-        - weights need to be implemented
 
 '''
 import ROOT
+ROOT.gROOT.SetBatch(True)
 import argparse
 import sys
 import os
 import itertools
-import logging
 #Delphes
 import uuid
 import shutil
@@ -56,8 +55,10 @@ if not os.path.exists(outdir):
 #for key in modeldict.keys():
 #    logger_rt.info(key, [ a.strip( sampledir ) for a in modeldict[key] ])
 
-modeldict = {'SMtest':  ['/mnt/hephy/pheno/gerhard/Madresults/v3/dielec/SM/SM_DYjets_dielec_v3/Events/run_01/tag_1_delphes_events.root',\
-                        '/mnt/hephy/pheno/gerhard/Madresults/v3/dielec/SM/SM_DYjets_dielec_v3/Events/run_02/tag_1_delphes_events.root'] }
+#modeldict = {'SMtest':  ['/mnt/hephy/pheno/gerhard/Madresults/v3/dielec/SM/SM_DYjets_dielec_v3/Events/run_01/tag_1_delphes_events.root',\
+#                        '/mnt/hephy/pheno/gerhard/Madresults/v3/dielec/SM/SM_DYjets_dielec_v3/Events/run_02/tag_1_delphes_events.root'] }
+
+modeldict = {'SMtest_run02':  ['/mnt/hephy/pheno/gerhard/Madresults/v3/dielec/SM/SM_DYjets_dielec_v3/Events/run_02/tag_1_delphes_events.root']}
 
 #
 # Tree Maker
@@ -70,6 +71,7 @@ variables_strings = ['l1_pt/F', 'l1_phi/F', 'l1_eta/F', #leading lepton1
                     'met_pt/F','met_phi/F', #MET 
                     'ht/F', 'nJet/I', # hadronic activity
                     'dl_mass/F', 'dl_pt/F', 'dl_phi/F', 'dl_eta/F', 'dPhi_ll/F', #dilepton system
+                    'weight/F',
                     ]
 
 #Examples for Gen variables: nGenJet/I, GenMet_pt/F, GenMet_phi/F, GenLep_pt/F, GenLep_pt[1]/F
@@ -88,6 +90,9 @@ def filler(event):
     #
     # 1:1 translation
     #
+
+    # weight, reads from Event.Weight - sum over all weights = crosssection
+    event.weight = reader.weight()[0]['weight']
 
     # leptons
     event.nLep = len( reader.electrons() )
@@ -115,7 +120,7 @@ def filler(event):
     # dilepton system
     # very simple implementation for now
     leptonlist = reader.electrons() 
-    if event.nLep == 2:
+    if event.nLep == 2 and leptonlist[0]['charge']*leptonlist[1]['charge']<0:
         l1 = ROOT.TLorentzVector()
         # last argument is mass
         l1.SetPtEtaPhiM(leptonlist[0]['pt'], leptonlist[0]['eta'], leptonlist[0]['phi'], 0)

@@ -8,6 +8,121 @@ import math
 import logging
 logger = logging.getLogger(__name__)
 
+def bannerfiletoModelName( bannerfilepath ):
+    ''' takes the path of the bannerfile and extracts the modelinformation
+        returns: LL0_2000_dimu or SM0_0000_diel
+    '''
+    bannerfile = open( bannerfilepath )
+    modelname = ''
+    #initialize some vals
+    mzpval=666
+    gal1x1=10
+    gvl1x1=10
+    gal2x2=10
+    gvl2x2=10
+    gal3x3=10
+    gvl3x3=10
+ 
+    # check UFO model
+    # get values from banner file
+    for line in bannerfile:
+        line = line.strip()
+        if 'generate p p' in line:
+            if 'mu' in line.split()[-1]:
+                flavor = 'dimu'
+            if 'e' in line.split()[-1]:
+                flavor = 'diel'
+        if 'mzp' in line:
+            if '9000001' in line:
+                mzpval = int(float((line.lstrip('9000001').strip().split('#')[0])))
+        # electron
+        if 'gal1x1' in line:
+            gal1x1 =float(line.lstrip('1').strip().lstrip('1').strip().split('#')[0])
+        if 'gvl1x1' in line:
+            gvl1x1 =float(line.lstrip('1').strip().lstrip('1').strip().split('#')[0])
+        # muons
+        if 'gal2x2' in line:
+            gal2x2 =float(line.lstrip('2').strip().lstrip('2').strip().split('#')[0])
+        if 'gvl2x2' in line:
+            gvl2x2 =float(line.lstrip('2').strip().lstrip('2').strip().split('#')[0])
+        # tau
+        if 'gal3x3' in line:
+            gal3x3 =float(line.lstrip('3').strip().lstrip('3').strip().split('#')[0])
+        if 'gvl3x3' in line:
+            gvl3x3 =float(line.lstrip('3').strip().lstrip('3').strip().split('#')[0])
+    # determine model from values
+    # electron model letter
+    if gvl1x1 == -gal1x1:
+        modelname += 'L'
+    elif gvl1x1 == gal1x1:
+        modelname += 'R'
+    elif gal1x1 == 0:
+        modelname += 'V'
+    else:
+        modelname += 'X'
+    # muon model letter
+    if gvl2x2 == -gal2x2:
+        modelname += 'L'
+    elif gvl2x2 == gal2x2:
+        modelname += 'R'
+    elif gal2x2 == 0:
+        modelname += 'V'
+    else:
+        modelname += 'X'
+    # tau model letter
+    if gvl3x3 == 0 and gal3x3 == 0:
+        modelname += '0'
+    else: 
+        modelname += 'X'
+    # ratio
+    ratio10 = gvl1x1/gvl2x2 *10
+    if ratio10 in [1,3,5]:
+        modelname += str(int(ratio10))
+    else:
+        modelname += 'X'
+    modelname = modelname + '_' + str(mzpval).zfill(4) + '_' + flavor
+    if 'RRX_0666' in modelname:
+	modelname = 'SM0_0000_' + flavor
+    return modelname
+
+def createModellist2( maddir ):
+    models = []
+    masslist = []
+    # Modellist for maddir
+    for root, dirs, files in os.walk( os.path.join( maddir, 'Events')):
+        if root.split('/')[-1].startswith('run_'):
+            for filename in files:
+                if filename.endswith('banner.txt'):
+                    bannerfilepath = os.path.join( root,filename)
+                    modelname, mass = createModelName( bannerfilepath )
+                if filename.endswith('.root'):
+                    rootfilepath = os.path.join( root,filename)
+            models.append( (modelname, mass, rootfilepath) )
+            if mass not in masslist:
+                masslist.append(mass)
+    # get flavor from last modelname
+    if 'dimu' in modelname:
+        flavor = 'dimu'
+    if 'diel' in modelname:
+        flavor = 'diel'
+
+    # Modellist for SMindir, based on BSMindir (we need the masses from there)
+    if SMindir:
+        models = []
+        for root, dirs, files in os.walk( os.path.join( SMindir, 'Events')):
+            if root.split('/')[-1].startswith('run_'):
+                for filename in files:
+                    if root.split('/')[-1].startswith('run_'):
+                        for filename in files:
+                            if filename.endswith('.root'):
+                                rootfilepath =  os.path.join( root,filename) 
+        for mass in masslist:
+            models.append( ('SMLO_' + str(mass).zfill(4) + '_' + flavor, mass, rootfilepath )) 
+
+    models = sorted(models, key=lambda (modelname,mass,rootfilepath): modelname)
+    return models
+
+
 def setdihistoprop( hist1, hist2, xlabel = 'm_{ll}/[GeV]'):
     # Disable Stats box
     hist2.SetStats(0)
@@ -127,6 +242,7 @@ def createModellist( BSMindir, SMindir=False):
 
     models = sorted(models, key=lambda (modelname,mass,rootfilepath): modelname)
     return models
+
 
 def labelhistoaxis(histo, xlabel, ylabel):
     histo.GetYaxis().SetTitle( ylabel )

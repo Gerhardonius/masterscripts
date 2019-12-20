@@ -49,3 +49,12 @@ example:
 ./local_run.sh z testrun input_z.txt histograms.txt outputfile.dat .. 1
 ./finish.sh testrun LO.outputfile.dat
 
+## RootTools
+is an adopted version of https://github.com/schoef/RootTools
+this means CMSSW structure (the python subdir) is removed, and all things wich do not work also:
+- TDRStyle in line 250 of plot/plotting.py, introduced a local path for C files
+- example_sample.py and example_treeMaker.py: sample import changed to local path
+- and additionally DelphesReader.py was imported from TTXPheno
+running examples: example_sample/plot/treeConverter/treeMaker/stack/treeReader/variables  
+add to path:
+python looks in sys.path for modules, this retrieves from linux PYTHONPATH

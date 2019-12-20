@@ -1,0 +1,9 @@
+/bin/luac: cannot open /users/gerhard.ungersbaeck/.lmod.d/__cache__/spiderT.x86_64_Linux.lua: No such file or directory
+stty: 'standard input': Inappropriate ioctl for device
+stty: 'standard input': Inappropriate ioctl for device
+stty: 'standard input': Inappropriate ioctl for device
+Unable to init server: Broadway display type not supported: localhost:11.0
+Error: cannot open display: localhost:11.0
+stty: 'standard input': Inappropriate ioctl for device
+stty: 'standard input': Inappropriate ioctl for device
+stty: 'standard input': Inappropriate ioctl for device
