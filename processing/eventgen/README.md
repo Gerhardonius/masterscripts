@@ -4,13 +4,13 @@ Two implementations, with the same interface:
 * singularityscripts
 
 With the Clusterscripts all computation is done on the cluster,
-but stdout goes to the terminal. For singularity scripts (only the ZP),
+but stdout goes to the terminal. For singularity scripts,
 the source directory is copied and on the copied version is used for the generation. 
 
 ## HOW TO:
 * check settings in scripts:  
 clusterscripts: info in SMsubmitSample  
-singularityscripts: info in SMsingularitywrapper  
+singularityscripts: info in SMsingularitywrapper, and SMsubmitSample (number of runs for low and hi) 
 this means:  
 define the compiled directory, where you want to generate events AND
 define number of events and also the number of runs

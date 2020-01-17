@@ -16,7 +16,8 @@ contains run and proc card from CMS repositrory
 model sm-no_b_mass, include photon in proton, DY+4jets without higgs output directory  
 
 * run_card (copy from CMS, with minor changes):
-uncommented:  
+copy this in compiled directory
+changes i have made compared to CMS:  
 .true.     = gridpack  !True = setting up the grid pack
 $DEFAULT_PDF_SETS = lhaid
 $DEFAULT_PDF_MEMBERS = reweight_PDF     ! if pdlabel=lhapdf, this is the lhapdf number 
@@ -24,6 +25,7 @@ added:
 325100    = lhaid
 
 * param_card (default from SM UFO model with no_b_mass restriction):
+nothing to be done
 
 ### Cards_BSM
 * proc_card (to generate Madgraph process and compile dir) for every channel:  

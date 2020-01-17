@@ -1,0 +1,70 @@
+************************************************************
+*                                                          *
+*                      W E L C O M E to                    *
+*             M A D G R A P H 5 _ a M C @ N L O            *
+*                      M A D E V E N T                     *
+*                                                          *
+*                 *                       *                *
+*                   *        * *        *                  *
+*                     * * * * 5 * * * *                    *
+*                   *        * *        *                  *
+*                 *                       *                *
+*                                                          *
+*         VERSION 2.6.7                 20xx-xx-xx         *
+*                                                          *
+*    The MadGraph5_aMC@NLO Development Team - Find us at   *
+*    https://server06.fynu.ucl.ac.be/projects/madgraph     *
+*                                                          *
+*               Type 'help' for in-line help.              *
+*                                                          *
+************************************************************
+INFO: load configuration from /mnt/hephy/pheno/gerhard/Madresults/singularity/v1/SM/SM_DYjets_dielec_SM_hi_6/Cards/me5_configuration.txt  
+INFO: load configuration from /users/gerhard.ungersbaeck/MG5_aMC_v2_6_7/input/mg5_configuration.txt  
+INFO: load configuration from /mnt/hephy/pheno/gerhard/Madresults/singularity/v1/SM/SM_DYjets_dielec_SM_hi_6/Cards/me5_configuration.txt  
+Using default text editor "vi". Set another one in ./input/mg5_configuration.txt
+Using default eps viewer "evince". Set another one in ./input/mg5_configuration.txt
+Using default web browser "firefox". Set another one in ./input/mg5_configuration.txt
+import command tmpcmd
+generate_events SM_ee_hi_4
+[1;34mrun_card missed argument time_of_flight. Takes default: -1.0[0m
+[1;34mrun_card missed argument bias_module. Takes default: None[0m
+[1;34mrun_card missed argument event_norm. Takes default: sum[0m
+[1;34mrun_card missed argument pt_min_pdg. Takes default: {}[0m
+[1;34mrun_card missed argument pt_max_pdg. Takes default: {}[0m
+[1;34mrun_card missed argument eta_min_pdg. Takes default: {}[0m
+[1;34mrun_card missed argument eta_max_pdg. Takes default: {}[0m
+[1;34mrun_card missed argument mxx_min_pdg. Takes default: {}[0m
+[1;34mrun_card missed argument mxx_only_part_antipart. Takes default: {'default': False}[0m
+set nevents 50000
+[1mINFO: modify parameter nevents of the run_card.dat to 50000 [0m
+set mmll 500
+[1mINFO: modify parameter mmll of the run_card.dat to 500.0 [0m
+set mmllmax -1
+[1mINFO: modify parameter mmllmax of the run_card.dat to -1.0 [0m
+Do you want to edit a card (press enter to bypass editing)?
+/------------------------------------------------------------\
+|  [31m1[0m. param               : [32mparam_card.dat[0m                   |
+|  [31m2[0m. run                 : [32mrun_card.dat[0m                     |
+|  [31m3[0m. madanalysis5_parton : [32mmadanalysis5_parton_card.dat[0m     |
+\------------------------------------------------------------/
+ you can also
+   - enter the path to a valid card or banner.
+   - use the 'set' command to modify a parameter directly.
+     The set option works only for param_card and run_card.
+     Type 'help set' for more information on this command.
+   - call an external program (ASperGE/MadWidth/...).
+     Type 'help' for the list of available command
+ [[4m0[0m, done, 1, param, 2, run, 3, madanalysis5_parton, enter path]
+[1;34mfound line : generate_events SM_ee_hi_10[0m
+[1;34mThis answer is not valid for current question. Keep it for next question and use here default: 0[0m
+INFO: Update the dependent parameter of the param_card.dat 
+Generating 50000 events with run name SM_ee_hi_4
+survey  SM_ee_hi_4 
+INFO: compile directory 
+INFO: Using LHAPDF v6.1.6 interface for PDFs 
+compile Source Directory
+Using random number seed offset = 21
+INFO: Running Survey 
+Creating Jobs
+Working on SubProcesses
+INFO:     P4_gg_llggqq  

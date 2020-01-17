@@ -1,0 +1,11 @@
+import model sm-no_b_mass
+# include photo induced processes
+define p = g u c d s u~ c~ d~ s~ a
+# Specify process(es) to run
+generate    p p > e+ e- / h @0
+add process p p > e+ e- j / h @1
+add process p p > e+ e- j j / h @2
+add process p p > e+ e- j j j / h @3
+add process p p > e+ e- j j j j / h @4
+# Output processes to MadEvent directory
+output /mnt/hephy/pheno/gerhard/Madresults/singularity/v1/SM/SM_DYjets_dielec

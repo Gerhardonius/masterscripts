@@ -1,0 +1,57 @@
+generate_events SM_ee_hi_4
+set nevents 50000
+set mmll 500
+set mmllmax -1
+generate_events SM_ee_hi_10
+set nevents 50000
+set mmll 500
+set mmllmax -1
+generate_events SM_ee_hi_6
+generate_events SM_ee_lo_2
+set mmll 500
+0000
+set mmll 50
+-1
+set mmllmax 500
+generate_events SM_ee_hi_8
+set nevents 50000
+set mmll 500
+ts SM_ee_lo_4
+set mmllmax -1
+set nevents 50000
+set mmll 50
+set mmllmax 500
+generate_events SM_ee_hi_5
+set nevents 50000
+set mmll 500
+set mmllmax -1
+generate_events SM_ee_hi_1
+set nevents 50000
+set mmll 500
+set mmllmax -1
+generate_events SM_ee_hi_9
+set nevents 50000
+set mmll 500
+set mmllmax -1
+generate_events SM_ee_lo_5
+set nevents 50000
+set mmll 50
+set mmllmax 500
+generate_events SM_ee_hi_2
+set nevents 50000
+set nevents 50000
+set mmllmax -1
+set mmll 500
+set mmllmax -1
+generate_events SM_ee_lo_3
+set nevents 50000
+set mmll 50
+set mmllmax 500
+generate_events SM_ee_lo_1
+set nevents 50000
+set mmll 50
+set mmllmax 500
+generate_events SM_ee_hi_3
+set nevents 50000
+set mmll 500
+set mmllmax -1
