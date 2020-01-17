@@ -42,8 +42,8 @@ case "$CHANNEL" in
 	for run in $(seq 1 $NBRUNHIGH)
 	do
 		# submit job
-		echo "sbatch --job-name=${MODELL}_${CHANNEL}_lo_${run} --output=msg/${MODELL}_${CHANNEL}_lo_${run}.log --error=msg/${MODELL}_${CHANNEL}_lo_${run}.err SMsingularitywrapper.sh -c ${CHANNEL} -r hi -n ${run}"
-		sbatch --job-name=${MODELL}_${CHANNEL}_lo_${run} --output=msg/${MODELL}_${CHANNEL}_lo_${run}.log --error=msg/${MODELL}_${CHANNEL}_lo_${run}.err SMsingularitywrapper.sh -c ${CHANNEL} -r hi -n ${run}
+		echo "sbatch --job-name=${MODELL}_${CHANNEL}_hi_${run} --output=msg/${MODELL}_${CHANNEL}_hi_${run}.log --error=msg/${MODELL}_${CHANNEL}_hi_${run}.err SMsingularitywrapper.sh -c ${CHANNEL} -r hi -n ${run}"
+		sbatch --job-name=${MODELL}_${CHANNEL}_hi_${run} --output=msg/${MODELL}_${CHANNEL}_hi_${run}.log --error=msg/${MODELL}_${CHANNEL}_hi_${run}.err SMsingularitywrapper.sh -c ${CHANNEL} -r hi -n ${run}
 	done
 	;;
 	*)
