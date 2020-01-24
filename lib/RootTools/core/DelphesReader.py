@@ -26,6 +26,11 @@ class DelphesReader( DelphesReaderBase ): # version RootTools reader
 #        buffers = {var_old: getattr( self.reader, collection+'_'+var_old) for var_old, var_new in variables}
 #        return [{var_new:buffers[var_old][i] for var_old, var_new in variables} for i in range(nColl)]
 
+    def sysweight( self ):
+        res = self.read_collection( 'Weight', 
+            [   ('Weight', 'sysweight'),])
+        return res
+
     def muons( self ):
         res = self.read_collection( 'Muon', 
             [   ('PT', 'pt'), ( 'Eta', 'eta'), ('Phi', 'phi'), 
@@ -34,7 +39,6 @@ class DelphesReader( DelphesReaderBase ): # version RootTools reader
             ])
         for r in res:
             r['pdgId'] = -13*r['charge']
-            r['ehadOverEem'] = float('nan')
         return res
 
     def electrons( self ):
