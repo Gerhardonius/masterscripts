@@ -120,7 +120,7 @@ def drawObjects( hasData = False ):
     tex.SetTextAlign(11) # align right
     lines = [
       (0.15, 0.95, 'Preliminary' if hasData else 'Simulation'), 
-      #(0.45, 0.95, 'L=%3.1f fb{}^{-1} (13 TeV) Scale %3.2f'% ( lumi_scale, dataMCScale ) ) if plotData else (0.45, 0.95, 'L=%3.1f fb{}^{-1} (13 TeV)' % lumi_scale)
+      (0.60, 0.95, 'L=%3.1f fb{}^{-1} (13 TeV)' % args.lumi)
     ]
     return [tex.DrawLatex(*l) for l in lines] 
 
@@ -171,6 +171,9 @@ sequence.append(makestuff)
 #
 for sample in samples:
     sample.setSelectionString( "(1)" )
+    #sample.setSelectionString( "nJet==2" )
+    #sample.setSelectionString( "dl_mass>1000&&dl_mass<2000" )
+    #sample.setSelectionString( "dl_mass>1000&&dl_mass<2000" )
 
 # Let's use a trivial weight. All functions will
 #plot_weight   = lambda event, sample : 1
@@ -291,7 +294,7 @@ plots.append(Plot( name = 'dl_phi',
 plots.append(Plot( name = 'deltaPhi_ll',
   texX = '#Delta#phi(ll)', texY = 'Number of Events',
   attribute = lambda event, sample:event.dPhi_ll,
-  binning=[4,0,pi],
+  binning=[10,0,pi],
   weight = plot_weight,
 ))
 
