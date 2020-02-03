@@ -32,7 +32,7 @@ from directories.directories import flattreedir, plotdir
 # 
 argParser = argparse.ArgumentParser(description = "Argument parser")
 argParser.add_argument('--logLevel',           action='store',      default='INFO',          nargs='?', choices=['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG', 'TRACE', 'NOTSET'], help="Log level for logging")
-argParser.add_argument('--plot_directory',     action='store',      default='testplots')
+argParser.add_argument('--plot_directory',     action='store',      default='testplots_systematics')
 argParser.add_argument('--small',                                   action='store_true',     help='Run only on a small subset of the data?', )
 argParser.add_argument('--sysweight', type=int, default=153,  help='Number of Weight.Weight in Madgraph root files')
 args = argParser.parse_args()
@@ -46,6 +46,7 @@ logger_rt = logger_rt.get_logger(args.logLevel, logFile = None)
 # directories
 #
 plot_directory = os.path.join( plotdir, args.plot_directory )
+if args.small: plot_directory += "_small"
 if not os.path.exists(plot_directory):
     os.makedirs(plot_directory) 
 print 'plot_directory: ', plot_directory
