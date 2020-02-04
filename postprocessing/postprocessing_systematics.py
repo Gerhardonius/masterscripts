@@ -61,6 +61,7 @@ for name in glob.glob( os.path.join( samplepath, '*/Events/*/*.root')):
 # split root files in low and high mlls
 #
 rootfiles_lo = [ rootfile for rootfile in rootfiles if 'lo' in rootfile.split('/')[-1]] 
+rootfiles_mi = [ rootfile for rootfile in rootfiles if 'mi' in rootfile.split('/')[-1]] 
 rootfiles_hi = [ rootfile for rootfile in rootfiles if 'hi' in rootfile.split('/')[-1]] 
 
 # flattree
@@ -69,8 +70,10 @@ if not os.path.exists(outdir):
     os.makedirs(outdir) 
 logger_rt.info("Flattree directory: " + outdir)
 outfile_lo = os.path.join( outdir, samplesubdirlist[-1] + '_lo_small.root' if args.small else samplesubdirlist[-1] + '_lo.root')
+outfile_mi = os.path.join( outdir, samplesubdirlist[-1] + '_mi_small.root' if args.small else samplesubdirlist[-1] + '_mi.root')
 outfile_hi = os.path.join( outdir, samplesubdirlist[-1] + '_hi_small.root' if args.small else samplesubdirlist[-1] + '_hi.root')
 logger_rt.info("Flattree file: " + outfile_lo)
+logger_rt.info("Flattree file: " + outfile_mi)
 logger_rt.info("Flattree file: " + outfile_hi)
 
 # determine flavor (later used in filler)
@@ -119,15 +122,9 @@ def filler(event):
     listofdirweights = reader.sysweight()
     listofweights = [ dic['sysweight'] for dic in listofdirweights ]
     maxsysweight = max( listofweights ) 
-    if maxsysweight > 1.: logger_rt.warning("sysweight > 1 found: " + str(maxsysweight) )
+    #if maxsysweight > 1.: logger_rt.warning("sysweight > 1 found: " + str(maxsysweight) )
     for i in range(1, len(listofdirweights) + 1):
     	setattr( event, 'sysweight_' + str(i).zfill(3), listofdirweights[i-1]['sysweight'])
-
-    # leptons
-    event.nLep = len( reader.electrons() )
-    for recoelec, rank in zip(reader.electrons(), ['l1','l2']):
-        for var in ['pt','eta','phi']:
-            setattr( event, rank+'_'+var, recoelec[var])     
 
     # Jet
     event.nJet = len( reader.jets() )
@@ -142,13 +139,22 @@ def filler(event):
     for var in ['pt','phi']:
         setattr( event, 'met_'+var, reader.met()[0][var])     
 
+
+    # get leptons based on flavor
+    if flavor=='dielec': leptonlist = reader.electrons() 
+    if flavor=='dimuon': leptonlist = reader.muons() 
+
+    # leptons
+    event.nLep = len( leptonlist )
+    for recoelec, rank in zip( leptonlist, ['l1','l2']):
+        for var in ['pt','eta','phi']:
+            setattr( event, rank+'_'+var, recoelec[var])     
+
     #
     # new branches
     #
 
     # dilepton system
-    if flavor=='dielec': leptonlist = reader.electrons() 
-    if flavor=='dimuon': leptonlist = reader.muons() 
     if event.nLep == 2 and leptonlist[0]['charge']*leptonlist[1]['charge']<0:
         l1 = ROOT.TLorentzVector()
         # last argument is mass
@@ -163,13 +169,20 @@ def filler(event):
         event.dl_eta    = dl.Eta() 
         event.dPhi_ll   = deltaPhi( leptonlist[0]['phi'], leptonlist[1]['phi']) 
 
+    else:
+	event.dl_mass   = -1.
+        event.dl_pt     = -1. 
+        event.dl_phi    = -10.
+        event.dl_eta    = -10. 
+        event.dPhi_ll   = -10.
+
     return
 
 #
 # postprocess
 #
 
-for rootfiles, outfile in zip([rootfiles_lo,rootfiles_hi],[outfile_lo,outfile_hi]):
+for rootfiles, outfile in zip([rootfiles_lo,rootfiles_mi,rootfiles_hi],[outfile_lo,outfile_mi,outfile_hi]):
 	maker  = TreeMaker( sequence = [filler], variables = new_variables, treeName ="Events" )
 	maker.start()
 	if rootfiles:
