@@ -94,6 +94,7 @@ variables_strings = [   'l1_pt/F', 'l1_phi/F', 'l1_eta/F', #leading lepton1
 			'ht/F', 'nJet/I', # hadronic activity
 			'dl_mass/F', 'dl_pt/F', 'dl_phi/F', 'dl_eta/F', 'dPhi_ll/F', #dilepton system
 			'weight/F',
+			'gen_dl_mass/F', 'gen_dl_pt/F', 'gen_dl_phi/F', 'gen_dl_eta/F', 'gen_dPhi_ll/F', # generator level: dilepton system
 			]
 # sysweight
 for i in range(1,args.sysweight +1):
@@ -110,6 +111,10 @@ def filler(event):
     Caution: even though Collection_size = x, Collection_PT[y] gives an unphys. value for y>x
     thats the reason for read_collection
     '''
+    #
+    # RecoLevel
+    #
+
     #
     # 1:1 translation
     #
@@ -169,12 +174,70 @@ def filler(event):
         event.dl_eta    = dl.Eta() 
         event.dPhi_ll   = deltaPhi( leptonlist[0]['phi'], leptonlist[1]['phi']) 
 
+	logger_rt.debug( '*********************************************************************')
+	logger_rt.debug( 'reco_Dilepton (dlM, pt, pt):     '+str(dl.M())+', '+str(leptonlist[0]['pt'])+', '+str(leptonlist[1]['pt']))
     else:
 	event.dl_mass   = -1.
         event.dl_pt     = -1. 
         event.dl_phi    = -10.
         event.dl_eta    = -10. 
         event.dPhi_ll   = -10.
+
+    #
+    # GenLevel
+    #
+
+    if flavor=='dielec': pdgId = 11 
+    if flavor=='dimuon': pdgId = 13 
+    gen_leptonlist = []
+    genparticles = reader.genParticles()
+    for genparticle in genparticles:
+        if abs(genparticle['pdgId']) == pdgId:
+		if genparticle['status'] == 1:
+			genparticle['charge']=genparticle['pdgId']/(-pdgId)
+                	gen_leptonlist.append(genparticle)  
+
+    if len(gen_leptonlist)>1:
+    	inds =range(len(gen_leptonlist))
+	vecs = [ ROOT.TLorentzVector() for i in inds ]                                                    
+	for i, v in enumerate(vecs):
+		v.SetPtEtaPhiM(gen_leptonlist[i]['pt'], gen_leptonlist[i]['eta'], gen_leptonlist[i]['phi'], 0,)
+	# all index combinations of OC particles
+	dlMasses = [((vecs[comb[0]] + vecs[comb[1]]).M(), comb[0], comb[1])  for comb in itertools.combinations(inds, 2) if gen_leptonlist[comb[0]]['charge']*gen_leptonlist[comb[1]]['charge'] < 0 ]
+	# sort the candidates, by mass of dilepton system
+	dlMasses = sorted(dlMasses, key=lambda (m,i1,i2): -m)
+        # sort indizes for pt
+        for k,dlMass in enumerate(dlMasses): 
+		if gen_leptonlist[dlMass[1]]['pt'] < gen_leptonlist[dlMass[2]]['pt']:
+	        	dlMasses[k] = (dlMass[0],dlMass[2],dlMass[1],)
+	gen_leading_index = dlMasses[0][1]
+	gen_subleading_index = dlMasses[0][2]
+
+        if event.nLep == 2 and leptonlist[0]['charge']*leptonlist[1]['charge']<0:
+        	for j, dlMass in enumerate(dlMasses): 
+			logger_rt.debug( 'gen_Dileptons (dlM, pt, pt) ' +str(j+1)+'/'+str(len(dlMasses))+ ': '+str(dlMass[0])+', '+str(gen_leptonlist[dlMass[1]]['pt'])+', '+str(gen_leptonlist[dlMass[2]]['pt']))
+		logger_rt.debug( '*********************************************************************')
+	# do it again, to have same synthax as for reco
+        l1 = ROOT.TLorentzVector()
+        # last argument is mass
+        l1.SetPtEtaPhiM(gen_leptonlist[gen_leading_index]['pt'], gen_leptonlist[gen_leading_index]['eta'], gen_leptonlist[gen_leading_index]['phi'], 0)
+        l2 = ROOT.TLorentzVector()
+        l2.SetPtEtaPhiM(gen_leptonlist[gen_subleading_index]['pt'], gen_leptonlist[gen_subleading_index]['eta'], gen_leptonlist[gen_subleading_index]['phi'], 0)
+        dl = l1 + l2
+
+        event.gen_dl_mass   = dl.M()
+        event.gen_dl_pt     = dl.Pt() 
+        event.gen_dl_phi    = dl.Phi() 
+        event.gen_dl_eta    = dl.Eta() 
+        event.gen_dPhi_ll   = deltaPhi( gen_leptonlist[gen_leading_index]['phi'], gen_leptonlist[gen_subleading_index]['phi']) 
+
+    else:
+        event.gen_dl_mass   = -1.
+        event.gen_dl_pt     = -1. 
+        event.gen_dl_phi    = -10.
+        event.gen_dl_eta    = -10. 
+        event.gen_dPhi_ll   = -10.
+
 
     return
 
