@@ -1,0 +1,728 @@
+ CMS collision Energy =    13000.000000000000     
+ Collider type = pp
+ ======================================
+ Factorization scale                = dynamical
+ Renormalization scale              = dynamical
+ ==================================
+ NNLO QCD + NLO EW Cross-Section with LO photon-induced Channel                                                                                                 
+ ======================================
+ EW input parameters: Gmu scheme
+ Fermi constant (1/GeV^2)           =    1.1663789999999999E-005
+ ======================================
+ Lepton mass (GeV)                  =   0.10500000000000000     
+ W mass (GeV)                       =    80.358000000000004     
+ W width (GeV)                      =    2.0840000000000001     
+ Z mass (GeV)                       =    91.153490000000005     
+ Z width (GeV)                      =    2.4943000000000000     
+ Top mass (GeV)                     =    173.50000000000000     
+ Higgs mass (GeV)                   =    125.00000000000000     
+ ======================================
+ Strong coupling at Mz              =   0.11800215829284905     
+ PDF set = NNPDF31_nnlo_as_0118_luxqed                                 
+ ======================================
+ Z pole focus ON
+ ======================================
+ Lepton-pair invariant mass minimum =    50.000000000000000     
+ Lepton-pair invariant mass maximum =    13000.000000000000     
+ Transverse mass minimum            =    0.0000000000000000     
+ Transverse mass maximum            =    100000.00000000000     
+ Z pT minimum                       =    0.0000000000000000     
+ Z pT maximum                       =    100000.00000000000     
+ Z rapidity minimum                 =   -2000.0000000000000     
+ Z rapidity maximum                 =    2000.0000000000000     
+ Lepton pT minimum                  =    0.0000000000000000     
+ Lepton pT maximum                  =    100000.00000000000     
+ Anti-lepton pT minimum             =    0.0000000000000000     
+ Anti-lepton pT maximum             =    100000.00000000000     
+ Lepton eta absolute value?         =   T
+ Lepton pseudorapidity minimum      =    0.0000000000000000     
+ Lepton pseudorapidity maximum      =    100000.00000000000     
+ Anti-lepton eta absolute value?    =   T
+ Anti-lepton pseudorapidity minimum =    0.0000000000000000     
+ Anti-lepton pseudorapidity maximum =    100000.00000000000     
+ ======================================
+ Photon Recombination Cone Size     =     0.10000000000000001     
+ Minimum pT for Observable Photon   =    0.0000000000000000     
+ Maximum eta for Observable Photon  =    100000.00000000000     
+ Minimum Number of Photon           =             0
+ Maximum Number of Photon           =             1
+ ======================================
+ Jet merging algorithm              =   akta
+ Jet algorithm cone size (deltaR)   =   0.40000000000000002     
+ parton-parton Rsep (cone algo only)=    1.3000000000000000     
+ Minimum pT for Observable Jets     =    0.0000000000000000     
+ Maximum eta for Observable Jets    =    100000.00000000000     
+ Minimum Number of Jets             =             0
+ Maximum Number of Jets             =             2
+ Leading jet pT minimum             =    0.0000000000000000     
+ ======================================
+ Lep-Anti-lep deltaR minimum        =    0.0000000000000000     
+ Lep-Anti-lep deltaPhi minimum      =    0.0000000000000000     
+ Lep-Anti-lep deltaPhi maximum      =    4.0000000000000000     
+ Lep-Jet deltaR minimum             =    0.0000000000000000     
+ Lep-Photon deltaR minimum          =    0.0000000000000000     
+ ======================================
+ Rapidity of Z cutoff for CS angles =    0.0000000000000000     
+ 
+ ===========   VEGAS PARAMETERS   ========
+ 
+ Maximum number of evaluations      =     20000000
+ Actual number of evaluations       =     14950000
+ Requested relative precision (%)   =    0.0000000000000000     
+ Requested absolute precision       =    2.9999999999999999E-002
+ Total integration time (sec)       =    1185286.0000000000     
+ Random number seed                 =           34
+ 
+ ===========   RESULT    =================
+ 
+ Sigma (pb)                  =    1.19364
+ Integration Error (pb)      =    0.000330379
+ PDF Error (pb)              =    0.00162906
+ ===========   HISTOGRAMS    =================
+      bin           weight    numerical error       + pdf error       - pdf error
+
+  ----   Z/W pT         ----
+
+    45.00         undefined         undefined         undefined
+    55.00         undefined         undefined         undefined
+    68.00         undefined         undefined         undefined
+    81.00         undefined         undefined         undefined
+    91.00         undefined         undefined         undefined
+   101.00         undefined         undefined         undefined
+   113.00         undefined         undefined         undefined
+   135.00         undefined         undefined         undefined
+   175.00         undefined         undefined         undefined
+   400.00         undefined         undefined         undefined
+
+  ----   Z/W rapidity   ----
+
+    -4.75           1.71405         0.0373738         0.0473943
+    -4.25           1.24206        0.00710445        0.00779489
+    -3.75           1.19827        0.00376158        0.00402542
+    -3.25           1.20208        0.00299421        0.00212341
+    -2.75           1.20828        0.00267511        0.00152715
+    -2.25           1.19876        0.00247035        0.00125733
+    -1.75           1.19454        0.00236038        0.00134595
+    -1.25           1.18661        0.00224213        0.00169767
+    -0.75           1.18429        0.00216248        0.00209203
+    -0.25           1.17548        0.00211603        0.00228465
+     0.25           1.17196        0.00212423        0.00228297
+     0.75           1.18525        0.00216333        0.00210201
+     1.25           1.18488         0.0022438        0.00170036
+     1.75           1.19586        0.00236159        0.00134562
+     2.25           1.19833        0.00245342        0.00125171
+     2.75           1.20755         0.0026774        0.00153241
+     3.25           1.20212        0.00299088        0.00194635
+     3.75           1.19747        0.00378364        0.00405938
+     4.25           1.24249        0.00712817        0.00778196
+     4.75            1.6921          0.036782         0.0467328
+
+  ----   Q_ll Invaria   ----
+
+    67.25           2.18155         0.0235019         0.0101968
+    69.75           1.86856         0.0193834        0.00733934
+    72.25           1.68659         0.0159768        0.00561895
+    74.75           1.53666         0.0139536        0.00403457
+    77.25           1.40815         0.0110806        0.00306115
+    79.75           1.29568         0.0084648        0.00226483
+    82.25           1.22122        0.00670846        0.00176939
+    84.75           1.17426        0.00481092        0.00151353
+    87.25           1.14727        0.00288558        0.00144868
+    89.75           1.13144        0.00114907        0.00144415
+    92.25            1.1391        0.00104607        0.00145451
+    94.75           1.14997        0.00277696        0.00143103
+    97.25           1.17815        0.00481934        0.00147951
+    99.75            1.2094        0.00722043        0.00147676
+   102.25           1.24799        0.00958083        0.00152125
+   104.75            1.2888          0.012359        0.00149193
+   107.25           1.33018         0.0147148        0.00169082
+   109.75           1.38807         0.0187851        0.00180595
+   112.25           1.43565         0.0224079        0.00236544
+   114.75           1.47913         0.0261956        0.00267428
+
+  ----   l-/lep. pT     ----
+
+     2.50           1.01549         0.0306235        0.00268666
+     7.50            1.1087         0.0303204        0.00308575
+    12.50          0.956755         0.0295343        0.00280265
+    17.50           1.02923         0.0255526        0.00343958
+    22.50           1.16659         0.0195152          0.003428
+    27.50           1.06203         0.0182529        0.00289201
+    32.50           1.11293         0.0139467        0.00154822
+    37.50           1.10744         0.0121493        0.00187366
+    42.50          0.728425        0.00850537        0.00297402
+    47.50           1.24495         0.0163501        0.00164324
+    52.50            9.0048         0.0945415         0.0242613
+    57.50           14.9655          0.228085         0.0495101
+    62.50           15.3113          0.318151          0.067546
+    67.50           19.6819          0.486661         0.0934025
+    72.50           24.4804          0.727889          0.117196
+    77.50           23.2498          0.772517          0.121495
+    82.50            23.538          0.874379          0.145226
+    87.50           26.6411           1.15621          0.130075
+    92.50           27.1878            1.3623          0.176155
+    97.50           19.7169           2.19392          0.215491
+
+  ----   l-/lep. eta    ----
+
+    -4.75          0.875286         0.0454524        0.00420212
+    -4.25            1.0652         0.0200249        0.00357333
+    -3.75            1.0777         0.0159908        0.00292219
+    -3.25           1.26899         0.0113148        0.00185411
+    -2.75           1.22693        0.00976526        0.00143047
+    -2.25           1.21572        0.00859964        0.00140885
+    -1.75           1.19118        0.00931555        0.00147722
+    -1.25           1.18759        0.00758344        0.00154958
+    -0.75           1.17722        0.00797035        0.00172366
+    -0.25           1.18758        0.00597637        0.00184135
+     0.25           1.19837        0.00662786        0.00185242
+     0.75           1.18152        0.00762648        0.00165994
+     1.25           1.20158        0.00709202        0.00164198
+     1.75           1.21121        0.00742591        0.00146227
+     2.25           1.22583        0.00826991        0.00121411
+     2.75           1.25387         0.0103028        0.00135368
+     3.25           1.24047          0.010543        0.00188281
+     3.75           1.14536         0.0139175        0.00251526
+     4.25           0.99037         0.0201072        0.00457992
+     4.75           1.08635         0.0415441        0.00351499
+
+  ----   l+/neu. pT     ----
+
+     2.50           0.97379         0.0324517        0.00296293
+     7.50           1.27361         0.0386011         0.0035435
+    12.50          0.905791         0.0369226         0.0039766
+    17.50          0.997354         0.0229565        0.00341677
+    22.50           1.05749         0.0207303        0.00305395
+    27.50           1.20967         0.0161816        0.00257702
+    32.50             1.139         0.0133762        0.00184015
+    37.50           1.04019         0.0128146        0.00189813
+    42.50          0.738499        0.00839503        0.00291892
+    47.50           1.22711         0.0165643        0.00158644
+    52.50           9.31189         0.0947107         0.0247927
+    57.50           14.0967          0.213944         0.0489054
+    62.50            16.219          0.325485          0.075029
+    67.50           19.6659          0.497304         0.0915347
+    72.50           21.8996          0.613771          0.110947
+    77.50           24.8501          0.772342          0.129984
+    82.50           21.9399           0.86185          0.123484
+    87.50            20.971          0.966174          0.153376
+    92.50           28.2397           1.40284           0.15678
+    97.50           25.6091           1.41821          0.197604
+
+  ----   l+/neu. eta    ----
+
+    -4.75           1.13172         0.0469399        0.00547705
+    -4.25           1.02358         0.0235702        0.00374899
+    -3.75            1.0571         0.0168908        0.00317744
+    -3.25           1.13153         0.0103899        0.00205273
+    -2.75           1.22773         0.0102565        0.00132091
+    -2.25           1.22374        0.00734971        0.00129363
+    -1.75           1.21905        0.00728602         0.0012545
+    -1.25           1.16187         0.0105603        0.00159533
+    -0.75           1.19292        0.00710993        0.00176379
+    -0.25           1.21246        0.00622501        0.00202403
+     0.25           1.18634        0.00666734        0.00187407
+     0.75           1.21759        0.00728942        0.00181383
+     1.25           1.21108        0.00696308        0.00158896
+     1.75           1.22916        0.00778503        0.00129586
+     2.25            1.2193        0.00818119        0.00131839
+     2.75           1.22977        0.00944408        0.00127869
+     3.25           1.15832        0.00981321        0.00212581
+     3.75           1.09133         0.0146165        0.00280222
+     4.25           1.06674         0.0194389        0.00440533
+     4.75           1.10171         0.0520476         0.0062804
+
+  ----   jet 1 pT       ----
+
+     2.50          -0.18409         0.0012196         0.0048116
+     7.50         undefined         undefined         undefined
+    12.50         undefined         undefined         undefined
+    17.50         undefined         undefined         undefined
+    22.50         undefined         undefined         undefined
+    27.50         undefined         undefined         undefined
+    32.50         undefined         undefined         undefined
+    37.50         undefined         undefined         undefined
+    42.50         undefined         undefined         undefined
+    47.50         undefined         undefined         undefined
+    52.50         undefined         undefined         undefined
+    57.50         undefined         undefined         undefined
+    62.50         undefined         undefined         undefined
+    67.50         undefined         undefined         undefined
+    72.50         undefined         undefined         undefined
+    77.50         undefined         undefined         undefined
+    82.50         undefined         undefined         undefined
+    87.50         undefined         undefined         undefined
+    92.50         undefined         undefined         undefined
+    97.50         undefined         undefined         undefined
+
+  ----   jet 1 eta      ----
+
+    -4.75         undefined         undefined         undefined
+    -4.25         undefined         undefined         undefined
+    -3.75         undefined         undefined         undefined
+    -3.25         undefined         undefined         undefined
+    -2.75         undefined         undefined         undefined
+    -2.25         undefined         undefined         undefined
+    -1.75         undefined         undefined         undefined
+    -1.25         undefined         undefined         undefined
+    -0.75         undefined         undefined         undefined
+    -0.25         undefined         undefined         undefined
+     0.25         undefined         undefined         undefined
+     0.75         undefined         undefined         undefined
+     1.25         undefined         undefined         undefined
+     1.75         undefined         undefined         undefined
+     2.25         undefined         undefined         undefined
+     2.75         undefined         undefined         undefined
+     3.25         undefined         undefined         undefined
+     3.75         undefined         undefined         undefined
+     4.25         undefined         undefined         undefined
+     4.75         undefined         undefined         undefined
+
+  ----   jet 2 pT       ----
+
+     2.50           0.74423       0.000409746        0.00467657
+     7.50         undefined         undefined         undefined
+    12.50         undefined         undefined         undefined
+    17.50         undefined         undefined         undefined
+    22.50         undefined         undefined         undefined
+    27.50         undefined         undefined         undefined
+    32.50         undefined         undefined         undefined
+    37.50         undefined         undefined         undefined
+    42.50         undefined         undefined         undefined
+    47.50         undefined         undefined         undefined
+    52.50         undefined         undefined         undefined
+    57.50         undefined         undefined         undefined
+    62.50         undefined         undefined         undefined
+    67.50         undefined         undefined         undefined
+    72.50         undefined         undefined         undefined
+    77.50         undefined         undefined         undefined
+    82.50         undefined         undefined         undefined
+    87.50         undefined         undefined         undefined
+    92.50         undefined         undefined         undefined
+    97.50         undefined         undefined         undefined
+
+  ----   jet 2 eta      ----
+
+    -4.75         undefined         undefined         undefined
+    -4.25         undefined         undefined         undefined
+    -3.75         undefined         undefined         undefined
+    -3.25         undefined         undefined         undefined
+    -2.75         undefined         undefined         undefined
+    -2.25         undefined         undefined         undefined
+    -1.75         undefined         undefined         undefined
+    -1.25         undefined         undefined         undefined
+    -0.75         undefined         undefined         undefined
+    -0.25         undefined         undefined         undefined
+     0.25         undefined         undefined         undefined
+     0.75         undefined         undefined         undefined
+     1.25         undefined         undefined         undefined
+     1.75         undefined         undefined         undefined
+     2.25         undefined         undefined         undefined
+     2.75         undefined         undefined         undefined
+     3.25         undefined         undefined         undefined
+     3.75         undefined         undefined         undefined
+     4.25         undefined         undefined         undefined
+     4.75         undefined         undefined         undefined
+
+  ----   phot. pT       ----
+
+     2.50           1.18863       0.000336945        0.00161889
+     7.50         undefined         undefined         undefined
+    12.50         undefined         undefined         undefined
+    17.50         undefined         undefined         undefined
+    22.50         undefined         undefined         undefined
+    27.50         undefined         undefined         undefined
+    32.50         undefined         undefined         undefined
+    37.50         undefined         undefined         undefined
+    42.50         undefined         undefined         undefined
+    47.50         undefined         undefined         undefined
+    52.50         undefined         undefined         undefined
+    57.50         undefined         undefined         undefined
+    62.50         undefined         undefined         undefined
+    67.50         undefined         undefined         undefined
+    72.50         undefined         undefined         undefined
+    77.50         undefined         undefined         undefined
+    82.50         undefined         undefined         undefined
+    87.50         undefined         undefined         undefined
+    92.50         undefined         undefined         undefined
+    97.50         undefined         undefined         undefined
+
+  ----   phot. eta      ----
+
+    -4.75         undefined         undefined         undefined
+    -4.25         undefined         undefined         undefined
+    -3.75         undefined         undefined         undefined
+    -3.25         undefined         undefined         undefined
+    -2.75         undefined         undefined         undefined
+    -2.25         undefined         undefined         undefined
+    -1.75         undefined         undefined         undefined
+    -1.25         undefined         undefined         undefined
+    -0.75         undefined         undefined         undefined
+    -0.25         undefined         undefined         undefined
+     0.25         undefined         undefined         undefined
+     0.75         undefined         undefined         undefined
+     1.25         undefined         undefined         undefined
+     1.75         undefined         undefined         undefined
+     2.25         undefined         undefined         undefined
+     2.75         undefined         undefined         undefined
+     3.25         undefined         undefined         undefined
+     3.75         undefined         undefined         undefined
+     4.25         undefined         undefined         undefined
+     4.75         undefined         undefined         undefined
+
+  ----   beam thrust    ----
+
+     2.50          0.615443       0.000406859        0.00361572
+     7.50         undefined         undefined         undefined
+    12.50         undefined         undefined         undefined
+    17.50         undefined         undefined         undefined
+    22.50         undefined         undefined         undefined
+    27.50         undefined         undefined         undefined
+    32.50         undefined         undefined         undefined
+    37.50         undefined         undefined         undefined
+    42.50         undefined         undefined         undefined
+    47.50         undefined         undefined         undefined
+    52.50         undefined         undefined         undefined
+    57.50         undefined         undefined         undefined
+    62.50         undefined         undefined         undefined
+    67.50         undefined         undefined         undefined
+    72.50         undefined         undefined         undefined
+    77.50         undefined         undefined         undefined
+    82.50         undefined         undefined         undefined
+    87.50         undefined         undefined         undefined
+    92.50         undefined         undefined         undefined
+    97.50         undefined         undefined         undefined
+
+  ----   dR_lep,lep     ----
+
+     0.12         undefined         undefined         undefined
+     0.38         undefined         undefined         undefined
+     0.62         undefined         undefined         undefined
+     0.88         undefined         undefined         undefined
+     1.12         undefined         undefined         undefined
+     1.38         undefined         undefined         undefined
+     1.62         undefined         undefined         undefined
+     1.88         undefined         undefined         undefined
+     2.12         undefined         undefined         undefined
+     2.38         undefined         undefined         undefined
+     2.62         undefined         undefined         undefined
+     2.88         undefined         undefined         undefined
+     3.12           1.15651        0.00524061        0.00345071
+     3.38          0.773297        0.00859774         0.0024125
+     3.62           0.79822         0.0133593        0.00277039
+     3.88          0.840537         0.0192635        0.00269423
+     4.12          0.740947         0.0284699         0.0031896
+     4.38          0.779083         0.0382484        0.00273183
+     4.62          0.766006         0.0540808         0.0030396
+     4.88          0.996906           0.11404        0.00323193
+
+  ----   dR_jet1,l-/l   ----
+
+     0.12         undefined         undefined         undefined
+     0.38         undefined         undefined         undefined
+     0.62         undefined         undefined         undefined
+     0.88         undefined         undefined         undefined
+     1.12         undefined         undefined         undefined
+     1.38         undefined         undefined         undefined
+     1.62         undefined         undefined         undefined
+     1.88         undefined         undefined         undefined
+     2.12         undefined         undefined         undefined
+     2.38         undefined         undefined         undefined
+     2.62         undefined         undefined         undefined
+     2.88         undefined         undefined         undefined
+     3.12         undefined         undefined         undefined
+     3.38         undefined         undefined         undefined
+     3.62         undefined         undefined         undefined
+     3.88         undefined         undefined         undefined
+     4.12         undefined         undefined         undefined
+     4.38         undefined         undefined         undefined
+     4.62         undefined         undefined         undefined
+     4.88         undefined         undefined         undefined
+
+  ----   dR_jet1,l+/n   ----
+
+     0.12         undefined         undefined         undefined
+     0.38         undefined         undefined         undefined
+     0.62         undefined         undefined         undefined
+     0.88         undefined         undefined         undefined
+     1.12         undefined         undefined         undefined
+     1.38         undefined         undefined         undefined
+     1.62         undefined         undefined         undefined
+     1.88         undefined         undefined         undefined
+     2.12         undefined         undefined         undefined
+     2.38         undefined         undefined         undefined
+     2.62         undefined         undefined         undefined
+     2.88         undefined         undefined         undefined
+     3.12         undefined         undefined         undefined
+     3.38         undefined         undefined         undefined
+     3.62         undefined         undefined         undefined
+     3.88         undefined         undefined         undefined
+     4.12         undefined         undefined         undefined
+     4.38         undefined         undefined         undefined
+     4.62         undefined         undefined         undefined
+     4.88         undefined         undefined         undefined
+
+  ----   dR_jet2,l-/l   ----
+
+     0.12         undefined         undefined         undefined
+     0.38         undefined         undefined         undefined
+     0.62         undefined         undefined         undefined
+     0.88         undefined         undefined         undefined
+     1.12         undefined         undefined         undefined
+     1.38         undefined         undefined         undefined
+     1.62         undefined         undefined         undefined
+     1.88         undefined         undefined         undefined
+     2.12         undefined         undefined         undefined
+     2.38         undefined         undefined         undefined
+     2.62         undefined         undefined         undefined
+     2.88         undefined         undefined         undefined
+     3.12         undefined         undefined         undefined
+     3.38         undefined         undefined         undefined
+     3.62         undefined         undefined         undefined
+     3.88         undefined         undefined         undefined
+     4.12         undefined         undefined         undefined
+     4.38         undefined         undefined         undefined
+     4.62         undefined         undefined         undefined
+     4.88         undefined         undefined         undefined
+
+  ----   dR_jet2,l+/n   ----
+
+     0.12         undefined         undefined         undefined
+     0.38         undefined         undefined         undefined
+     0.62         undefined         undefined         undefined
+     0.88         undefined         undefined         undefined
+     1.12         undefined         undefined         undefined
+     1.38         undefined         undefined         undefined
+     1.62         undefined         undefined         undefined
+     1.88         undefined         undefined         undefined
+     2.12         undefined         undefined         undefined
+     2.38         undefined         undefined         undefined
+     2.62         undefined         undefined         undefined
+     2.88         undefined         undefined         undefined
+     3.12         undefined         undefined         undefined
+     3.38         undefined         undefined         undefined
+     3.62         undefined         undefined         undefined
+     3.88         undefined         undefined         undefined
+     4.12         undefined         undefined         undefined
+     4.38         undefined         undefined         undefined
+     4.62         undefined         undefined         undefined
+     4.88         undefined         undefined         undefined
+
+  ----   dR_jet,jet     ----
+
+     0.12         undefined         undefined         undefined
+     0.38         undefined         undefined         undefined
+     0.62         undefined         undefined         undefined
+     0.88         undefined         undefined         undefined
+     1.12         undefined         undefined         undefined
+     1.38         undefined         undefined         undefined
+     1.62         undefined         undefined         undefined
+     1.88         undefined         undefined         undefined
+     2.12         undefined         undefined         undefined
+     2.38         undefined         undefined         undefined
+     2.62         undefined         undefined         undefined
+     2.88         undefined         undefined         undefined
+     3.12         undefined         undefined         undefined
+     3.38         undefined         undefined         undefined
+     3.62         undefined         undefined         undefined
+     3.88         undefined         undefined         undefined
+     4.12         undefined         undefined         undefined
+     4.38         undefined         undefined         undefined
+     4.62         undefined         undefined         undefined
+     4.88         undefined         undefined         undefined
+
+  ----   dR_phot,lep    ----
+
+     0.12         undefined         undefined         undefined
+     0.38         undefined         undefined         undefined
+     0.62         undefined         undefined         undefined
+     0.88         undefined         undefined         undefined
+     1.12         undefined         undefined         undefined
+     1.38         undefined         undefined         undefined
+     1.62         undefined         undefined         undefined
+     1.88         undefined         undefined         undefined
+     2.12         undefined         undefined         undefined
+     2.38         undefined         undefined         undefined
+     2.62         undefined         undefined         undefined
+     2.88         undefined         undefined         undefined
+     3.12         undefined         undefined         undefined
+     3.38         undefined         undefined         undefined
+     3.62         undefined         undefined         undefined
+     3.88         undefined         undefined         undefined
+     4.12         undefined         undefined         undefined
+     4.38         undefined         undefined         undefined
+     4.62         undefined         undefined         undefined
+     4.88         undefined         undefined         undefined
+
+  ----   H_T            ----
+
+     5.00          0.217803         0.0327841        0.00434778
+    15.00        -0.0856664         0.0358154        0.00514398
+    25.00          0.205694         0.0293001        0.00484573
+    35.00          0.314359         0.0247537        0.00495276
+    45.00           0.50974         0.0213444        0.00452373
+    55.00          0.589053         0.0188716        0.00436864
+    65.00          0.649277         0.0167334        0.00393706
+    75.00          0.564512         0.0139421        0.00361168
+    85.00          0.361385         0.0108754        0.00322998
+    95.00           2.51812         0.0217406        0.00543892
+   105.00           30.8234          0.246156         0.0909654
+   115.00           49.5559          0.613007          0.195912
+   125.00           59.9966          0.996104          0.292653
+   135.00           76.4865           1.60011          0.389309
+   145.00           94.5375           2.31013          0.510595
+   155.00           104.636           3.02104           0.63781
+   165.00           112.131           3.83809          0.724912
+   175.00           121.451           4.85475          0.830986
+   185.00           134.327           6.16952          0.958462
+   195.00           144.361           7.15696           1.04253
+
+  ----   M_T            ----
+
+    25.00           1.25033        0.00224376        0.00209642
+    75.00           1.16753        0.00075012        0.00151102
+   125.00           1.47783         0.0101642        0.00300875
+   175.00           2.40937         0.0557681        0.00936063
+   225.00           2.70415          0.120125         0.0109498
+   275.00           3.02438          0.196157         0.0140211
+   325.00           2.97426          0.299145         0.0141935
+   375.00           3.49824          0.475688         0.0254952
+   425.00           2.77379          0.478787         0.0191368
+   475.00           4.69461           1.01956         0.0442049
+   525.00           3.75773           1.17947         0.0445392
+   575.00           1.14228          0.457269         0.0123186
+   625.00           258.579           146.657           175.897
+   675.00           1.26624           0.69453         0.0604937
+   725.00           2.68944           1.99049         0.0852011
+   775.00           1.03202            1.0503         0.0374189
+   825.00           38.0086           28.0883          0.969716
+   875.00          0.531044          0.381584        0.00915586
+   925.00           0.27617          0.178693        0.00917365
+   975.00          0.321029          0.326348          0.014962
+
+  ----   Delta_Phi      ----
+
+     0.16         undefined         undefined         undefined
+     0.47         undefined         undefined         undefined
+     0.79         undefined         undefined         undefined
+     1.10         undefined         undefined         undefined
+     1.41         undefined         undefined         undefined
+     1.73         undefined         undefined         undefined
+     2.04         undefined         undefined         undefined
+     2.36         undefined         undefined         undefined
+     2.67         undefined         undefined         undefined
+     2.98          0.740569       0.000918985        0.00319261
+
+  ----   A_FB vs Qll    ----
+
+    67.25         -0.569686           0.43474         0.0648319
+    69.75           -5.5371            1.1666          0.257343
+    72.25          -3.84355          0.833264         0.0472881
+    74.75          -1.72835          0.330027         0.0427221
+    77.25          -2.07079          0.285737         0.0288403
+    79.75          -2.14673          0.327911         0.0291077
+    82.25          -1.61153           0.23464         0.0299349
+    84.75          -3.62203           0.53732         0.0741898
+    87.25          0.574872          0.067102         0.0141898
+    89.75          -1.48048          0.506856         0.0635903
+    92.25           1.66232         0.0602233        0.00919879
+    94.75           2.28098          0.139865         0.0126675
+    97.25           2.71352            0.2372         0.0148836
+    99.75           3.33551          0.393746         0.0365109
+   102.25           1.29707          0.248501         0.0541544
+   104.75           1.33505          0.193777         0.0349245
+   107.25           2.90792           0.64751         0.0579677
+   109.75            2.5874          0.567857         0.0298579
+   112.25          -6.20955           1.43204           2.24177
+   114.75           1.78178          0.558522         0.0281697
+
+  ----   A0 vs ZpT      ----
+
+     5.00           1.76193         0.0861449         0.0135023
+    15.00         undefined         undefined         undefined
+    25.00         undefined         undefined         undefined
+    35.00         undefined         undefined         undefined
+    45.00         undefined         undefined         undefined
+    55.00         undefined         undefined         undefined
+    65.00         undefined         undefined         undefined
+    75.00         undefined         undefined         undefined
+    85.00         undefined         undefined         undefined
+    95.00         undefined         undefined         undefined
+
+  ----   A1 vs ZpT      ----
+
+     5.00         undefined         undefined         undefined
+    15.00         undefined         undefined         undefined
+    25.00         undefined         undefined         undefined
+    35.00         undefined         undefined         undefined
+    45.00         undefined         undefined         undefined
+    55.00         undefined         undefined         undefined
+    65.00         undefined         undefined         undefined
+    75.00         undefined         undefined         undefined
+    85.00         undefined         undefined         undefined
+    95.00         undefined         undefined         undefined
+
+  ----   A2 vs ZpT      ----
+
+     5.00         undefined         undefined         undefined
+    15.00         undefined         undefined         undefined
+    25.00         undefined         undefined         undefined
+    35.00         undefined         undefined         undefined
+    45.00         undefined         undefined         undefined
+    55.00         undefined         undefined         undefined
+    65.00         undefined         undefined         undefined
+    75.00         undefined         undefined         undefined
+    85.00         undefined         undefined         undefined
+    95.00         undefined         undefined         undefined
+
+  ----   A3 vs ZpT      ----
+
+     5.00         undefined         undefined         undefined
+    15.00         undefined         undefined         undefined
+    25.00         undefined         undefined         undefined
+    35.00         undefined         undefined         undefined
+    45.00         undefined         undefined         undefined
+    55.00         undefined         undefined         undefined
+    65.00         undefined         undefined         undefined
+    75.00         undefined         undefined         undefined
+    85.00         undefined         undefined         undefined
+    95.00         undefined         undefined         undefined
+
+  ----   A4 vs ZpT      ----
+
+     5.00           1.31342         0.0519563         0.0138897
+    15.00         undefined         undefined         undefined
+    25.00         undefined         undefined         undefined
+    35.00         undefined         undefined         undefined
+    45.00         undefined         undefined         undefined
+    55.00         undefined         undefined         undefined
+    65.00         undefined         undefined         undefined
+    75.00         undefined         undefined         undefined
+    85.00         undefined         undefined         undefined
+    95.00         undefined         undefined         undefined
+
+  ----   phi CS         ----
+
+    -2.83            1.1794          0.140333        0.00745922
+    -2.20           2.23109          0.145379        0.00793612
+    -1.57           1.22158          0.135834        0.00773634
+    -0.94          0.262922           0.14324        0.00522618
+    -0.31           1.03669          0.167157        0.00931215
+     0.31          -0.44374          0.149968         0.0123764
+     0.94           2.27978          0.145032        0.00769314
+     1.57           1.23208          0.110763        0.00766197
+     2.20           1.61743           0.17112        0.00977785
+     2.83           1.27951          0.149128        0.00986963
+
+  ----   costh CS       ----
+
+    -0.90          0.937161        0.00379179       0.000410985
+    -0.70          0.963642        0.00553557       0.000271485
+    -0.50           1.02157        0.00733116        0.00019002
+    -0.30           1.04166         0.0074831       0.000417131
+    -0.10           1.05678        0.00745502        0.00049995
+     0.10           1.04527        0.00894893       0.000570898
+     0.30           1.05302         0.0076154       0.000747859
+     0.50           1.05015        0.00667931       0.000504443
+     0.70           0.94275        0.00578137       0.000644516
+     0.90          0.946941         0.0036677       0.000549531

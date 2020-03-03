@@ -17,6 +17,19 @@ Example:
 ./local_run.sh z my_run my_input.txt my_histograms.txt my_results.dat .. 1  
 ./finish.sh my_run NNLO.my_results.dat  
 
+Benchmarks:
+checkCMSDatabase_LO: 1CPU, 
+DYtail_LO: 10 CPUs, ca 1.5h, did not produce resultfile
+DYtail_LO_offZ: 20 CPUs, ca 1.5 h, dont focus on Z pole, did not produce resultfile
+DYtail_LO_hist: 20 CPUs, ca 1.5 h, with regular histogram.txt file, but high min mll, produced outpufile
+DYtail_LO: 20 CPUs, this time with boundaries in histogram_DYtail, corresponding to mllbins.txt, did not produce resultfile: SEGMENTATION FAULT
+
+DYtail_LO_histhmll: 20 CPUs, 20 bins with boundaries ca666 to ca4000, works like a charm. NOTE: numerical error in high mass regime almost as high as value
+DYtail_LO_newhist: 20 CPUs, with mllbins but in file .xyz replaced by .x (. should be fine according to manual: FORTRAN interprets it as string) did not produce resultfile: SEGMENTATION FAULT
+DYtail_LO_histhmll2: 20 CPUs, 65 bins with boundaries ca666 to ca4000, NOTE: bins where reduced to 30 this is the max number, but it workded out
+DYtail_LO_histcoarse: 20 CPUs, with mllbins but only 21 entries, works
+Note: Cern Masterthesis: binning for k-factors: 115,150,200,300,500,1500 at most 4%
+
 ## NNLO
 NNLO calculation is splitted in 127(154) integration sectors (Vegas integration). For each sector a subir is created.   
 Note: dont use the ./fewzz -i executable to run sectors separately. Use local_run.sh as follows:   
@@ -33,6 +46,17 @@ do
 done  
 when sectors are finished: 
 ./finish.sh CMSDATABASE_LOCAL_SEP NNLO.outputfileCMSDATABASE.dat
+
+Benchmarks:
+checkCMSDatabase: sector 0 was running very long >14d, was canceled by slurm bin finish still gave a usefull output
+DYtail: currently not working, maybe its because of the Zpeak switch
+
+## kfactors
+From a NNLO and LO computation we obtain kfactors via:
+./finish.sh CMSDATABASE_LOCAL_SEP NNLO.outputfileCMSDATABASE.dat / CMSDATABASE_LO LO.outputfileCMSDATABASE_LO.dat CMSdatabasekfactor.dat
+
+./finish.sh DYtail_coharse NNLO.outputfileDYtail_coharse.dat / DYTAIL_LO_histcoarse LO.outputfileDYTAIL_LO_histcoarse.dat kfactorsNNLO_div_LO.dat
+
 
 ## extras:
 FEWZ can also perform scale variation and pdf errors. This is done by finish.sh if outputfile name is choosen as follows:   
