@@ -1,13 +1,40 @@
 # FEWZ
 These scripts need to be run from the FEWZ/bin directory
 
+## Results
+
+### check CMSdatabase
+my result is pretty much the same as CMSdatase (i haven t used the same random seed)
+fromCMSdatabase:			Sigma (pb)                  =    2025.74
+checkCMSdatabase_local_separated:	Sigma (pb)                  =    2025.78
+
+### DYtail
+use of ATLAS binning (combined 3bins to one), starts at mll=602.522
+The NNLNLO is a copy of CMSdatabase with different binning and lepton-pair invariant mass 
+Specifically: QCD=NNLO, EW=NLO, Z pole = yes, EWcontrol=1, with photon
+Order: QCDEW
+1. NNLNLO		Sigma (pb)                  =    0.0663804
+ 			Error (pb)                  =    0.000287699
+
+2. LOLOnophoton
+ 			Sigma (pb)                  =    2.8362940370528680E-002
+ 			Error (pb)                  =    6.2033907580238265E-005
+
+3. NLOLOnophoton
+ 			Sigma (pb)                  =    3.1400853380282069E-002
+ 			Error (pb)                  =    6.4037734276009513E-005
+
+4. LOLO
+5. NLOLO
+
+## HowTO
 inputfiles:
 * my_input_z.txt: defines all settings
 * my_histograms.txt and bins.txt: defines histograms and customary binning
 
 pdfs can be used from FEWZ homepage (dat directory), or a external LHAPDF library can be used.
 
-## LO
+### LO
 ./local_run.sh <boson> <run_dir> <usr_input_file> <usr_histo_file> <output_file_extension> <pdf_location> <num_processors>  
 This will create a directory called my_run where the preliminary output files named my_results.dat will be placed.  
 ./finish.sh <run_dir> <order_prefix>.<output_file_extension>  
@@ -30,7 +57,7 @@ DYtail_LO_histhmll2: 20 CPUs, 65 bins with boundaries ca666 to ca4000, NOTE: bin
 DYtail_LO_histcoarse: 20 CPUs, with mllbins but only 21 entries, works
 Note: Cern Masterthesis: binning for k-factors: 115,150,200,300,500,1500 at most 4%
 
-## NNLO
+### NNLO
 NNLO calculation is splitted in 127(154) integration sectors (Vegas integration). For each sector a subir is created.   
 Note: dont use the ./fewzz -i executable to run sectors separately. Use local_run.sh as follows:   
 ./local_run.sh <boson> <run_dir> <usr_input_file> <usr_histo_file> <output_file_extension> <pdf_location> <num_processors> <which_sector>  
@@ -51,14 +78,13 @@ Benchmarks:
 checkCMSDatabase: sector 0 was running very long >14d, was canceled by slurm bin finish still gave a usefull output
 DYtail: currently not working, maybe its because of the Zpeak switch
 
-## kfactors
+### kfactors
 From a NNLO and LO computation we obtain kfactors via:
 ./finish.sh CMSDATABASE_LOCAL_SEP NNLO.outputfileCMSDATABASE.dat / CMSDATABASE_LO LO.outputfileCMSDATABASE_LO.dat CMSdatabasekfactor.dat
 
 ./finish.sh DYtail_coharse NNLO.outputfileDYtail_coharse.dat / DYTAIL_LO_histcoarse LO.outputfileDYTAIL_LO_histcoarse.dat kfactorsNNLO_div_LO.dat
 
-
-## extras:
+### extras:
 FEWZ can also perform scale variation and pdf errors. This is done by finish.sh if outputfile name is choosen as follows:   
 * preliminary merged result for central value: <order_prefix>.<output_file_extension>
 * + info to calculate PDF errors: <order_prefix>.pdf.<output_file_extension>

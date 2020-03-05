@@ -1,0 +1,1 @@
+./finish.sh DYTAIL_NLOLO_histcoarse NNLO.outputfileDYtail_coharse.dat / DYTAIL_NLOLOwithphoton_histcoarse NLO.outputfileDYTAIL_NLOLOwithphoton_histcoarse.dat k_factors_NNLONLO_div_NLOLO.dat
