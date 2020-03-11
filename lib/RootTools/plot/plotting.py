@@ -479,6 +479,14 @@ def draw(plot, \
         if o:
             if type(o) in [ ROOT.TF1, ROOT.TGraph, ROOT.TEfficiency ]:
                 o.Draw('same')
+	    # UNG: Added TGraphAsymmErrors
+            elif type(o) in [ ROOT.TGraphAsymmErrors ]:
+		# does not connect points
+                o.Draw('same&P')
+	    # UNG: Added TH1D
+            elif type(o) in [ ROOT.TH1D ]:
+		#][ removes vertical line from first and last bin
+                o.Draw('same ][')
             else:
                 o.Draw()
         else:
@@ -489,64 +497,227 @@ def draw(plot, \
         # Make all the ratio histograms
         same=''
         stuff=[]
-        for i_num, i_den in ratio['histos']:
-            num = histos[i_num][0]
-            den = histos[i_den][0]
-            h_ratio = helpers.clone( num )
-            stuff.append(h_ratio)
-            # For a ratio of profiles, use projection (preserve attributes)
-            if isinstance( h_ratio, ROOT.TProfile ):
-                attrs = h_ratio.__dict__
-                h_ratio = h_ratio.ProjectionX()
-                h_ratio.__dict__.update( attrs )
-                h_ratio.Divide( den.ProjectionX() )
-            else:
-                h_ratio.Divide( den )
 
-            #if ratio['style'] is not None: ratio['style'](h_ratio) 
+	if any([type(x)==list for x in ratio['histos']]): # if an element is a list
+	#if 'newhistos' in ratio.keys():
+		# allows for newhistos:[[(0,1),(2,1)],(2,1)], for [(0,1),(2,1)] the ratio of ratio is drawn
+		for myindex, element in enumerate(ratio['histos']):
+		    if type(element) == list: # if [(0,1),(0,1)] in list
+		        # get ratio of each tuple
+			numtup = element[0]
+			i_numnum, i_numden = numtup
+			dentup = element[1]
+			i_dennum, i_denden = dentup
 
-            h_ratio.GetXaxis().SetTitle(plot.texX)
-            h_ratio.GetYaxis().SetTitle(ratio['texY'])
+        	        numnum = histos[i_numnum][0]
+        	        numden = histos[i_numden][0]
+        	        h_rationum = helpers.clone( numnum )
+        	        h_rationum.Divide( numden )
 
-            h_ratio.GetXaxis().SetTitleFont(43)
-            h_ratio.GetYaxis().SetTitleFont(43)
-            h_ratio.GetXaxis().SetLabelFont(43)
-            h_ratio.GetYaxis().SetLabelFont(43)
-            h_ratio.GetXaxis().SetTitleSize(24)
-            h_ratio.GetYaxis().SetTitleSize(24)
-            h_ratio.GetXaxis().SetLabelSize(20)
-            h_ratio.GetYaxis().SetLabelSize(20)
+        	        dennum = histos[i_dennum][0]
+        	        denden = histos[i_denden][0]
+        	        h_ratioden = helpers.clone( dennum )
+        	        h_ratioden.Divide( denden )
+			
+		        # get ratio of tuple ratios
+        	        h_ratio = helpers.clone( h_rationum )
+        	        h_ratio.Divide( h_ratioden )
+        	        stuff.append(h_ratio)
 
-            h_ratio.GetXaxis().SetTitleOffset( 3.2 )
-            h_ratio.GetYaxis().SetTitleOffset( 1.6 )
+		        #UNG
+		        # style: function or list of functions of lenght histos
+		        if ratio['style'] is not None:
+		            if type(ratio['style']) == list and len(ratio['style'])==len(ratio['histos']):
+		                ratio['style'][myindex](h_ratio) 
+		            elif callable(ratio['style']):
+		                ratio['style'](h_ratio) 
+		            else:
+        	                logger.debug( "style of ratio must be function or list of length histos")
+		        #UNG
 
-            h_ratio.GetXaxis().SetTickLength( 0.03*3 )
-            h_ratio.GetYaxis().SetTickLength( 0.03*2 )
+        	        h_ratio.GetXaxis().SetTitle(plot.texX)
+        	        h_ratio.GetYaxis().SetTitle(ratio['texY'])
+
+        	        h_ratio.GetXaxis().SetTitleFont(43)
+        	        h_ratio.GetYaxis().SetTitleFont(43)
+        	        h_ratio.GetXaxis().SetLabelFont(43)
+        	        h_ratio.GetYaxis().SetLabelFont(43)
+        	        h_ratio.GetXaxis().SetTitleSize(24)
+        	        h_ratio.GetYaxis().SetTitleSize(24)
+        	        h_ratio.GetXaxis().SetLabelSize(20)
+        	        h_ratio.GetYaxis().SetLabelSize(20)
+
+        	        h_ratio.GetXaxis().SetTitleOffset( 3.2 )
+        	        h_ratio.GetYaxis().SetTitleOffset( 1.6 )
+
+        	        h_ratio.GetXaxis().SetTickLength( 0.03*3 )
+        	        h_ratio.GetYaxis().SetTickLength( 0.03*2 )
 
 
-            h_ratio.GetYaxis().SetRangeUser( *ratio['yRange'] )
-            h_ratio.GetYaxis().SetNdivisions(505)
+        	        h_ratio.GetYaxis().SetRangeUser( *ratio['yRange'] )
+        	        h_ratio.GetYaxis().SetNdivisions(505)
 
-            if ratio.has_key('histModifications'):
-                for modification in ratio['histModifications']: modification(h_ratio)
-            drawOption = h_ratio.drawOption if hasattr(h_ratio, "drawOption") else "hist"
-            if drawOption == "e1":                          # hacking to show error bars within panel when central value is off scale
-              graph = ROOT.TGraphAsymmErrors(h_ratio)       # cloning in order to get layout
-              graph.Set(0)
-              for bin in range(1, h_ratio.GetNbinsX()+1):   # do not show error bars on hist
-                h_ratio.SetBinError(bin, 0.0001)
-                center  = h_ratio.GetBinCenter(bin)
-                val     = h_ratio.GetBinContent(bin)
-                errUp   = num.GetBinErrorUp(bin)/den.GetBinContent(bin) if val > 0 else 0
-                errDown = num.GetBinErrorLow(bin)/den.GetBinContent(bin) if val > 0 else 0
-                graph.SetPoint(bin, center, val)
-                graph.SetPointError(bin, 0, 0, errDown, errUp)
-              h_ratio.Draw("e0"+same)
-              graph.Draw("P0 same")
-              stuff.append( graph )
-            else:
-              h_ratio.Draw(drawOption+same)
-            same = 'same'
+        	        if ratio.has_key('histModifications'):
+        	            for modification in ratio['histModifications']: modification(h_ratio)
+        	        drawOption = h_ratio.drawOption if hasattr(h_ratio, "drawOption") else "hist"
+        	        if drawOption == "e1":                          # hacking to show error bars within panel when central value is off scale
+        	          graph = ROOT.TGraphAsymmErrors(h_ratio)       # cloning in order to get layout
+        	          graph.Set(0)
+        	          for bin in range(1, h_ratio.GetNbinsX()+1):   # do not show error bars on hist
+        	            h_ratio.SetBinError(bin, 0.0001)
+        	            center  = h_ratio.GetBinCenter(bin)
+        	            val     = h_ratio.GetBinContent(bin)
+			    # UNG: careful
+        	            errUp   = numnum.GetBinErrorUp(bin)/denden.GetBinContent(bin) if val > 0 else 0
+        	            errDown = numnum.GetBinErrorLow(bin)/denden.GetBinContent(bin) if val > 0 else 0
+        	            graph.SetPoint(bin, center, val)
+        	            graph.SetPointError(bin, 0, 0, errDown, errUp)
+        	          h_ratio.Draw("e0"+same)
+        	          graph.Draw("P0 same")
+        	          stuff.append( graph )
+        	        else:
+        	          h_ratio.Draw(drawOption+same)
+        	        same = 'same'
+
+
+
+	            else: # the standard thing copied from RootTools
+		        i_num, i_den = element
+        	        num = histos[i_num][0]
+        	        den = histos[i_den][0]
+        	        h_ratio = helpers.clone( num )
+        	        stuff.append(h_ratio)
+        	        # For a ratio of profiles, use projection (preserve attributes)
+        	        if isinstance( h_ratio, ROOT.TProfile ):
+        	            attrs = h_ratio.__dict__
+        	            h_ratio = h_ratio.ProjectionX()
+        	            h_ratio.__dict__.update( attrs )
+        	            h_ratio.Divide( den.ProjectionX() )
+        	        else:
+        	            h_ratio.Divide( den )
+
+		        #UNG
+		        # style: function or list of functions of lenght histos
+		        if ratio['style'] is not None:
+		            if type(ratio['style']) == list and len(ratio['style'])==len(ratio['histos']):
+		                ratio['style'][myindex](h_ratio) 
+		            elif callable(ratio['style']):
+		                ratio['style'](h_ratio) 
+		            else:
+        	                logger.debug( "style of ratio must be function or list of length histos")
+		        #UNG
+
+        	        h_ratio.GetXaxis().SetTitle(plot.texX)
+        	        h_ratio.GetYaxis().SetTitle(ratio['texY'])
+
+        	        h_ratio.GetXaxis().SetTitleFont(43)
+        	        h_ratio.GetYaxis().SetTitleFont(43)
+        	        h_ratio.GetXaxis().SetLabelFont(43)
+        	        h_ratio.GetYaxis().SetLabelFont(43)
+        	        h_ratio.GetXaxis().SetTitleSize(24)
+        	        h_ratio.GetYaxis().SetTitleSize(24)
+        	        h_ratio.GetXaxis().SetLabelSize(20)
+        	        h_ratio.GetYaxis().SetLabelSize(20)
+
+        	        h_ratio.GetXaxis().SetTitleOffset( 3.2 )
+        	        h_ratio.GetYaxis().SetTitleOffset( 1.6 )
+
+        	        h_ratio.GetXaxis().SetTickLength( 0.03*3 )
+        	        h_ratio.GetYaxis().SetTickLength( 0.03*2 )
+
+
+        	        h_ratio.GetYaxis().SetRangeUser( *ratio['yRange'] )
+        	        h_ratio.GetYaxis().SetNdivisions(505)
+
+        	        if ratio.has_key('histModifications'):
+        	            for modification in ratio['histModifications']: modification(h_ratio)
+        	        drawOption = h_ratio.drawOption if hasattr(h_ratio, "drawOption") else "hist"
+        	        if drawOption == "e1":                          # hacking to show error bars within panel when central value is off scale
+        	          graph = ROOT.TGraphAsymmErrors(h_ratio)       # cloning in order to get layout
+        	          graph.Set(0)
+        	          for bin in range(1, h_ratio.GetNbinsX()+1):   # do not show error bars on hist
+        	            h_ratio.SetBinError(bin, 0.0001)
+        	            center  = h_ratio.GetBinCenter(bin)
+        	            val     = h_ratio.GetBinContent(bin)
+        	            errUp   = num.GetBinErrorUp(bin)/den.GetBinContent(bin) if val > 0 else 0
+        	            errDown = num.GetBinErrorLow(bin)/den.GetBinContent(bin) if val > 0 else 0
+        	            graph.SetPoint(bin, center, val)
+        	            graph.SetPointError(bin, 0, 0, errDown, errUp)
+        	          h_ratio.Draw("e0"+same)
+        	          graph.Draw("P0 same")
+        	          stuff.append( graph )
+        	        else:
+        	          h_ratio.Draw(drawOption+same)
+        	        same = 'same'
+
+	else: # if no lists in histos list
+        	for myindex, (i_num, i_den) in enumerate(ratio['histos']):
+        	    num = histos[i_num][0]
+        	    den = histos[i_den][0]
+        	    h_ratio = helpers.clone( num )
+        	    stuff.append(h_ratio)
+        	    # For a ratio of profiles, use projection (preserve attributes)
+        	    if isinstance( h_ratio, ROOT.TProfile ):
+        	        attrs = h_ratio.__dict__
+        	        h_ratio = h_ratio.ProjectionX()
+        	        h_ratio.__dict__.update( attrs )
+        	        h_ratio.Divide( den.ProjectionX() )
+        	    else:
+        	        h_ratio.Divide( den )
+
+		    #UNG
+		    # style: function or list of functions of lenght histos
+		    if ratio['style'] is not None:
+			if type(ratio['style']) == list and len(ratio['style'])==len(ratio['histos']):
+			    ratio['style'][myindex](h_ratio) 
+			elif callable(ratio['style']):
+			    ratio['style'](h_ratio) 
+			else:
+            		    logger.debug( "style of ratio must be function or list of length histos")
+		    #UNG
+
+        	    h_ratio.GetXaxis().SetTitle(plot.texX)
+        	    h_ratio.GetYaxis().SetTitle(ratio['texY'])
+
+        	    h_ratio.GetXaxis().SetTitleFont(43)
+        	    h_ratio.GetYaxis().SetTitleFont(43)
+        	    h_ratio.GetXaxis().SetLabelFont(43)
+        	    h_ratio.GetYaxis().SetLabelFont(43)
+        	    h_ratio.GetXaxis().SetTitleSize(24)
+        	    h_ratio.GetYaxis().SetTitleSize(24)
+        	    h_ratio.GetXaxis().SetLabelSize(20)
+        	    h_ratio.GetYaxis().SetLabelSize(20)
+
+        	    h_ratio.GetXaxis().SetTitleOffset( 3.2 )
+        	    h_ratio.GetYaxis().SetTitleOffset( 1.6 )
+
+        	    h_ratio.GetXaxis().SetTickLength( 0.03*3 )
+        	    h_ratio.GetYaxis().SetTickLength( 0.03*2 )
+
+
+        	    h_ratio.GetYaxis().SetRangeUser( *ratio['yRange'] )
+        	    h_ratio.GetYaxis().SetNdivisions(505)
+
+        	    if ratio.has_key('histModifications'):
+        	        for modification in ratio['histModifications']: modification(h_ratio)
+        	    drawOption = h_ratio.drawOption if hasattr(h_ratio, "drawOption") else "hist"
+        	    if drawOption == "e1":                          # hacking to show error bars within panel when central value is off scale
+        	      graph = ROOT.TGraphAsymmErrors(h_ratio)       # cloning in order to get layout
+        	      graph.Set(0)
+        	      for bin in range(1, h_ratio.GetNbinsX()+1):   # do not show error bars on hist
+        	        h_ratio.SetBinError(bin, 0.0001)
+        	        center  = h_ratio.GetBinCenter(bin)
+        	        val     = h_ratio.GetBinContent(bin)
+        	        errUp   = num.GetBinErrorUp(bin)/den.GetBinContent(bin) if val > 0 else 0
+        	        errDown = num.GetBinErrorLow(bin)/den.GetBinContent(bin) if val > 0 else 0
+        	        graph.SetPoint(bin, center, val)
+        	        graph.SetPointError(bin, 0, 0, errDown, errUp)
+        	      h_ratio.Draw("e0"+same)
+        	      graph.Draw("P0 same")
+        	      stuff.append( graph )
+        	    else:
+        	      h_ratio.Draw(drawOption+same)
+        	    same = 'same'
 
         bottomPad.SetLogx(logX)
         bottomPad.SetLogy(ratio['logY'])
@@ -558,7 +729,11 @@ def draw(plot, \
         line.Draw()
 
         for o in ratio['drawObjects']:
-            if o:
+	    # UNG: Added TGraphAsymmErrors
+            if type(o) in [ ROOT.TGraphAsymmErrors ]:
+		# does not connect points
+                o.Draw('same&P')
+            elif o:
                 o.Draw()
             else:
                 logger.debug( "ratio['drawObjects'] has something I can't Draw(): %r", o)

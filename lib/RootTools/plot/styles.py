@@ -34,6 +34,26 @@ def lineStyle( color, width = None, dotted=False, dashed=False, errors = False):
         return 
     return func
 
+def fakelineStyle( color, width = None, dotted=False, dashed=False, errors = False):
+	''' plots only the axis, no histogram
+	used to get legend entry
+	'''
+    def func( histo ):
+        histo.SetLineColor( color )
+        histo.SetMarkerSize( 0 )
+        histo.SetMarkerStyle( 0 )
+        histo.SetMarkerColor( color )
+        histo.SetFillColor( 0 )
+        if dotted: histo.SetLineStyle( 3 )
+        if dashed: histo.SetLineStyle( 7 )
+        if width: histo.SetLineWidth( width )
+        #histo.drawOption = "hist"
+        histo.drawOption = "AXIS"
+        if errors: histo.drawOption+='E'
+        return 
+    return func
+
+
 def fillStyle( color, lineColor = ROOT.kBlack, lineWidth = 1, errors = False):
     def func( histo ):
         lc = lineColor if lineColor is not None else color
