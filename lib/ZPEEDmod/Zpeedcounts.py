@@ -295,10 +295,12 @@ def getBSMcounts( channel, Zp_model, lumi =139., mllrange = None, withinterferen
 if __name__== "__main__":
 
 	print 'Compare expected standard model with Zp model'
-	g = 0.1
-	MZp = 1000
+	g = 1
+	MZp = 1500
+	model = 'VV05'
 	print 'Zprime mass: ' + str(MZp)
 	print 'Zprime g: ' + str(g)
+	print 'model: ' + model
 	
 	#sm_counts = getSMcounts( 'ee', counttype='expected', mllrange = None, lumi =139.)
 	#bsm_counts = getBSMcounts( 'ee', g, MZp, lumi =139., mllrange = None, model = 'VV05',  WZp = 'auto', withinterference = True)
@@ -309,7 +311,9 @@ if __name__== "__main__":
 	
 	sm_counts = getSMcounts( 'ee', counttype='expected', mllrange = [ MZp - 300, MZp + 300], lumi =139.)
 
-	Zp_model = getZpmodel(g, MZp, model = 'VV05',  WZp = 'auto')
+	Zp_model = getZpmodel(g, MZp, model = model,  WZp = 'auto')
+	print 'Width'
+	print Zp_model['Gamma']
 	bsm_counts = getBSMcounts( 'ee', Zp_model, lumi =139., mllrange = [ MZp - 300, MZp + 300], withinterference = True)
 	
 	print 'counts in range [ MZp - 300, MZp + 300]'
