@@ -1,0 +1,184 @@
+#import model
+import model zPrime_UFO_LO_mod
+# Define multiparticles
+#define p = g u c d s u~ c~ d~ s~
+# generate a process, ev add some more
+generate u u~ > mu+ mu-
+# Output processes to MadEvent directory
+output CheckZPEED_uux_tot_mm
+launch CheckZPEED_uux_tot_mm --name=run1000 --laststep=parton
+	# Run card
+	set nevents 1000
+	#no pdf
+	set lpp1 0
+	set lpp2 0
+	#beam energy
+	set ebeam1 500
+	set ebeam2 500
+	# Param card
+	set gVl1x1 0.5
+	set gAl1x1 0.
+	set gVl2x2 1.
+	set gAl2x2 0.
+	set gVl3x3 0.
+	set gAl3x3 0.
+	set MZp 1500
+	set g1p 1.
+	set wzp Auto
+launch CheckZPEED_uux_tot_mm --name=run1250 --laststep=parton
+	# Run card
+	set nevents 1000
+	#no pdf
+	set lpp1 0
+	set lpp2 0
+	#beam energy
+	set ebeam1 625
+	set ebeam2 625
+	# Param card
+	set gVl1x1 0.5
+	set gAl1x1 0.
+	set gVl2x2 1.
+	set gAl2x2 0.
+	set gVl3x3 0.
+	set gAl3x3 0.
+	set MZp 1500
+	set g1p 1.
+	set wzp Auto
+launch CheckZPEED_uux_tot_mm --name=run1400 --laststep=parton
+	# Run card
+	set nevents 1000
+	#no pdf
+	set lpp1 0
+	set lpp2 0
+	#beam energy
+	set ebeam1 700
+	set ebeam2 700
+	# Param card
+	set gVl1x1 0.5
+	set gAl1x1 0.
+	set gVl2x2 1.
+	set gAl2x2 0.
+	set gVl3x3 0.
+	set gAl3x3 0.
+	set MZp 1500
+	set g1p 1.
+	set wzp Auto
+launch CheckZPEED_uux_tot_mm --name=run1450 --laststep=parton
+	# Run card
+	set nevents 1000
+	#no pdf
+	set lpp1 0
+	set lpp2 0
+	#beam energy
+	set ebeam1 725
+	set ebeam2 725
+	# Param card
+	set gVl1x1 0.5
+	set gAl1x1 0.
+	set gVl2x2 1.
+	set gAl2x2 0.
+	set gVl3x3 0.
+	set gAl3x3 0.
+	set MZp 1500
+	set g1p 1.
+	set wzp Auto
+launch CheckZPEED_uux_tot_mm --name=run1500 --laststep=parton
+	# Run card
+	set nevents 1000
+	#no pdf
+	set lpp1 0
+	set lpp2 0
+	#beam energy
+	set ebeam1 750
+	set ebeam2 750
+	# Param card
+	set gVl1x1 0.5
+	set gAl1x1 0.
+	set gVl2x2 1.
+	set gAl2x2 0.
+	set gVl3x3 0.
+	set gAl3x3 0.
+	set MZp 1500
+	set g1p 1.
+	set wzp Auto
+launch CheckZPEED_uux_tot_mm --name=run1550 --laststep=parton
+	# Run card
+	set nevents 1000
+	#no pdf
+	set lpp1 0
+	set lpp2 0
+	#beam energy
+	set ebeam1 775
+	set ebeam2 775
+	# Param card
+	set gVl1x1 0.5
+	set gAl1x1 0.
+	set gVl2x2 1.
+	set gAl2x2 0.
+	set gVl3x3 0.
+	set gAl3x3 0.
+	set MZp 1500
+	set g1p 1.
+	set wzp Auto
+launch CheckZPEED_uux_tot_mm --name=run1600 --laststep=parton
+	# Run card
+	set nevents 1000
+	#no pdf
+	set lpp1 0
+	set lpp2 0
+	#beam energy
+	set ebeam1 800
+	set ebeam2 800
+	# Param card
+	set gVl1x1 0.5
+	set gAl1x1 0.
+	set gVl2x2 1.
+	set gAl2x2 0.
+	set gVl3x3 0.
+	set gAl3x3 0.
+	set MZp 1500
+	set g1p 1.
+	set wzp Auto
+launch CheckZPEED_uux_tot_mm --name=run1750 --laststep=parton
+	# Run card
+	set nevents 1000
+	#no pdf
+	set lpp1 0
+	set lpp2 0
+	#beam energy
+	set ebeam1 875
+	set ebeam2 875
+	# Param card
+	set gVl1x1 0.5
+	set gAl1x1 0.
+	set gVl2x2 1.
+	set gAl2x2 0.
+	set gVl3x3 0.
+	set gAl3x3 0.
+	set MZp 1500
+	set g1p 1.
+	set wzp Auto
+launch CheckZPEED_uux_tot_mm --name=run2000 --laststep=parton
+	# Run card
+	set nevents 1000
+	#no pdf
+	set lpp1 0
+	set lpp2 0
+	#beam energy
+	set ebeam1 1000
+	set ebeam2 1000
+	# Param card
+	set gVl1x1 0.5
+	set gAl1x1 0.
+	set gVl2x2 1.
+	set gAl2x2 0.
+	set gVl3x3 0.
+	set gAl3x3 0.
+	set MZp 1500
+	set g1p 1.
+	set wzp Auto
+	# scan works only for param_card
+#this is automatically done for scans, but for multiple launches use this line to get a summary
+launch CheckZPEED_uux_tot_mm -i
+print_results --path=/users/gerhard.ungersbaeck/masterscripts/plots/checkZPEED/cross_section_uux_tot_mm.txt --format=short
+done
