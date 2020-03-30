@@ -24,12 +24,17 @@ def sigmafromfile( file ):
 	f.close()
 	return sqrts_vals, sigma_vals
 
-def Zp_wint_interference( initial='uux', final='mm' ):
+def Zp_nointerference( model='VV05',initial='uux', final='mm' ):
+	sqrts_vals, sigma_vals = sigmafromfile( 'cross_section_' + model + '_' + initial + '_zp_' + final + '.txt' )
+
+	return sqrts_vals, sigma_vals
+
+def Zp_withinterference( model='VV05', initial='uux', final='mm' ):
 	#total
-	sqrts_vals, sigma_vals = sigmafromfile( 'cross_section_' + initial + '_tot_' + final + '.txt' )
+	sqrts_vals, sigma_vals = sigmafromfile( 'cross_section_' + model + '_' + initial + '_tot_' + final + '.txt' )
 
 	#SMtotal
-	sqrts_vals, sigma_vals_SMtot = sigmafromfile( 'cross_section_' + initial + '_SMtot_' + final + '.txt' )
+	sqrts_vals, sigma_vals_SMtot = sigmafromfile( 'cross_section_SM_' + initial + '_tot_' + final + '.txt' )
 
 	# SMtotal: z2, a2, 2 z a
 	# total: z2, a2, 2 z a, zp2, 2 zp a, 2 z zp
@@ -37,20 +42,14 @@ def Zp_wint_interference( initial='uux', final='mm' ):
 	for i in range(len(sigma_vals)):
 		sigma_vals[i] =  sigma_vals[i] - sigma_vals_SMtot[i]
 
-	## substract a
-	#sigma_vals_a = sigmafromfile( 'cross_section_' + initial + '_a_' + final + '.txt' )[1]
-	## substract z
-	#sigma_vals_z = sigmafromfile( 'cross_section_' + initial + '_z_' + final + '.txt' )[1]
-
-	#for i in range(len(sigma_vals)):
-	#	sigma_vals[i] =  sigma_vals[i] - sigma_vals_a[i] - sigma_vals_z[i]
-
 	return sqrts_vals, sigma_vals
 
 if __name__ == '__main__':
-	print 'sqrts and simga [fb] from cross_section_uux_zp_mm.txt'
-	print sigmafromfile( 'cross_section_uux_zp_mm.txt')
 
-	print 'sqrts and simga [fb] from Zp with interference'
-	print Zp_wint_interference( initial='uux', final = 'mm' )
+	print 'sqrts and simga [fb] from Zp in VV05_uux_zp_mm'
+	print Zp_nointerference( model='VV05',initial='uux', final='mm' )
+
+	print 'sqrts and simga [fb] from Zp with SM interference in VV05_uux to mm'
+	print Zp_withinterference( model='VV05', initial='uux', final='mm' )
+
 

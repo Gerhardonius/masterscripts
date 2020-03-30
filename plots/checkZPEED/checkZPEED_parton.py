@@ -8,7 +8,7 @@ import ZPEED.dileptons_functions_modified as df_mod
 from ZPEEDmod.Zpeedcounts import mydsigmadmll, getZpmodel, myDecayWidth
 from directories.directories import plotdir
 
-from madgraph_crossections import sigmafromfile, Zp_wint_interference
+from madgraph_crossections import sigmafromfile, Zp_wint_interference, Zp_wint_interference2
 #
 # argparser
 # 
@@ -271,18 +271,121 @@ plt.clf()
 
 plt.plot( madgraph_mll ,madgraph_sigma_int_d_ee, label='Madgraph_int_d_ee')
 plt.plot( sqrts_vals, 	sigma_int_d_ee,		label='ZPEED_int_d_ee')
-
-#madgraph_mll, madgraph_sigma_d_z_ee = sigmafromfile( 'cross_section_ddx_z_ee.txt')
-#madgraph_mll, madgraph_sigma_d_zp_ee = sigmafromfile( 'cross_section_ddx_zp_ee.txt')
-#madgraph_mll, madgraph_sigma_d_a_ee = sigmafromfile( 'cross_section_ddx_a_ee.txt')
-#madgraph_mll, madgraph_sigma_d_tot_ee = sigmafromfile( 'cross_section_ddx_tot_ee.txt')
-#plt.plot( madgraph_mll ,madgraph_sigma_d_z_ee, label='Madgraph_d_z_ee')
-#plt.plot( madgraph_mll ,madgraph_sigma_d_zp_ee, label='Madgraph_d_zp_ee')
-#plt.plot( madgraph_mll ,madgraph_sigma_d_a_ee, label='Madgraph_d_a_ee')
-#plt.plot( madgraph_mll ,madgraph_sigma_d_tot_ee, label='Madgraph_d_tot_ee')
 plt.legend()
 plt.ylabel(r'$\sigma/fb$')
 plt.xlabel(r'$\sqrt{\hat{s}}/GeV$')
 plt.savefig( os.path.join( plot_directory, 'VV05_1500_do_dielec_wint.pdf' ))
 plt.clf()
+
+
+#
+# RR05 model
+#
+g = 1.
+MZp = 1500.
+model = 'RR05'
+Zp_model = getZpmodel(g, MZp, model = model,  WZp = 'auto')
+print Zp_model
+
+sqrts_vals = np.linspace( 1000., 2000., num=100)
+sigma_u_mm = np.zeros_like( sqrts_vals )
+sigma_d_mm = np.zeros_like( sqrts_vals )
+sigma_u_ee = np.zeros_like( sqrts_vals )
+sigma_d_ee = np.zeros_like( sqrts_vals )
+
+
+for i, sqrts in enumerate(sqrts_vals):
+	sigma_u_mm[i] = mydsigmadmll_mod( sqrts , Zp_model, species = "mm", quarktype = 'u', partonlevel = True)
+	sigma_d_mm[i] = mydsigmadmll_mod( sqrts , Zp_model, species = "mm", quarktype = 'd', partonlevel = True)
+	sigma_u_ee[i] = mydsigmadmll_mod( sqrts , Zp_model, species = "ee", quarktype = 'u', partonlevel = True)
+	sigma_d_ee[i] = mydsigmadmll_mod( sqrts , Zp_model, species = "ee", quarktype = 'd', partonlevel = True)
+madgraph_mll, madgraph_sigma_u_mm = sigmafromfile( 'cross_section_uux_zp2_mm.txt')
+madgraph_mll, madgraph_sigma_d_mm = sigmafromfile( 'cross_section_ddx_zp2_mm.txt')
+madgraph_mll, madgraph_sigma_u_ee = sigmafromfile( 'cross_section_uux_zp2_ee.txt')
+madgraph_mll, madgraph_sigma_d_ee = sigmafromfile( 'cross_section_ddx_zp2_ee.txt')
+
+#
+# Plot
+#
+plt.plot( madgraph_mll ,madgraph_sigma_u_mm, label='Madgraph_u_mm')
+plt.plot( sqrts_vals, 	sigma_u_mm,		label='ZPEED_u_mm')
+plt.legend()
+plt.ylabel(r'$\sigma/fb$')
+plt.xlabel(r'$\sqrt{\hat{s}}/GeV$')
+plt.savefig( os.path.join( plot_directory, 'RR05_1500_up_dimuon.pdf' ))
+plt.clf()
+
+plt.plot( madgraph_mll ,madgraph_sigma_d_mm, label='Madgraph_d_mm')
+plt.plot( sqrts_vals, 	sigma_d_mm,		label='ZPEED_d_mm')
+plt.legend()
+plt.ylabel(r'$\sigma/fb$')
+plt.xlabel(r'$\sqrt{\hat{s}}/GeV$')
+plt.savefig( os.path.join( plot_directory, 'RR05_1500_do_dimuon.pdf' ))
+plt.clf()
+
+plt.plot( madgraph_mll ,madgraph_sigma_u_ee, label='Madgraph_u_ee')
+plt.plot( sqrts_vals, 	sigma_u_ee,		label='ZPEED_u_ee')
+plt.legend()
+plt.ylabel(r'$\sigma/fb$')
+plt.xlabel(r'$\sqrt{\hat{s}}/GeV$')
+plt.savefig( os.path.join( plot_directory, 'RR05_1500_up_dielec.pdf' ))
+plt.clf()
+
+plt.plot( madgraph_mll ,madgraph_sigma_d_ee, label='Madgraph_d_ee')
+plt.plot( sqrts_vals, 	sigma_d_ee,		label='ZPEED_d_ee')
+plt.legend()
+plt.ylabel(r'$\sigma/fb$')
+plt.xlabel(r'$\sqrt{\hat{s}}/GeV$')
+plt.savefig( os.path.join( plot_directory, 'RR05_1500_do_dielec.pdf' ))
+plt.clf()
+
+# Interference
+sqrts_vals = np.linspace( 1000., 2000., num=100)
+sigma_int_u_mm = np.zeros_like( sqrts_vals )
+sigma_int_d_mm = np.zeros_like( sqrts_vals )
+sigma_int_u_ee = np.zeros_like( sqrts_vals )
+sigma_int_d_ee = np.zeros_like( sqrts_vals )
+
+for i, sqrts in enumerate(sqrts_vals):
+	sigma_int_u_mm[i] = mydsigmadmll_wint_mod( sqrts , Zp_model, species = "mm", quarktype = 'u', partonlevel = True)
+	sigma_int_d_mm[i] = mydsigmadmll_wint_mod( sqrts , Zp_model, species = "mm", quarktype = 'd', partonlevel = True)
+	sigma_int_u_ee[i] = mydsigmadmll_wint_mod( sqrts , Zp_model, species = "ee", quarktype = 'u', partonlevel = True)
+	sigma_int_d_ee[i] = mydsigmadmll_wint_mod( sqrts , Zp_model, species = "ee", quarktype = 'd', partonlevel = True)
+madgraph_mll, madgraph_sigma_int_u_mm = Zp_wint_interference2( initial='uux', final='mm' )
+madgraph_mll, madgraph_sigma_int_d_mm = Zp_wint_interference2( initial='ddx', final='mm' )
+madgraph_mll, madgraph_sigma_int_u_ee = Zp_wint_interference2( initial='uux', final='ee' )
+madgraph_mll, madgraph_sigma_int_d_ee = Zp_wint_interference2( initial='ddx', final='ee' )
+
+plt.plot( madgraph_mll ,madgraph_sigma_int_u_mm, label='Madgraph_int_u_mm')
+plt.plot( sqrts_vals, 	sigma_int_u_mm,		label='ZPEED_int_u_mm')
+plt.legend()
+plt.ylabel(r'$\sigma/fb$')
+plt.xlabel(r'$\sqrt{\hat{s}}/GeV$')
+plt.savefig( os.path.join( plot_directory, 'RR05_1500_up_dimuon_wint.pdf' ))
+plt.clf()
+
+plt.plot( madgraph_mll ,madgraph_sigma_int_d_mm, label='Madgraph_int_d_mm')
+plt.plot( sqrts_vals, 	sigma_int_d_mm,		label='ZPEED_int_d_mm')
+plt.legend()
+plt.ylabel(r'$\sigma/fb$')
+plt.xlabel(r'$\sqrt{\hat{s}}/GeV$')
+plt.savefig( os.path.join( plot_directory, 'RR05_1500_do_dimuon_wint.pdf' ))
+plt.clf()
+
+plt.plot( madgraph_mll ,madgraph_sigma_int_u_ee, label='Madgraph_int_u_ee')
+plt.plot( sqrts_vals, 	sigma_int_u_ee,		label='ZPEED_int_u_ee')
+plt.legend()
+plt.ylabel(r'$\sigma/fb$')
+plt.xlabel(r'$\sqrt{\hat{s}}/GeV$')
+plt.savefig( os.path.join( plot_directory, 'RR05_1500_up_dielec_wint.pdf' ))
+plt.clf()
+
+plt.plot( madgraph_mll ,madgraph_sigma_int_d_ee, label='Madgraph_int_d_ee')
+plt.plot( sqrts_vals, 	sigma_int_d_ee,		label='ZPEED_int_d_ee')
+plt.legend()
+plt.ylabel(r'$\sigma/fb$')
+plt.xlabel(r'$\sqrt{\hat{s}}/GeV$')
+plt.savefig( os.path.join( plot_directory, 'RR05_1500_do_dielec_wint.pdf' ))
+plt.clf()
+
 
