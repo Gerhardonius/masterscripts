@@ -55,6 +55,44 @@ def CLsZpeed( Zp_model,  searchwindow=[-3.,3.], withint = True ):
   		return result[2]
   		#return result
 
+def CLsZpeed_withexpected( Zp_model,  searchwindow=[-3.,3.], withint = True ):
+	# search region
+	Mlow = Zp_model['MZp'] + searchwindow[0] *Zp_model['Gamma']
+	Mhigh = Zp_model['MZp']+ searchwindow[1] *Zp_model['Gamma']
+	sig_range = [Mlow,Mhigh]
+
+	if withint:
+		#Step 2: Calculate differential cross section (including detector efficiency)
+		# lambda functions (needed to calculate \hat{mu}
+		ee_signal_with_interference = lambda x : xi_function(x, "ee") * mydsigmadmll_wint(x, Zp_model, "ee")
+		mm_signal_with_interference = lambda x : xi_function(x, "mm") * mydsigmadmll_wint(x, Zp_model, "mm")	
+		#Step 3: Create likelihood functions, returns chi2 test statistic as function of mu
+		chi2, chi2_Asimov = calculate_chi2_noweight(ee_signal_with_interference, mm_signal_with_interference, signal_range=sig_range)
+		# evaluates teststatistic and calculates CLs in asmptotic limit
+		result = get_likelihood(chi2_with_interference, chi2_Asimov_with_interference)
+  		#return [chi2(1),Delta_chi2(1), CLs(1)]
+		#CLs_obs = result_with_interference[2]
+		tmpresult = result
+
+	else:
+		ee_signal = lambda x : xi_function(x, "ee") * mydsigmadmll(x, Zp_model, "ee")
+		mm_signal = lambda x : xi_function(x, "mm") * mydsigmadmll(x, Zp_model, "mm")	
+
+		chi2, chi2_Asimov = calculate_chi2_noweight(ee_signal, mm_signal, signal_range=sig_range)
+		result = get_likelihood(chi2, chi2_Asimov)
+  		#CLs_obs = result[2]
+		tmpresult = result
+
+	quantiles = [-2.,-1.,0.,1.,2.]
+	sqrtq_exp = [ x + sqrt_safe( chi2_Asimov(1.) ) for x in quantiles ]
+  	CLs = [0.] * 5
+	for i in range(len(CLs)):
+		CLs[i]=(1 - norm.cdf( sqrtq_exp[i]) )/norm.cdf(sqrt_safe(chi2_Asimov(1.)) - sqrtq_exp[i])
+	CLs.append( result[2] )	
+	xvals = [ x**2 for x in sqrtq_exp] + [ tmpresult[1]]
+
+	return CLs, xvals
+
 def CLspython( Zp_model,  searchwindow=[-3.,3.], withint = True, plotname= None, N=10**2 ):
 	#
 	# get ZPEED result to compare to and get Asimov data for asymptotic formula
@@ -177,6 +215,7 @@ def CLspython( Zp_model,  searchwindow=[-3.,3.], withint = True, plotname= None,
 				q.append( sum(getloglikelihood( 1. , toydata_ee, ee_expected_bin, ee_signal_bin, toydata_mm, mm_expected_bin, mm_signal_bin)) -
 				sum(getloglikelihood( muhat , toydata_ee, ee_expected_bin, ee_signal_bin, toydata_mm, mm_expected_bin, mm_signal_bin)) )
 		return q
+
 	# sampled test statistic
 	qsb = get_qlist(ee_expected_bin, ee_signal_bin, mm_expected_bin, mm_signal_bin,  mu=1., N=N)
 	qb  = get_qlist(ee_expected_bin, ee_signal_bin, mm_expected_bin, mm_signal_bin,  mu=0., N=N)
@@ -197,17 +236,21 @@ def CLspython( Zp_model,  searchwindow=[-3.,3.], withint = True, plotname= None,
 		binning.append( qobs + i*spacing)
 	qsb_hist = plt.hist( qsb, bins=binning, density = True, label = 'S+B', log=True, alpha=0.5 ,color='r' )
 	qb_hist = plt.hist( qb, bins=binning, density = True,  label = 'B', log=True   , alpha=0.5 ,color='b' )
-	# extract p values from plot
-	psb_val = sum(qsb_hist[0][numberofbins:])*spacing #50bins above qobs 
-	#print 'Integral qsb:', sum(qsb_hist[0])*spacing
-	#print qsb_hist[0][numberofbins:] #10bins above qobs 
-	oneminuspb_val = sum(qb_hist[0][numberofbins:])*spacing #50bins above qobs 
-	#print qb_hist[0][:numberofbins] #10bins above qobs 
-	#print 'Integral qb:', sum(qb_hist[0])*spacing
-	# finish plot
+
+	#
+	# obtain CLs and q values: [-2sig, -sig, median, sig, 2sig, observed]
+	#
+	CLs_values, q_values = getCLs_values( qsb_hist, qb_hist, qobs, spacing, numberofbins)
+
+	#
+	# plot q_values, make pretty and save plot
+	#
 	plt.axvline( qobs, color = 'black', label=r'$q_{obs}$')
+	for q_value, tag in zip(q_values[:-1], [ 'r$q_{exp}^{2 \sigma}$', 'r$q_{exp}^{ \sigma}$', 'r$q_{exp}^{ med}$', r'$q_{exp}^{-\sigma}$', r'$q_{exp}^{-2 \sigma}$' ]):
+		plt.axvline( q_value, color = 'black', linestyle='dashed', label= tag )
 	plt.xlabel(r'$q_{obs}$')
 	plt.xlabel(r'$-2*\ln \frac{ \mathcal{L}(\mu=1)}{ \mathcal{L}(\hat{\mu})}$')
+
 	#
 	# plot asymptotic
 	#
@@ -241,29 +284,44 @@ def CLspython( Zp_model,  searchwindow=[-3.,3.], withint = True, plotname= None,
 	plt.plot( qlist, [ asymptotic_b(q, chi2_Asimov(1.) ) for q in qlist], label ='Asym. B', color='b')
 	plt.plot( qlist, [ asymptotic_sb(q,chi2_Asimov(1.) ) for q in qlist], label ='Asym. S+B', color='r')
 	plt.legend()
-	#
-	# Evaluate CLs vals
-	#
-	# asymptotic
-	psb_asym = quad(asymptotic_sb, qobs, binning[-1], args=(chi2_Asimov(1.)) )
-	oneminuspb_asym = quad(asymptotic_b, qobs,binning[-1], args=(chi2_Asimov(1.)) )
-	CLs_asym = psb_asym[0]/oneminuspb_asym[0]
-	# python sampling
-	CLs = psb_val/oneminuspb_val
-	#print 'psb_val:' , psb_val
-	#print 'oneminuspb_val:' , oneminuspb_val
-	#print 'CLs: ', CLs
-	CLs_str = "%.3f" % CLs
-	# Zpeed
-	CLs_asym_str = "%.3f" % CLs_asym
-	Zpeedresult_str = "%.3f" % Zpeedresult
-	plt.title( 'CLs=' + CLs_str + ' - N ' + str(N) + ' / CLs_asym=' + CLs_asym_str + ' / ' + 'ZPEED=' + Zpeedresult_str)
+
+	CLs_obs_str = "%.3f" % CLs_values[-1]
+	CLs_exp_str = "%.3f" % CLs_values[2]
+	#plt.title( 'CLs=' + CLs_str + ' - N ' + str(N) + ' / CLs_asym=' + CLs_asym_str )
+	plt.title( 'CLs_obs=' + CLs_obs_str + ' / CLs_exp=' + CLs_exp_str + ' / N ' + str(N) )
 	if plotname != None:
 		plt.savefig( os.path.join( plot_directory, Zp_model['name'] + '_' + plotname + '_' + str(N) + '.pdf' ) )
 		print 'Teststatistik saved as ', os.path.join( plot_directory, Zp_model['name'] + '_' + plotname + '_' + str(N) + '.pdf' )
 	plt.clf()
 
-	return {'CLspython:':CLs, 'CLspython_asym:':CLs_asym, 'Zpeedresult(noweights)':Zpeedresult}
+	return CLs_values
+
+
+
+	# OLD
+	#
+	# Evaluate CLs vals
+	#
+	# asymptotic
+	#psb_asym = quad(asymptotic_sb, qobs, binning[-1], args=(chi2_Asimov(1.)) )
+	#oneminuspb_asym = quad(asymptotic_b, qobs,binning[-1], args=(chi2_Asimov(1.)) )
+	#CLs_asym = psb_asym[0]/oneminuspb_asym[0]
+	## python sampling
+	#CLs = psb_val/oneminuspb_val
+	##print 'psb_val:' , psb_val
+	##print 'oneminuspb_val:' , oneminuspb_val
+	##print 'CLs: ', CLs
+	#CLs_str = "%.3f" % CLs
+	## Zpeed
+	#CLs_asym_str = "%.3f" % CLs_asym
+	#Zpeedresult_str = "%.3f" % Zpeedresult
+	#plt.title( 'CLs=' + CLs_str + ' - N ' + str(N) + ' / CLs_asym=' + CLs_asym_str + ' / ' + 'ZPEED=' + Zpeedresult_str)
+	#if plotname != None:
+	#	plt.savefig( os.path.join( plot_directory, Zp_model['name'] + '_' + plotname + '_' + str(N) + '.pdf' ) )
+	#	print 'Teststatistik saved as ', os.path.join( plot_directory, Zp_model['name'] + '_' + plotname + '_' + str(N) + '.pdf' )
+	#plt.clf()
+
+	#return {'CLspython:':CLs, 'CLspython_asym:':CLs_asym, 'Zpeedresult(noweights)':Zpeedresult}
 
 def CLspython_Tevatron( Zp_model,  searchwindow=[-3.,3.], withint = True, plotname= None, N=10**2 ):
 	#
@@ -918,11 +976,10 @@ def CLspython_ratio_Tevatron_gauss( Zp_model,  searchwindow=[-3.,3.], withint = 
 	# obtain CLs and q values: [-2sig, -sig, median, sig, 2sig, observed]
 	#
 	CLs_values, q_values = getCLs_values( qsb_hist, qb_hist, qobs, spacing, numberofbins)
-	# extract p values from plot
-	psb_val = sum(qsb_hist[0][numberofbins:])*spacing #50bins above qobs 
-	oneminuspb_val = sum(qb_hist[0][numberofbins:])*spacing #50bins above qobs 
-	#print 'Integral qb:', sum(qb_hist[0])*spacing
-	# finish plot
+
+	#
+	# plot q_values, make pretty and save plot
+	#
 	plt.axvline( qobs, color = 'black', label=r'$q_{obs}$')
 	for q_value, tag in zip(q_values[:-1], [ 'r$q_{exp}^{2 \sigma}$', 'r$q_{exp}^{ \sigma}$', 'r$q_{exp}^{ med}$', r'$q_{exp}^{-\sigma}$', r'$q_{exp}^{-2 \sigma}$' ]):
 		plt.axvline( q_value, color = 'black', linestyle='dashed', label= tag )
@@ -1011,7 +1068,7 @@ if __name__ == "__main__":
 	import time
 
 	argParser = argparse.ArgumentParser(description = "Argument parser")
-	argParser.add_argument('--tag',       		default='Test' ,  help='Tag for files', )
+	#argParser.add_argument('--tag',       		default='Test' ,  help='Tag for files', )
 	argParser.add_argument('--powN',      type=int, default=2,  help='power of 10 for toydata', )
 	argParser.add_argument('--ge',      type=float, default=0.5,  help='ge coupling', )
 	argParser.add_argument('--gm',      type=float, default=0.5,  help='gm coupling', )
@@ -1040,27 +1097,29 @@ if __name__ == "__main__":
 	## standard +- 3 Gamma
 	#print '----------- standard, noint-----------------'
 	#print 'CLsZPEED: ', CLsZpeed( Zp_model,  searchwindow = [-3.,3.], withint = False )
+	print 'CLsZPEED_withexpected: ', CLsZpeed_withexpected( Zp_model,  searchwindow=[-3.,3.], withint = False )
+
 	#
-	## ZPEED Sampling
-	###start_time = time.clock()
-	#print 'CLsPython:', CLspython( Zp_model,  searchwindow= [-3.,3.], withint = False, plotname= modelname , N =10**args.powN )
-	###end_time = time.clock()
+	# ZPEED Sampling
+	#start_time = time.clock()
+	print 'CLsPython:', CLspython( Zp_model,  searchwindow= [-3.,3.], withint = False, plotname= 'ZPEED' , N =10**args.powN )
+	#end_time = time.clock()
 	##print 'Duration in min for 10^x ' + str(args.powN) + ': ' + str((end_time-start_time)/60.) 
 
 	## Tevatron 
-	#print 'CLsPython_Tevatron:', CLspython_Tevatron( Zp_model,  searchwindow= [-3.,3.], withint = False, plotname= modelname + '_Tevatron' , N =10**args.powN )
+	#print 'CLsPython_Tevatron:', CLspython_Tevatron( Zp_model,  searchwindow= [-3.,3.], withint = False, plotname= '_Tevatron' , N =10**args.powN )
 
 	## Tevatron with gauss/chi2 (mainly to check how to implement it in ratios)
-	#print 'CLsPython_Tevatron_gauss:', CLspython_Tevatron_gauss( Zp_model,  searchwindow= [-3.,3.], withint = False, plotname= modelname + '_Tevatron_gauss' , N =10**args.powN )
+	#print 'CLsPython_Tevatron_gauss:', CLspython_Tevatron_gauss( Zp_model,  searchwindow= [-3.,3.], withint = False, plotname= '_Tevatron_gauss' , N =10**args.powN )
 	## chi2 -> asymptotic does not fit well
-	#print 'CLsPython_Tevatron_chi2:', CLspython_Tevatron_chi2( Zp_model,  searchwindow= [-3.,3.], withint = False, plotname= modelname + '_Tevatron_chi2' , N =10**args.powN )
+	#print 'CLsPython_Tevatron_chi2:', CLspython_Tevatron_chi2( Zp_model,  searchwindow= [-3.,3.], withint = False, plotname= '_Tevatron_chi2' , N =10**args.powN )
 
 	#
 	# searches in ratio of mll bins
 	#
 	# RATIO STUFF
 	#start_time = time.clock()
-	print 'CLsPython_ratio_Tevatron_gauss:', CLspython_ratio_Tevatron_gauss( Zp_model,  searchwindow= [-3.,3.], withint = False, plotname= 'Tevatron_ratio' , N =10**args.powN, hilumi=False )
+	#print 'CLsPython_ratio_Tevatron_gauss:', CLspython_ratio_Tevatron_gauss( Zp_model,  searchwindow= [-3.,3.], withint = False, plotname= 'Tevatron_ratio' , N =10**args.powN, hilumi=False )
 	#end_time = time.clock()
 	#print 'Duration in min for 10^x ' + str(args.powN) + ': ' + str((end_time-start_time)/60.) 
 	#print 'CLsPython_ratio_Tevatron_hilumi:', CLspython_ratio_Tevatron_gauss( Zp_model,  searchwindow= [-3.,3.], withint = False, plotname= 'Tevatron_ratio_hilumi' , N =10**args.powN, hilumi=True )
