@@ -832,7 +832,7 @@ def CLspython_ratio_Tevatron_gauss( Zp_model,  searchwindow=[-3.,3.], withint = 
 	#
 	# teststatistik, remember observations are k's from poission, and s*mu+bkg are parameters of poisson
 	# Tevatron test statistik q=-2ln( Likelihood(mu=1) / Likelihood(mu=0)) = -2  ln L (mu=1) + 2 ln L (mu=0)) = chi2(s+b) - chi2(b) 
-	# Recall: -2 loglikelihood of gaus -> chi2
+	# Recall: -2 loglikelihood of gaus -> chi2, here i used gauss implementation, but there is no difference
 	#
 	# some helpers
 	def getteststatistik( ee_observed_bin, ee_expected_bin, ee_signal_bin, mm_observed_bin, mm_expected_bin, mm_signal_bin, hilumi=False):
@@ -861,34 +861,14 @@ def CLspython_ratio_Tevatron_gauss( Zp_model,  searchwindow=[-3.,3.], withint = 
 				print 'WARNING mm_observed_bin[%i]=0'%i
 				splusb += 0.
 				b += 0.
-			#print '%.2f %.2f %.2f %.2f %.2f'%(y_data, y_pred_b, uncert_b, y_pred_splusb, uncert_splusb )
-		# just to check wheather the script is correct
-		#for i in range(len(ee_observed_bin)):
-		#	if mm_observed_bin[i] != 0:
-		#		fakeval = 9. # scales all ee counts
-		#		y_data = ee_observed_bin[i]
-		#		y_pred_splusb = ee_expected_bin[i] + 1*ee_signal_bin[i]
-		#		uncert_splusb = np.sqrt( y_pred_splusb )
-
-		#		splusb += norm.logpdf( y_data , loc = y_pred_splusb, scale =uncert_splusb)	
-
-		#		y_pred_b = ee_expected_bin[i]
-		#		uncert_b = np.sqrt( y_pred_b )
-		#		b += norm.logpdf( y_data , loc = y_pred_b, scale =uncert_b)	
-		#	else:
-		#		print 'WARNING mm_observed_bin[%i]=0'%i
-		#		splusb += 0.
-		#		b += 0.
-		#	#print '%.2f %.2f %.2f'%(y_data, y_pred_b, y_pred_splusb)
-
-		return -2*(splusb - b)
+			return -2*(splusb - b)
 
 	#
 	# observed test statistic
 	#
 	qobs = getteststatistik( ee_observed_bin, ee_expected_bin, ee_signal_bin, mm_observed_bin, mm_expected_bin, mm_signal_bin, hilumi=hilumi) 
-	qasimov_b = getteststatistik( ee_expected_bin, ee_expected_bin, ee_signal_bin, mm_expected_bin, mm_expected_bin, mm_signal_bin, hilumi=hilumi) 
-	qasimov_sb= getteststatistik(  [ b+s for b,s in zip(ee_expected_bin,ee_signal_bin) ], ee_expected_bin, ee_signal_bin,  [ b+s for b,s in zip(mm_expected_bin,mm_signal_bin) ], mm_expected_bin,	mm_signal_bin, hilumi=hilumi)
+	#qasimov_b = getteststatistik( ee_expected_bin, ee_expected_bin, ee_signal_bin, mm_expected_bin, mm_expected_bin, mm_signal_bin, hilumi=hilumi) 
+	#qasimov_sb= getteststatistik(  [ b+s for b,s in zip(ee_expected_bin,ee_signal_bin) ], ee_expected_bin, ee_signal_bin,  [ b+s for b,s in zip(mm_expected_bin,mm_signal_bin) ], mm_expected_bin,	mm_signal_bin, hilumi=hilumi)
 
 	#
 	# sampling
@@ -919,12 +899,11 @@ def CLspython_ratio_Tevatron_gauss( Zp_model,  searchwindow=[-3.,3.], withint = 
 	#
 	# histo of sampled test statistik
 	#
-	# plot stuff
 	plotdirname = 'Teststatistik'
 	plot_directory = os.path.join( plotdir, plotdirname )
 	if not os.path.exists(plot_directory):
     		os.makedirs(plot_directory) 
-	# prepare plot
+	# prepare plot and plot
 	numberofbins = 50 #eachside of qobs
 	spacing = max( qobs - min(qsb), max(qsb)-qobs, qobs - min(qb), max(qb)-qobs, )/(numberofbins)
 	binning = []
@@ -933,66 +912,98 @@ def CLspython_ratio_Tevatron_gauss( Zp_model,  searchwindow=[-3.,3.], withint = 
 	qsb_hist = plt.hist( qsb, bins=binning, density = True, label = 'S+B', log=True, alpha=0.5 ,color='r' )
 	qb_hist = plt.hist( qb, bins=binning, density = True,  label = 'B', log=True   , alpha=0.5 ,color='b' )
 	# scale histo
-	plt.ylim(( plt.ylim()[1] - 10**5, plt.ylim()[1])) 
+	#plt.ylim(( plt.ylim()[1] - 10**5, plt.ylim()[1])) 
+
+	#
+	# obtain CLs and q values: [-2sig, -sig, median, sig, 2sig, observed]
+	#
+	CLs_values, q_values = getCLs_values( qsb_hist, qb_hist, qobs, spacing, numberofbins)
 	# extract p values from plot
 	psb_val = sum(qsb_hist[0][numberofbins:])*spacing #50bins above qobs 
-	#print 'Integral qsb:', sum(qsb_hist[0])*spacing
-	#print qsb_hist[0][numberofbins:] #10bins above qobs 
 	oneminuspb_val = sum(qb_hist[0][numberofbins:])*spacing #50bins above qobs 
-	#print qb_hist[0][:numberofbins] #10bins above qobs 
 	#print 'Integral qb:', sum(qb_hist[0])*spacing
 	# finish plot
 	plt.axvline( qobs, color = 'black', label=r'$q_{obs}$')
+	for q_value, tag in zip(q_values[:-1], [ 'r$q_{exp}^{2 \sigma}$', 'r$q_{exp}^{ \sigma}$', 'r$q_{exp}^{ med}$', r'$q_{exp}^{-\sigma}$', r'$q_{exp}^{-2 \sigma}$' ]):
+		plt.axvline( q_value, color = 'black', linestyle='dashed', label= tag )
 	plt.xlabel(r'$q_{obs}$')
 	plt.xlabel(r'$-2*\ln \frac{ \mathcal{L}(\mu=1)}{ \mathcal{L}(\mu=0)}, \mathcal{L}=\mathcal{G}$')
-	#
-	# plot asymptotic
-	#
-	def asymptotic_b(x, qasimov):
-		# asimov evaluatat at testmu
-		sig = np.sqrt(1./ abs(qasimov) ) 
-
-		loc = 1./sig**2 # mu of gauss
-		scale = 2./sig # sigma of gauss
-		return norm.pdf(x, loc=loc, scale=scale)
-
-	def asymptotic_sb(x, qasimov):
-		# asimov evaluatat at testmu
-		sig = np.sqrt(1./ abs(qasimov) )
-
-		loc = -1./sig**2 # mu of gauss
-		scale = 2./sig # sigma of gauss
-		return norm.pdf(x, loc=loc, scale=scale)
-
-	qlist = np.linspace( binning[0], binning[-1],1000)
-	plt.plot( qlist, [ asymptotic_b( q, qasimov_sb) for q in qlist], label ='Asym. B',   color='b')
-	plt.plot( qlist, [ asymptotic_sb(q, qasimov_b ) for q in qlist], label ='Asym. S+B', color='r')
 	plt.legend()
-	#
-	# Evaluate CLs vals
-	#
-	# asymptotic
-	#psb_asym = quad(asymptotic_sb, qobs, binning[-1], args=(qasimov) )
-	#print psb_asym
-	#oneminuspb_asym = quad(asymptotic_b, qobs,binning[-1], args=(qasimov) )
-	#print oneminuspb_asym
-	#CLs_asym = psb_asym[0]/oneminuspb_asym[0]
-	# python sampling
-	CLs = psb_val/oneminuspb_val
-	#print 'psb_val:' , psb_val
-	#print 'oneminuspb_val:' , oneminuspb_val
-	#print 'CLs: ', CLs
-	CLs_str = "%.3f" % CLs
-	# Zpeed
-	#CLs_asym_str = "%.3f" % CLs_asym
+
+	# asymptotic does not work out since i am drawing poisson, but testing gauss
+	##
+	## plot asymptotic
+	##
+	#def asymptotic_b(x, qasimov):
+	#	# asimov evaluatat at testmu
+	#	sig = np.sqrt(1./ abs(qasimov) ) 
+
+	#	loc = 1./sig**2 # mu of gauss
+	#	scale = 2./sig # sigma of gauss
+	#	return norm.pdf(x, loc=loc, scale=scale)
+
+	#def asymptotic_sb(x, qasimov):
+	#	# asimov evaluatat at testmu
+	#	sig = np.sqrt(1./ abs(qasimov) )
+
+	#	loc = -1./sig**2 # mu of gauss
+	#	scale = 2./sig # sigma of gauss
+	#	return norm.pdf(x, loc=loc, scale=scale)
+
+	#qlist = np.linspace( binning[0], binning[-1],1000)
+	#plt.plot( qlist, [ asymptotic_b( q, qasimov_sb) for q in qlist], label ='Asym. B',   color='b')
+	#plt.plot( qlist, [ asymptotic_sb(q, qasimov_b ) for q in qlist], label ='Asym. S+B', color='r')
+	#plt.legend()
+	CLs_obs_str = "%.3f" % CLs_values[-1]
+	CLs_exp_str = "%.3f" % CLs_values[2]
 	#plt.title( 'CLs=' + CLs_str + ' - N ' + str(N) + ' / CLs_asym=' + CLs_asym_str )
-	plt.title( 'CLs=' + CLs_str + ' - N ' + str(N) )
+	plt.title( 'CLs_obs=' + CLs_obs_str + ' / CLs_exp=' + CLs_exp_str + ' / N ' + str(N) )
 	if plotname != None:
 		plt.savefig( os.path.join( plot_directory, Zp_model['name'] + '_' + plotname + '_' + str(N) + '.pdf' ) )
 		print 'Teststatistik saved as ', os.path.join( plot_directory, Zp_model['name'] + '_' + plotname + '_' + str(N) + '.pdf' )
 	plt.clf()
 
-	return CLs
+	return CLs_values
+
+def getCLs_values( qsb_hist, qb_hist, qobs, spacing, numberofbins):
+	# hist[0][i]...heights
+	# hist[1][i]...bin edges, one entry more
+
+	# define p_b - for expectations: -2 sig, -sig, median, sig, 2 sig
+	areas = [ 0.97725, 0.84135, 0.5, 0.15865, 0.02275 ]
+	
+	# get value of teststatistik where x % of sampled teststatistics are in qb_hist, and the corresponding acutal area oneminusp_bs
+	xvals = [ 0. ] * 5
+	oneminusp_bs = [ 0. ] * 5
+	for i in range(len(areas)):
+		j=len(qb_hist[0])-1 # reduce len by one to get max index
+		while oneminusp_bs[i] < areas[i]: # integrate until we oneminusp_bs is bigger than area, acutal x will be a little bigger than the obtained one because of binning
+			oneminusp_bs[i] += qb_hist[0][j] * spacing #integrate histo
+			xvals[i] = qb_hist[1][j] # set xval to lower edge of bin, which was just added to integral
+			j -= 1 
+			if j==-1:
+				break
+	# add qobs
+	xvals.append(qobs)
+	oneminusp_bs.append(  sum(qb_hist[0][numberofbins:])*spacing ) #binning is made such that there are 50bins blow qobs 
+	# get p value of qsb_hist at this x
+	p_sbs =  [ 0. ] * 6
+	# for expectation
+	for i in range(len(xvals)-1):
+		j=len(qsb_hist[0])-1
+		while qsb_hist[1][j] >= xvals[i]:
+			p_sbs[i] += qsb_hist[0][j] * spacing
+			j -= 1 
+			if j==-1:
+				break
+	# for observed: use binning
+	p_sbs[-1] = sum(qsb_hist[0][numberofbins:])*spacing #50bins above qobs 
+	# get CLs values
+	CLs = [0.] * 6
+	for i in range(len(CLs)):
+		CLs[i] = p_sbs[i] / oneminusp_bs[i]
+	
+	return CLs, xvals
 
 if __name__ == "__main__":
 	from ZPEEDmod.Zpeedcounts import getZpmodel_sep
