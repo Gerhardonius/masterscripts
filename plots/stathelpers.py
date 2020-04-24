@@ -69,7 +69,7 @@ def CLsZpeed_withexpected( Zp_model,  searchwindow=[-3.,3.], withint = True ):
 		#Step 3: Create likelihood functions, returns chi2 test statistic as function of mu
 		chi2, chi2_Asimov = calculate_chi2_noweight(ee_signal_with_interference, mm_signal_with_interference, signal_range=sig_range)
 		# evaluates teststatistic and calculates CLs in asmptotic limit
-		result = get_likelihood(chi2_with_interference, chi2_Asimov_with_interference)
+		result = get_likelihood(chi2, chi2_Asimov)
   		#return [chi2(1),Delta_chi2(1), CLs(1)]
 		#CLs_obs = result_with_interference[2]
 		tmpresult = result
@@ -91,7 +91,7 @@ def CLsZpeed_withexpected( Zp_model,  searchwindow=[-3.,3.], withint = True ):
 	CLs.append( result[2] )	
 	xvals = [ x**2 for x in sqrtq_exp] + [ tmpresult[1]]
 
-	return CLs, xvals
+	return CLs
 
 def CLspython( Zp_model,  searchwindow=[-3.,3.], withint = True, plotname= None, N=10**2 ):
 	#
@@ -853,7 +853,17 @@ def CLspython_Tevatron_chi2( Zp_model,  searchwindow=[-3.,3.], withint = True, p
 
 	return {'CLspython:':CLs, 'CLspython_asym:':CLs_asym}
 
-def CLspython_ratio_Tevatron_gauss( Zp_model,  searchwindow=[-3.,3.], withint = True, plotname= None, N=10**2, hilumi=False ):
+def CLspython_ratio_Tevatron_gauss( Zp_model,  searchwindow=[-3.,3.], withint = True, plotname= None, plotdirectory = None, N=10**2, hilumi=False ):
+	# use plotname to save plot in Teststatistik directory
+	# if None grab variable plotdirname (defined in onemass exclusion plot) to save them in subdirectory there 
+	if plotname==None:
+		filename = os.path.join( plotdirectory, 'Teststatistic', Zp_model['name'] + '_' + str(N) + '.pdf' ) 
+		print filename
+		if not os.path.exists( os.path.join( plotdirectory, 'Teststatistic')):
+			os.makedirs(   os.path.join( plotdirectory, 'Teststatistic'))
+	else:
+		filename = os.path.join( plot_directory, Zp_model['name'] + '_' + plotname + '_' + str(N) + '.pdf' ) 
+
 	#
 	# get counts
 	#
@@ -981,7 +991,7 @@ def CLspython_ratio_Tevatron_gauss( Zp_model,  searchwindow=[-3.,3.], withint = 
 	# plot q_values, make pretty and save plot
 	#
 	plt.axvline( qobs, color = 'black', label=r'$q_{obs}$')
-	for q_value, tag in zip(q_values[:-1], [ 'r$q_{exp}^{2 \sigma}$', 'r$q_{exp}^{ \sigma}$', 'r$q_{exp}^{ med}$', r'$q_{exp}^{-\sigma}$', r'$q_{exp}^{-2 \sigma}$' ]):
+	for q_value, tag in zip(q_values[:-1], [ r'$q_{exp}^{2 \sigma}$', r'$q_{exp}^{ \sigma}$', r'$q_{exp}^{ med}$', r'$q_{exp}^{-\sigma}$', r'$q_{exp}^{-2 \sigma}$' ]):
 		plt.axvline( q_value, color = 'black', linestyle='dashed', label= tag )
 	plt.xlabel(r'$q_{obs}$')
 	plt.xlabel(r'$-2*\ln \frac{ \mathcal{L}(\mu=1)}{ \mathcal{L}(\mu=0)}, \mathcal{L}=\mathcal{G}$')
@@ -1015,9 +1025,8 @@ def CLspython_ratio_Tevatron_gauss( Zp_model,  searchwindow=[-3.,3.], withint = 
 	CLs_exp_str = "%.3f" % CLs_values[2]
 	#plt.title( 'CLs=' + CLs_str + ' - N ' + str(N) + ' / CLs_asym=' + CLs_asym_str )
 	plt.title( 'CLs_obs=' + CLs_obs_str + ' / CLs_exp=' + CLs_exp_str + ' / N ' + str(N) )
-	if plotname != None:
-		plt.savefig( os.path.join( plot_directory, Zp_model['name'] + '_' + plotname + '_' + str(N) + '.pdf' ) )
-		print 'Teststatistik saved as ', os.path.join( plot_directory, Zp_model['name'] + '_' + plotname + '_' + str(N) + '.pdf' )
+	plt.savefig( filename )
+	print 'Teststatistik saved as ', filename
 	plt.clf()
 
 	return CLs_values
@@ -1081,12 +1090,13 @@ if __name__ == "__main__":
 	gm= args.gm
 	MZp = args.M
 	model = 'VV'
-	Zp_model = getZpmodel_sep(ge ,gm , MZp, model = 'VV',  WZp = 'auto')
-	Zp_model['gtv']=Zp_model['gev'] 
-	Zp_model['gta']=Zp_model['gea'] 
-	Zp_model['gntv']=Zp_model['gnev'] 
-	Zp_model['gnta']=Zp_model['gnea'] 
-	Zp_model['Gamma']=myDecayWidth(Zp_model) 
+	Zp_model = getZpmodel_sep(ge ,gm , MZp, model = model,  WZp = 'auto')
+	# just for comparison purpuse
+	#Zp_model['gtv']=Zp_model['gev'] 
+	#Zp_model['gta']=Zp_model['gea'] 
+	#Zp_model['gntv']=Zp_model['gnev'] 
+	#Zp_model['gnta']=Zp_model['gnea'] 
+	#Zp_model['Gamma']=myDecayWidth(Zp_model) 
 	print Zp_model
 
 	#

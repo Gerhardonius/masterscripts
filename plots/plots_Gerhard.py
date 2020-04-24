@@ -35,8 +35,15 @@ from helpers import kfactors, getsystematics, getAsymTgraphs, sigmaNNLONLO, sigm
 # Samples
 #
 from samples.samples import SM_DYjets_dimuon, SM_DYjets_dielec
+from samples.samples import VV05_1500_dielec, VV05_1500_dimuon
+from samples.samples import VV05_1500_dielec_noPInojet, VV05_1500_dimuon_noPInojet  
+
+from samples.samples import SM_DYjets_dimuon_ATLAS, SM_DYjets_dielec_ATLAS
+from samples.samples import VV05_1500_dielec_ATLAS, VV05_1500_dimuon_ATLAS  
+
 from samples.samples import CMS_sampleforlegend_e, CMS_sampleforlegend_m 
 from samples.samples import ZPEED_sampleforlegend_e, ZPEED_sampleforlegend_m 
+from samples.samples import ZPEED_VV05_1500_sampleforlegend_e, ZPEED_VV05_1500_sampleforlegend_m 
 
 #
 # argparser
@@ -46,7 +53,7 @@ argParser.add_argument('--logLevel',	action='store',      	default='INFO', nargs
 argParser.add_argument('--plot_directory',     action='store',      default='plots_Gerhard_test')
 argParser.add_argument('--small',       action='store_true',     help='Run only on a small subset of the data?', )
 argParser.add_argument('--lumi',        type=int,		default=139,     help='Luminosity, eg 139', )
-argParser.add_argument('--mode',	action='store',      	default='all', nargs='?', choices=['all', 'CMS', 'ZPEED'], help="plot all variables, or compare to CMS or ZPEED")
+argParser.add_argument('--mode',	action='store',      	default='all', nargs='?', choices=['all','mllsamples','CMS','ZPEED','ZPEEDBSM'], help="plot all variables, or compare to CMS or ZPEED")
 args = argParser.parse_args()
 
 #
@@ -72,16 +79,30 @@ print 'plot_directory: ', plot_directory
 #binningspeziale = Binning.fromThresholds([0, 500, 1000, 5000]) # gives 3 bins 
 atlasbinningBinning = Binning.fromThresholds( atlasbinning )
 
-from ZPEEDmod.Zpeedcounts import getSMcounts
+from ZPEEDmod.Zpeedcounts import getSMcounts, getZpmodel, getBSMcounts, myDecayWidth
 from helpers import getHisto
 
 mllrange=[ atlasbinning[0] , atlasbinning[-1] ]
+# SM:
 sty_ee_exp=	{'LineColor':ROOT.kRed,		'style': 'dashed',	'LineWidth':2, } 
 sty_mm_exp=	{'LineColor':ROOT.kBlue,	'style': 'dashed',	'LineWidth':2, } 
 ee_expected = getSMcounts( 'ee', counttype='expected', mllrange = mllrange, lumi =139.)
 mm_expected = getSMcounts( 'mm', counttype='expected', mllrange = mllrange, lumi =139.)
 ee_histo_expected = getHisto( ee_expected, 'e/expected', **sty_ee_exp )
 mm_histo_expected = getHisto( mm_expected, 'm/expected', **sty_mm_exp )
+
+# BSM:
+sty_ee_bsm=	{'LineColor':ROOT.kRed, 	'style': 'dashed', 	'LineWidth':2, }
+sty_mm_bsm=	{'LineColor':ROOT.kBlue,	'style': 'dashed', 	'LineWidth':2, }
+g = 1
+MZp = 1500
+model = 'VV05'
+Zp_model =  getZpmodel( g , MZp , model = model,  WZp = 'auto')
+#width = Zp_model['Gamma']
+ee_signal   = getBSMcounts( 'ee', Zp_model, lumi =139., mllrange =  mllrange, withinterference = True)
+mm_signal   = getBSMcounts( 'mm', Zp_model, lumi =139., mllrange =  mllrange, withinterference = True)
+ee_histo_signal = getHisto( ee_signal  , 'e/'+ model + '/'+ str(MZp) + '/' + str(g).strip('0') , **sty_ee_bsm) 
+mm_histo_signal = getHisto( mm_signal  , 'm/'+ model + '/'+ str(MZp) + '/' + str(g).strip('0') , **sty_mm_bsm) 
 
 #
 # compare to CMS 1803.06292
@@ -114,27 +135,63 @@ SM_DYjets_dielec.style = styles.lineStyle( ROOT.kRed, 		errors = False )
 SM_DYjets_dimuon.style = styles.lineStyle( ROOT.kBlue, 		errors = False )
 
 #BSM
-#BSM_DYjets_dielec.style = styles.lineStyle( ROOT.kRed, errors = True )
-#BSM_DYjets_dimuon.style = styles.lineStyle( ROOT.kBlue, errors = True )
+if args.mode in ['all','mllsamples']:
+	VV05_1500_dielec.style = styles.lineStyle( ROOT.kRed,  dashed=True, errors = False )
+	VV05_1500_dimuon.style = styles.lineStyle( ROOT.kBlue, dashed=True, errors = False )
+	VV05_1500_dielec_noPInojet.style = styles.lineStyle( ROOT.kRed,  dashed=True, errors = False )
+	VV05_1500_dimuon_noPInojet.style = styles.lineStyle( ROOT.kBlue, dashed=True, errors = False )
+if args.mode == 'ZPEEDBSM':
+	VV05_1500_dielec.style = styles.lineStyle( ROOT.kRed,   	errors = False )
+	VV05_1500_dimuon.style = styles.lineStyle( ROOT.kBlue,  	errors = False )
+	VV05_1500_dielec_noPInojet.style = styles.lineStyle( ROOT.kRed, errors = False )
+	VV05_1500_dimuon_noPInojet.style = styles.lineStyle( ROOT.kBlue,errors = False )
 
 # fake styles (to get legend entry)
 CMS_sampleforlegend_e.style = styles.fakelineStyle( ROOT.kRed, width=2,dashed=True,	errors = False )
 CMS_sampleforlegend_m.style = styles.fakelineStyle( ROOT.kBlue,width=2,dashed=True,	errors = False )
 ZPEED_sampleforlegend_e.style = styles.fakelineStyle( ROOT.kRed, width=2,dashed=True,	errors = False )
 ZPEED_sampleforlegend_m.style = styles.fakelineStyle( ROOT.kBlue,width=2,dashed=True,	errors = False )
+ZPEED_VV05_1500_sampleforlegend_e.style = styles.fakelineStyle( ROOT.kRed, width=2,dashed=True,	errors = False )
+ZPEED_VV05_1500_sampleforlegend_m.style = styles.fakelineStyle( ROOT.kBlue,width=2,dashed=True,	errors = False )
 
-if args.mode == 'all': samples = [SM_DYjets_dielec, SM_DYjets_dimuon]
+if args.mode == 'all':
+	#samples = [SM_DYjets_dielec, SM_DYjets_dimuon]
+	#samples = [SM_DYjets_dielec, SM_DYjets_dimuon, VV05_2000_dielec_SR, VV05_2000_dimuon_SR]  
+	samples = [VV05_1500_dielec, VV05_1500_dimuon, SM_DYjets_dielec, SM_DYjets_dimuon] 
 if args.mode == 'CMS': samples = [SM_DYjets_dielec, SM_DYjets_dimuon, CMS_sampleforlegend_e, CMS_sampleforlegend_m]
-if args.mode == 'ZPEED': samples = [SM_DYjets_dielec, SM_DYjets_dimuon, ZPEED_sampleforlegend_e, ZPEED_sampleforlegend_m]
+if args.mode == 'ZPEED':
+	#samples = [SM_DYjets_dielec, SM_DYjets_dimuon, ZPEED_sampleforlegend_e, ZPEED_sampleforlegend_m]
+	samples = [SM_DYjets_dielec_ATLAS, SM_DYjets_dimuon_ATLAS, ZPEED_sampleforlegend_e, ZPEED_sampleforlegend_m]
+if args.mode == 'ZPEEDBSM':
+	#samples = [VV05_1500_dielec, VV05_1500_dimuon, ZPEED_VV05_1500_sampleforlegend_e, ZPEED_VV05_1500_sampleforlegend_m]
+	#samples = [VV05_1500_dielec_noPInojet, VV05_1500_dimuon_noPInojet, ZPEED_VV05_1500_sampleforlegend_e, ZPEED_VV05_1500_sampleforlegend_m]
+	samples = [VV05_1500_dielec_ATLAS, VV05_1500_dimuon_ATLAS, ZPEED_VV05_1500_sampleforlegend_e, ZPEED_VV05_1500_sampleforlegend_m]
+if args.mode == 'mllsamples':
+	#samples = [VV05_1500_dielec, VV05_1500_dimuon, SM_DYjets_dielec, SM_DYjets_dimuon] 
+	samples = [VV05_1500_dielec_noPInojet, VV05_1500_dimuon_noPInojet, VV05_1500_dielec, VV05_1500_dimuon]
 
 #
 # scaling
 #
 sigma = sigmaNNLONLO()
-for s in samples:
-	# scales to NNLONLO cross section from sample where k-factors have already been applied
-	sigmasample = sigmafromSample(s,fromorder='LOLO')
-	s.scale = sigma/sigmasample
+# Note: Not working if more than 2 samples are scaled
+#for s in samples:
+#	# scales to NNLONLO cross section from sample where k-factors have already been applied
+#	#if 'SM-DYjets' in s.name:
+#	sigmasample = sigmafromSample(s,fromorder='LOLO')
+#	s.scale = sigma/sigmasample
+#if not args.small:
+if False:
+	# dielec
+	scalefactor_dielec = sigma/sigmafromSample( SM_DYjets_dielec, fromorder='LOLO')
+	SM_DYjets_dielec.scale = scalefactor_dielec 
+	VV05_1500_dielec.scale = scalefactor_dielec 
+	
+	# dimuon
+	scalefactor_dimuon = sigma/sigmafromSample( SM_DYjets_dimuon, fromorder='LOLO')
+	SM_DYjets_dimuon.scale = scalefactor_dimuon 
+	VV05_1500_dimuon.scale = scalefactor_dimuon 
+
 #
 # Text on the plots
 #
@@ -155,6 +212,7 @@ def drawObjects( hasData = False ):
 def drawPlots(plots, systematics = False):
   '''
   '''
+  print 'call'
   for log in [False, True]:
     if log: subDir = "log"
     else: subDir ="linear"
@@ -171,6 +229,8 @@ def drawPlots(plots, systematics = False):
 	      DrawO += [ ee_histo_CMS[0] , mm_histo_CMS[0] ] 
       if args.mode == 'ZPEED':
 	      DrawO += [ ee_histo_expected[0] , mm_histo_expected[0] ]
+      if args.mode == 'ZPEEDBSM':
+	      DrawO += [ ee_histo_signal[0] , mm_histo_signal[0] ]
       plotting.draw(plot,
 	    plot_directory = plot_directory_,
     	    #ratio = {'histos':[(1,0)], 'logY':True, 'style':None, 'texY': '\mu \mu / ee', 'yRange': (0.2, 0.8), 'drawObjects':[]},
@@ -245,9 +305,10 @@ Plot.setDefaults(stack = stack, weight = weight_)
 # compare to CMS
 #
 if args.mode == 'CMS':
+	print 'CMS'
 	plots = []
 	
-	plots.append(Plot( name = "Mll_kfactorsLOLO",
+	plots.append(Plot( name = "dl_mass_kfactorsLOLO",
 	  texX = 'M_{ll} (GeV)', texY = 'Number of Events',
 	  attribute = lambda event, sample: event.dl_mass,
 	  binning= cmsbinning,
@@ -260,22 +321,59 @@ if args.mode == 'CMS':
 #
 # compare to ZPEED
 #
-if args.mode == 'ZPEED':
-
+if args.mode in ['ZPEED','ZPEEDBSM']:
+	print 'ZPEED or ZPEEDBSM'
 #print getsystematics( variable='dl_mass/F', nr_sysweight = 5, lumi = 139., binning=atlasbinningBinning )
 
 # mine: log y, ratio 
 	plots = []
 	
-	plots.append(Plot( name = "Mll_kfactorsLOLO",
+	plots.append(Plot( name = "dl_mass_kfactorsLOLO",
 	  texX = 'M_{ll} (GeV)', texY = 'Number of Events',
 	  attribute = lambda event, sample: event.dl_mass,
 	  binning= atlasbinningBinning,
 	  weight = lambda event, sample : event.weight * 10**3 * args.lumi * kfactors( event.dl_mass, fromorder='LOLO' ), 
 	))
+		
+	# gen level
+	plots.append(Plot( name = "gen_dl_mass_kfactorsLOLO",
+	  texX = 'M_{ll}^{gen} (GeV)', texY = 'Number of Events / 40 GeV',
+	  attribute = lambda event, sample: event.gen_dl_mass,
+	  binning=[2000/40,750,2750],
+	  weight = lambda event, sample : event.weight * 10**3 * args.lumi * kfactors( event.dl_mass, fromorder='LOLO' ), 
+	))
 	
 	plotting.fill(plots, read_variables = read_variables, sequence = sequence, max_events = 100 if args.small else -1)
 	drawPlots(plots, systematics=False)
+
+#
+# only mll
+#
+if args.mode == 'mllsamples':
+	print 'mllsamples'
+#print getsystematics( variable='dl_mass/F', nr_sysweight = 5, lumi = 139., binning=atlasbinningBinning )
+
+# mine: log y, ratio 
+	plots = []
+	
+	plots.append(Plot( name = "dl_mass_kfactorsLOLO",
+	  texX = 'M_{ll} (GeV)', texY = 'Number of Events',
+	  attribute = lambda event, sample: event.dl_mass,
+	  binning= atlasbinningBinning,
+	  weight = lambda event, sample : event.weight * 10**3 * args.lumi * kfactors( event.dl_mass, fromorder='LOLO' ), 
+	))
+		
+	# gen level
+	plots.append(Plot( name = "gen_dl_mass_kfactorsLOLO",
+	  texX = 'M_{ll}^{gen} (GeV)', texY = 'Number of Events / 40 GeV',
+	  attribute = lambda event, sample: event.gen_dl_mass,
+	  binning=[2000/40,750,2750],
+	  weight = lambda event, sample : event.weight * 10**3 * args.lumi * kfactors( event.dl_mass, fromorder='LOLO' ), 
+	))
+	
+	plotting.fill(plots, read_variables = read_variables, sequence = sequence, max_events = 100 if args.small else -1)
+	drawPlots(plots, systematics=False)
+
 
 #
 # draw all variables
@@ -402,8 +500,8 @@ if args.mode == 'all':
 	))
 	
 	# gen level
-	plots.append(Plot( name = "Mll_kfactorsLOLO",
-	  texX = 'M_{ll} (GeV)', texY = 'Number of Events / 40 GeV',
+	plots.append(Plot( name = "gen_dl_mass_kfactorsLOLO",
+	  texX = 'M_{ll}^{gen} (GeV)', texY = 'Number of Events / 40 GeV',
 	  attribute = lambda event, sample: event.gen_dl_mass,
 	  binning=[2000/40,750,2750],
 	  weight = lambda event, sample : event.weight * 10**3 * args.lumi * kfactors( event.dl_mass, fromorder='LOLO' ), 
@@ -452,7 +550,7 @@ if args.mode == 'all':
 	  binning=[3,-1,2],
 	))
 	
-	plotting.fill(plots, read_variables = read_variables, sequence = sequence, max_events = 100 if args.small else -1)
+	plotting.fill(plots, read_variables = read_variables, sequence = sequence, max_events = 1000 if args.small else -1)
 	
 	drawPlots(plots, systematics=False)
 
