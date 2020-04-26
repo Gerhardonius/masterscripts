@@ -16,64 +16,68 @@ import sys
 from directories.directories import plotdir
 from ZPEEDmod.Zpeedcounts import getSMcounts, getZpmodel_sep, getBSMcounts, myDecayWidth
 
-from stathelpers import CLsZpeed, CLspython_ratio_Tevatron_gauss
+from stathelpers import CLsZpeed_withexpected, CLsRatio_withexpected
 
 argParser = argparse.ArgumentParser(description = "Argument parser")
-argParser.add_argument('--plot_directory',     action='store',      default='OneMass_exclusion_test')
+#argParser.add_argument('--plot_directory',     action='store',      default='OneMass_exclusion_test')
 argParser.add_argument('--small',       action='store_true',     help='Only four parameter points', )
 argParser.add_argument('--M',       	type=float, default=500.,help='Mass point', )
+argParser.add_argument('--model',       default='VV' ,help='Mass point', )
 argParser.add_argument('--int',       	action='store_true',     help='Include interference', )
+argParser.add_argument('--points',      type=int, default=10,    choices=[ 10, 20], help='Number of couplings per dimension', )
+argParser.add_argument('--window',   type=float, default=3.,  help='Search window -xGamma', )
 args = argParser.parse_args()
 
 #
 # directories
 #
-plotdirname = 'OneMass_Exclusionplots'
-if args.small:
-	plot_directory = os.path.join( plotdir, plotdirname, args.plot_directory + '_small' )
-else: 
-	plot_directory = os.path.join( plotdir, plotdirname, args.plot_directory  )
+# plotdirname also for Teststatistik
+plotdirname = args.model + '_' + str(int(args.M)) + '_int' if args.int else args.model + '_' + str(int(args.M))
+if args.small: plotdirname = plotdirname + '_small'
+plotdirectory = os.path.join( plotdir, 'FinalPlots', plotdirname )
+if not os.path.exists( plotdirectory ):
+	os.makedirs(   plotdirectory )
+print 'plotdirectory: ', plotdirectory
+
+# plot_directory for files created by this very script
+plot_directory = os.path.join( plotdirectory, 'Exclusion' + '_P' + str(args.points) + '_SWpm' + str(int(args.window*10)) )
 if not os.path.exists(plot_directory):
-    os.makedirs(plot_directory) 
+	os.makedirs(plot_directory) 
 print 'plot_directory: ', plot_directory
 
 #
 # define stat methods
 #
+#def CLspython_ratio_Tevatron_gauss_wrapper( Zp_model,  searchwindow=[-3.,3.], withint = True ):
+#	return CLspython_ratio_Tevatron_gauss( Zp_model,  searchwindow=searchwindow, withint = withint, plotname= None, plotdirectory = plotdirectory, N=10**4, hilumi=False )
 
-# moved to helpers
-# Interface
-#CLsZpeed( Zp_model,  searchwindow=[-3.,3.], withint = True ):
-#CLspython_ratio_Tevatron_gauss( Zp_model,  searchwindow=[-3.,3.], withint = True, plotname= None, N=10**2, hilumi=False ):
-def CLspython_ratio_Tevatron_gauss_wrapper( Zp_model,  searchwindow=[-3.,3.], withint = True):
-	return CLspython_ratio_Tevatron_gauss( Zp_model,  searchwindow=[-3.,3.], withint = True, plotname= 'withexpected', N=10**4, hilumi=False )
+def CLsRatio_withexpected_reversed( 	Zp_model, searchwindow= [-3.,3.],	withint = False ):
+	return CLsRatio_withexpected( 	Zp_model, searchwindow= searchwindow, 	withint = withint, variant = 'rev' )
 
-methods = {	
-		#'CLs_mll':CLsZpeed,
-		'CLS_ratio': CLspython_ratio_Tevatron_gauss_wrapper,
+def CLsRatio_withexpected_alberto( 	Zp_model, searchwindow= [-3.,3.], 	withint = False ):
+	return CLsRatio_withexpected( 	Zp_model, searchwindow= searchwindow, 	withint = withint, variant = 'alb' )
+
+#def CLspython_ratio_Tevatron_gauss_gausssampling_wrapper( Zp_model,  searchwindow=[-3.,3.], withint = True ):
+#	return CLspython_ratio_Tevatron_gauss_gausssampling( Zp_model,  searchwindow=searchwindow, withint = withint, plotname= None, plotdirectory = plotdirectory, N=10**4, hilumi=False )
+
+methods = {	'CLs-mll':	CLsZpeed_withexpected,
+		'CLs-ratio': 	CLsRatio_withexpected,
+		'CLs-ratio-rev':CLsRatio_withexpected_reversed,
+		'CLs-ratio-det':CLsRatio_withexpected_alberto,
 		}
 
-colors = ['tomato','seagreen','gold']
-
-models = [      'VV', 
-		#'LL',
-		#'LR',
-		#'RR',
-		#'RL',
-		]
+colors = ['tomato','seagreen','gold','royalblue']
+models = [ args.model ]
 
 #
 # Create a grid
 #
 masslist= [args.M]
-gelist = np.linspace( 0, 1., 11) #smallest 0, largest 1, separation 0.1
-gmlist = np.linspace( 0, 1., 11)
-
-gelist = np.linspace( 0, 0.5, 11) #smallest 0, largest 0.5, separation 0.05
-gmlist = np.linspace( 0, 0.5, 11)
+gelist = np.linspace( -1, 1., 2*args.points + 1) #smallest 0, largest 1, separation 0.1
+gmlist = np.linspace( -1, 1., 2*args.points + 1)
 if args.small:
-	gelist = np.linspace( 0, 1., 2)
-	gmlist = np.linspace( 0, 1., 2)
+	gelist = np.linspace( -1, 1., 5) #smallest 0, largest 1, separation 0.1
+	gmlist = np.linspace( -1, 1., 5)
 GE, GM = np.meshgrid(gelist, gmlist)
 np.savetxt( os.path.join( plot_directory, 'GE'), GE )
 np.savetxt( os.path.join( plot_directory, 'GM'), GM )
@@ -83,7 +87,6 @@ print 'Model points: ' + str( nrpoints )
 #
 # Make figure
 #
-
 for model in models:
 	#
 	# loop over masslist
@@ -105,6 +108,13 @@ for model in models:
 		E3s=[]
 		for method in methods.keys():
 			E3s.append( np.zeros(np.shape(GE)) )
+		E4s=[]
+		for method in methods.keys():
+			E4s.append( np.zeros(np.shape(GE)) )
+		E5s=[]
+		for method in methods.keys():
+			E5s.append( np.zeros(np.shape(GE)) )
+
 		#
 		# loop over couplings,to fill Z
 		#
@@ -113,73 +123,44 @@ for model in models:
 			for gm_idx, gm in enumerate(gmlist):
 				# define model (needed for mll range)
 				Zp_model =  getZpmodel_sep(ge, gm, MZp, model = model,  WZp = 'auto')
-				#width = Zp_model['Gamma']
-				## define mll range
-				#mllrange=[ MZp - 3.*width, MZp + 3.*width]
-				## SM counts
-				#ee_observed = getSMcounts( 'ee', counttype='observed', mllrange = mllrange, lumi =139.)
-				#ee_observed_bin = [ x[2] for x in ee_observed ]
-				#ee_expected = getSMcounts( 'ee', counttype='expected', mllrange = mllrange, lumi =139.)
-				#ee_expected_bin = [ x[2] for x in ee_expected ]
-				#mm_observed = getSMcounts( 'mm', counttype='observed', mllrange = mllrange, lumi =139.)
-				#mm_observed_bin = [ x[2] for x in mm_observed ]
-				#mm_expected = getSMcounts( 'mm', counttype='expected', mllrange = mllrange, lumi =139.)
-				#mm_expected_bin = [ x[2] for x in mm_expected ]
-				## BSM counts
-				#ee_signal   = getBSMcounts( 'ee', Zp_model, lumi =139., mllrange =  mllrange, withinterference = args.int )
-				#ee_signal_bin = [ x[2] for x in ee_signal ]
-				#mm_signal   = getBSMcounts( 'mm', Zp_model, lumi =139., mllrange =  mllrange, withinterference = args.int )
-				#mm_signal_bin = [ x[2] for x in mm_signal ]
-				# loop over statistical methods to fill Z
-				#######################################################
-				#for Z, method in zip(Zs,methods.keys()):
- 				#	Z[gm_idx,ge_idx] = methods[method]( Zp_model, searchwindow = [-3.,3.], withint = args.int)
-				#######################################################
-				# NEW
-				for Z, method in zip(Zs,methods.keys()):
-					E1s[0][gm_idx,ge_idx], _, E2s[0][gm_idx,ge_idx], _, E3s[0][gm_idx,ge_idx], Z[gm_idx,ge_idx]= methods[method]( Zp_model, searchwindow = [-3.,3.], withint = args.int)
-				# NEW OFF
+				for Z, E1, E2, E3, E4, E5, method in zip(Zs, E1s, E2s, E3s, E4s, E5s, methods.keys()):
+					E1[gm_idx,ge_idx], E2[gm_idx,ge_idx], E3[gm_idx,ge_idx], E4[gm_idx,ge_idx], E5[gm_idx,ge_idx], Z[gm_idx,ge_idx]= methods[method]( Zp_model, searchwindow = [- args.window, args.window], withint = args.int)
 
-		#######################################################
-		#for Z, method in zip(Zs,methods.keys()):
-		#	np.savetxt( os.path.join( plot_directory, model + '_' + method), Z )
-		#######################################################
-		np.savetxt( os.path.join( plot_directory, model + '_Z'), Zs[0] )
-		np.savetxt( os.path.join( plot_directory, model + '_E1'), E1s[0] )
-		np.savetxt( os.path.join( plot_directory, model + '_E2'), E2s[0] )
-		np.savetxt( os.path.join( plot_directory, model + '_E3'), E3s[0] )
-
+		for Z, E1, E2, E3, E4, E5, method in zip(Zs, E1s, E2s, E3s, E4s, E5s, methods.keys()):
+			np.savetxt( os.path.join( plot_directory, plotdirname +  '_Z_' + method), Z )
+			np.savetxt( os.path.join( plot_directory, plotdirname + '_E1_' + method), E1 )
+			np.savetxt( os.path.join( plot_directory, plotdirname + '_E2_' + method), E2 )
+			np.savetxt( os.path.join( plot_directory, plotdirname + '_E3_' + method), E3 )
+			np.savetxt( os.path.join( plot_directory, plotdirname + '_E4_' + method), E4 )
+			np.savetxt( os.path.join( plot_directory, plotdirname + '_E5_' + method), E5 )
 
 	fig, ax = plt.subplots()
 	contourplots = []
 	# contour plot
-	##########################################################################
-	#for Z, method, color in zip(Zs,methods.keys(),colors):
-	#	# exclusion line
-	#	levels = [0, 0.05]
-	#	contourplots.append(ax.contour(GE, GM, Z, levels, colors=color))
+	for Z, E1, E2, E3, E4, E5, method, color in zip(Zs, E1s, E2s, E3s, E4s, E5s, methods.keys(), colors):
+		# exclusion line
+		levels = [0, 0.05]
+		contourplots.append(ax.contour(GE, GM, Z, levels,  colors=color, linewidths=2., linestyles='solid'   ))
+		contourplots.append(ax.contour(GE, GM, E1, levels, colors=color, linewidths=1., linestyles='dotted' ))
+		contourplots.append(ax.contour(GE, GM, E2, levels, colors=color, linewidths=1., linestyles='dashdot' ))
+		contourplots.append(ax.contour(GE, GM, E3, levels, colors=color, linewidths=1., linestyles='dashed'))
+		contourplots.append(ax.contour(GE, GM, E4, levels, colors=color, linewidths=1., linestyles='dashdot' ))
+		contourplots.append(ax.contour(GE, GM, E5, levels, colors=color, linewidths=1., linestyles='dotted' ))
 	#	# filles exclusion area
 	#	contour_filled = plt.contourf(GE, GM, Z, levels, colors=['grey','cyan'])
-	##########################################################################
-	# NEW
-	levels = [0, 0.05]
-	contourplots.append(ax.contour(GE, GM, Zs[0], levels, colors= 'black'))
-	contourplots.append(ax.contour(GE, GM, E1s[0], levels, colors= 'green'))
-	contourplots.append(ax.contour(GE, GM, E2s[0], levels, colors= 'red'))
-	contourplots.append(ax.contour(GE, GM, E3s[0], levels, colors= 'blue'))
-	# NEW OFF
 
 	# label each method	
-	##########################################################################
 	#ax.legend([h.legend_elements()[0][0] for h in contourplots],  methods.keys() )
-	##########################################################################
+	legendelements = []
+	nr = 0
+	for method in methods.keys(): 
+		legendelements.append(contourplots[nr].legend_elements()[0][0])
+		nr += 6
+	ax.legend( legendelements,  methods.keys() )
 	plt.title( model + ' ' + str(int(masslist[0])) + ' (points: ' + str(len(gelist)) + 'x' + str(len(gmlist)) + ')')
 	plt.xlabel(r'$g_e$')
-	plt.ylabel(r'$g_m$')
+	plt.ylabel(r'$g_\mu$')
 	plt.grid(True)
-	if args.int: 
-		plt.savefig( os.path.join( plot_directory, model + '_' + str(int(masslist[0])) + '_int.pdf') )
-		print 'Figure saved as ', os.path.join( plot_directory, model + '_' + str(int(masslist[0])) + '_int.pdf')
-	else:
-		plt.savefig( os.path.join( plot_directory, model + ' ' + str(int(masslist[0])) + '_noint.pdf') )
-		print 'Figure saved as ', os.path.join( plot_directory, model + '_' + str(int(masslist[0])) + '_noint.pdf')
+
+	plt.savefig( os.path.join( 		plot_directory, plotdirname  + '.pdf') )
+	print 'Exclusion plot saved as ', os.path.join( plot_directory, plotdirname  + '.pdf')

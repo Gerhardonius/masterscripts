@@ -16,12 +16,14 @@ import sys
 from directories.directories import plotdir
 from ZPEEDmod.Zpeedcounts import getSMcounts, getZpmodel_sep, getBSMcounts, myDecayWidth
 
-from stathelpers import CLsZpeed
+from stathelpers import CLsZpeed_withexpected, CLsRatio_withexpected
 
 argParser = argparse.ArgumentParser(description = "Argument parser")
 argParser.add_argument('--plot_directory',     action='store',      default='Gridexclusion_test')
 argParser.add_argument('--small',       action='store_true',     help='Only one mass', )
 argParser.add_argument('--int',       	action='store_true',     help='Include interference', )
+argParser.add_argument('--points',      type=int, default=10,    choices=[ 10, 20], help='Number of couplings per dimension', )
+argParser.add_argument('--window',   type=float, default=3.,  help='Search window -xGamma', )
 args = argParser.parse_args()
 
 #
@@ -39,13 +41,19 @@ print 'plot_directory: ', plot_directory
 
 # moved to helpers
 
-#def twotimesCLsZpeed( ee_observed, ee_expected, ee_signal, mm_observed, mm_expected, mm_signal):
-#	return 2*CLsZpeed( ee_observed, ee_expected, ee_signal, mm_observed, mm_expected, mm_signal)
+def CLsRatio_withexpected_reversed( 	Zp_model, searchwindow= [-3.,3.],	withint = False ):
+	return CLsRatio_withexpected( 	Zp_model, searchwindow= searchwindow, 	withint = withint, variant = 'rev' )
 
-methods = {	'CLsZpeed':CLsZpeed,
-	#	'newmeht': twotimesCLsZpeed,
+def CLsRatio_withexpected_alberto( 	Zp_model, searchwindow= [-3.,3.], 	withint = False ):
+	return CLsRatio_withexpected( 	Zp_model, searchwindow= searchwindow, 	withint = withint, variant = 'alb' )
+
+
+methods = {	'CLs-mll':	CLsZpeed_withexpected,
+		'CLs-ratio': 	CLsRatio_withexpected,
+		'CLs-ratio-rev':CLsRatio_withexpected_reversed,
+		'CLs-ratio-det':CLsRatio_withexpected_alberto,
 		}
-colors = ['tomato','seagreen','gold']
+colors = ['tomato','seagreen','gold','royalblue']
 
 models = [      'VV', 
 		#'LL',
@@ -57,13 +65,13 @@ models = [      'VV',
 #
 # Create a grid
 #
-masslist= [500,1000,1500,2000]
-gelist = np.linspace( 0, 1., 21) #smallest 0, largest 1, separation 0.05
-gmlist = np.linspace( 0, 1., 21)
+masslist= [500,750,1000,1250]
+gelist = np.linspace( 0, 1., args.points + 1) #smallest 0, largest 1, separation 0.1
+gmlist = np.linspace( 0, 1., args.points + 1)
 if args.small:
 	masslist= [1000]
-	gelist = np.linspace( 0, 1., 6) #smallest 0, largest 1, separation 0.05
-	gmlist = np.linspace( 0, 1., 6)
+	gelist = np.linspace( 0, 1., 4) #smallest 0, largest 1, separation 0.05
+	gmlist = np.linspace( 0, 1., 4)
 GE, GM = np.meshgrid(gelist, gmlist)
 nrpoints = np.product(np.shape(GE))
 print 'Model points: ' + str( nrpoints )
@@ -107,6 +115,21 @@ for model in models:
 		Zs=[]
 		for method in methods.keys():
 			Zs.append( np.zeros(np.shape(GE)) )
+		E1s=[]
+		for method in methods.keys():
+			E1s.append( np.zeros(np.shape(GE)) )
+		E2s=[]
+		for method in methods.keys():
+			E2s.append( np.zeros(np.shape(GE)) )
+		E3s=[]
+		for method in methods.keys():
+			E3s.append( np.zeros(np.shape(GE)) )
+		E4s=[]
+		for method in methods.keys():
+			E4s.append( np.zeros(np.shape(GE)) )
+		E5s=[]
+		for method in methods.keys():
+			E5s.append( np.zeros(np.shape(GE)) )
 		#
 		# loop over couplings,to fill Z
 		#
@@ -115,40 +138,34 @@ for model in models:
 			for gm_idx, gm in enumerate(gmlist):
 				# define model (needed for mll range)
 				Zp_model =  getZpmodel_sep(ge, gm, MZp, model = model,  WZp = 'auto')
-				#width = Zp_model['Gamma']
-				## define mll range
-				#mllrange=[ MZp - 3.*width, MZp + 3.*width]
-				## SM counts
-				#ee_observed = getSMcounts( 'ee', counttype='observed', mllrange = mllrange, lumi =139.)
-				#ee_observed_bin = [ x[2] for x in ee_observed ]
-				#ee_expected = getSMcounts( 'ee', counttype='expected', mllrange = mllrange, lumi =139.)
-				#ee_expected_bin = [ x[2] for x in ee_expected ]
-				#mm_observed = getSMcounts( 'mm', counttype='observed', mllrange = mllrange, lumi =139.)
-				#mm_observed_bin = [ x[2] for x in mm_observed ]
-				#mm_expected = getSMcounts( 'mm', counttype='expected', mllrange = mllrange, lumi =139.)
-				#mm_expected_bin = [ x[2] for x in mm_expected ]
-				## BSM counts
-				#ee_signal   = getBSMcounts( 'ee', Zp_model, lumi =139., mllrange =  mllrange, withinterference = args.int )
-				#ee_signal_bin = [ x[2] for x in ee_signal ]
-				#mm_signal   = getBSMcounts( 'mm', Zp_model, lumi =139., mllrange =  mllrange, withinterference = args.int )
-				#mm_signal_bin = [ x[2] for x in mm_signal ]
-				# loop over statistical methods to fill Z
-				for Z, method in zip(Zs,methods.keys()):
- 					Z[gm_idx,ge_idx] = methods[method]( Zp_model, searchwindow = [-3.,3.], withint = args.int)
-					#print Z[gm_idx,ge_idx]<0.5, gm, ge 
+				for Z, E1, E2, E3, E4, E5, method in zip(Zs, E1s, E2s, E3s, E4s, E5s, methods.keys()):
+					E1[gm_idx,ge_idx], E2[gm_idx,ge_idx], E3[gm_idx,ge_idx], E4[gm_idx,ge_idx], E5[gm_idx,ge_idx], Z[gm_idx,ge_idx]= methods[method]( Zp_model, searchwindow = [- args.window, args.window], withint = args.int)
+
 		#
 		# plot Z
 		#
 		# make contour plot
-		contourplots = [] # gather contourplots for legend
-		for Z, method, color in zip(Zs,methods.keys(),colors):
+		contourplots = []
+		# contour plot
+		for Z, E1, E2, E3, E4, E5, method, color in zip(Zs, E1s, E2s, E3s, E4s, E5s, methods.keys(), colors):
 			# exclusion line
 			levels = [0, 0.05]
-			contourplots.append(plot.contour(GE, GM, Z, levels, colors=color))
-			# filles exclusion area
-			contour_filled = plot.contourf(GE, GM, Z, levels, colors=['grey','cyan'])
-			# label each method	
-			#plot.legend([h.legend_elements()[0][0] for h in contourplots],  methods.keys() )
-		plot.legend([h.legend_elements()[0][0] for h in contourplots],  methods.keys() )
+			contourplots.append(plot.contour(GE, GM, Z, levels,  colors=color, linewidths=2., linestyles='solid'   ))
+			contourplots.append(plot.contour(GE, GM, E1, levels, colors=color, linewidths=1., linestyles='dotted' ))
+			contourplots.append(plot.contour(GE, GM, E2, levels, colors=color, linewidths=1., linestyles='dashdot' ))
+			contourplots.append(plot.contour(GE, GM, E3, levels, colors=color, linewidths=1., linestyles='dashed'))
+			contourplots.append(plot.contour(GE, GM, E4, levels, colors=color, linewidths=1., linestyles='dashdot' ))
+			contourplots.append(plot.contour(GE, GM, E5, levels, colors=color, linewidths=1., linestyles='dotted' ))
+		#	# filles exclusion area
+		#	contour_filled = plt.contourf(GE, GM, Z, levels, colors=['grey','cyan'])
+		#plot.legend([h.legend_elements()[0][0] for h in contourplots],  methods.keys() )
+		#plot.legend([contourplots[0].legend_elements()[0][0], contourplots[6].legend_elements()[0][0]],  methods.keys() )
+		legendelements = []
+		nr = 0
+		for method in methods.keys(): 
+			legendelements.append(contourplots[nr].legend_elements()[0][0])
+			nr += 6
+		plot.legend( legendelements,  methods.keys() )
 
 	fig.savefig( os.path.join(plot_directory, file_name ))
+	print 'Exclusion plot saved as ', os.path.join( plot_directory, file_name )
