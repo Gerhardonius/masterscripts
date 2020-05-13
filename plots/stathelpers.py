@@ -4,6 +4,7 @@ from array import array
 import math
 import matplotlib.pyplot as plt
 import os
+import sys
 
 #
 # Statistics
@@ -109,7 +110,6 @@ def CLsZpeed_sampling( Zp_model,  searchwindow=[-3.,3.], withint = True, plotnam
 	else:
 		filename = os.path.join( plotdirectory, Zp_model['name'] + '_CLsZpeed_' + plotname + '_' + str(N) + '.pdf' ) 
 	print 'Start sampling for: ', filename
-
 
 	#
 	# get ZPEED result to compare to and get Asimov data for asymptotic formula
@@ -263,7 +263,7 @@ def CLsZpeed_sampling( Zp_model,  searchwindow=[-3.,3.], withint = True, plotnam
 	# plot q_values, make pretty and save plot
 	#
 	plt.axvline( qobs, color = 'black', label=r'$q_{obs}$')
-	for q_value, tag in zip(q_values[:-1], [ 'r$q_{exp}^{2 \sigma}$', 'r$q_{exp}^{ \sigma}$', 'r$q_{exp}^{ med}$', r'$q_{exp}^{-\sigma}$', r'$q_{exp}^{-2 \sigma}$' ]):
+	for q_value, tag in zip(q_values[:-1], [ r'$q_{exp}^{2 \sigma}$', r'$q_{exp}^{ \sigma}$', r'$q_{exp}^{ med}$', r'$q_{exp}^{-\sigma}$', r'$q_{exp}^{-2 \sigma}$' ]):
 		plt.axvline( q_value, color = 'black', linestyle='dashed', label= tag )
 	plt.xlabel(r'$q_{obs}$')
 	plt.xlabel(r'$-2*\ln \frac{ \mathcal{L}(\mu=1)}{ \mathcal{L}(\hat{\mu})}$')
@@ -302,6 +302,248 @@ def CLsZpeed_sampling( Zp_model,  searchwindow=[-3.,3.], withint = True, plotnam
 	plt.plot( qlist, [ asymptotic_sb(q,chi2_Asimov(1.) ) for q in qlist], label ='Asym. S+B', color='r')
 	plt.legend()
 
+	# copied from with expected to get CLs from Asymptotic
+	quantiles = [-2.,-1.,0.,1.,2.]
+	sqrtq_exp = [ x + sqrt_safe( chi2_Asimov(1.) ) for x in quantiles ]
+  	CLs = [0.] * 5
+	for i in range(len(CLs)):
+		CLs[i]=(1 - norm.cdf( sqrtq_exp[i]) )/norm.cdf(sqrt_safe(chi2_Asimov(1.)) - sqrtq_exp[i])
+	print 'check'
+	print CLs
+	print Zpeedresult
+
+	CLs_asym_obs_str = "%.3f" % Zpeedresult
+	CLs_asym_exp_str = "%.3f" % CLs[2]
+	CLs_obs_str = "%.3f" % CLs_values[-1]
+	CLs_exp_str = "%.3f" % CLs_values[2]
+	#plt.title( 'CLs=' + CLs_str + ' - N ' + str(N) + ' / CLs_asym=' + CLs_asym_str )
+	#plt.title( 'CLs_obs=' + CLs_obs_str + ' / CLs_exp=' + CLs_exp_str + ' / N ' + str(N) )
+	plt.title( 'Sampling: CLs_obs=' + CLs_obs_str + ' / CLs_exp=' + CLs_exp_str + ' / N ' + str(N) + '\n' + 'Asymptotic: CLs_obs=' + CLs_asym_obs_str + ' / CLs_exp=' + CLs_asym_exp_str )
+	plt.savefig( filename )
+	print 'Teststatistik saved as ', filename
+	plt.clf()
+
+	return CLs_values
+
+def CLsZpeed_uncert( Zp_model,  searchwindow=[-3.,3.], withint = True, plotname= None, plotdirectory=None, N=10**2, Lunc = 0.03, Lnom=139. ):
+	# use plotname to save plot in Teststatistik directory
+	# if None grab variable plotdirname (defined in onemass exclusion plot) to save them in subdirectory there 
+	if plotdirectory==None:
+		plotdirectory = os.path.join(plotdir, 'Teststatistik')
+	if not os.path.exists(  plotdirectory):
+		os.makedirs(    plotdirectory)
+
+	if plotname==None:
+		filename = os.path.join( plotdirectory, Zp_model['name'] + '_CLsZpeed_LuncP' + str(Lunc*100) + '_' + str(N) + '.pdf' ) 
+	else:
+		filename = os.path.join( plotdirectory, Zp_model['name'] + '_CLsZpeed_LuncP' + str(Lunc*100) + '_' + plotname + '_' + str(N) + '.pdf' ) 
+	print 'Start sampling for: ', filename
+
+	#
+	# get ZPEED result to compare to and get Asimov data for asymptotic formula
+	#
+	Mlow = Zp_model['MZp'] + searchwindow[0] *Zp_model['Gamma']
+	Mhigh = Zp_model['MZp']+ searchwindow[1] *Zp_model['Gamma']
+	sig_range = [Mlow,Mhigh]
+
+	#
+	# get counts
+	#
+	width = Zp_model['Gamma']
+	MZp = Zp_model['MZp']
+	# define mll range
+	mllrange=[ MZp + searchwindow[0]*width, MZp + searchwindow[1]*width]
+	# SM counts
+	ee_observed = getSMcounts( 'ee', counttype='observed', mllrange = mllrange, lumi =Lnom)
+	ee_observed_bin = [ x[2] for x in ee_observed ]
+	ee_expected = getSMcounts( 'ee', counttype='expected', mllrange = mllrange, lumi =Lnom)
+	ee_expected_bin = [ x[2] for x in ee_expected ]
+	mm_observed = getSMcounts( 'mm', counttype='observed', mllrange = mllrange, lumi =Lnom)
+	mm_observed_bin = [ x[2] for x in mm_observed ]
+	mm_expected = getSMcounts( 'mm', counttype='expected', mllrange = mllrange, lumi =Lnom)
+	mm_expected_bin = [ x[2] for x in mm_expected ]
+	# BSM counts: note: this is actually SM+signal
+	ee_bsm   = getBSMcounts( 'ee', Zp_model, lumi =Lnom, mllrange =  mllrange, withinterference = withint )
+	ee_bsm_bin = [ x[2] for x in ee_bsm ]
+	mm_bsm   = getBSMcounts( 'mm', Zp_model, lumi =Lnom, mllrange =  mllrange, withinterference = withint )
+	mm_bsm_bin = [ x[2] for x in mm_bsm ]
+
+	print 'this are the counts'
+	print 'ee observed', ee_observed_bin
+	print 'ee expexted', ee_expected_bin
+	ee_signal_bin = [ bsm-sm for bsm,sm in zip(ee_bsm_bin, ee_expected_bin)]
+	print 'ee signal', ee_signal_bin 
+
+	print 'mm observed', mm_observed_bin
+	print 'mm expexted', mm_expected_bin
+	mm_signal_bin = [ bsm-sm for bsm,sm in zip(mm_bsm_bin, mm_expected_bin)]
+	print 'mm signal',   mm_signal_bin
+
+	#
+	# teststatistik, remember observations are k's from poission, and s*mu+bkg are parameters of poisson
+	# test statistik q=-2ln( Likelihood(mu=1) / Likelihood(muhat)) = -2 ( ln L (mu=1) - ln L (mu=muhat)) 
+	#
+	# some helpers
+	def getloglikelihood( r, L, ee_observed_bin, ee_expected_bin, ee_signal_bin, mm_observed_bin, mm_expected_bin, mm_signal_bin, Lnom=139., Lunc=Lunc):
+		'''r...signalstrenght
+		   L...Luminosity 
+		   Lnom..Measurement 
+		   Lunc..Measurement
+		'''
+		loglikelihood_ee = 0.	
+		loglikelihood_mm = 0.	
+		for i in range(len(ee_observed_bin)):
+			loglikelihood_ee += poisson.logpmf( ee_observed_bin[i] , mu= ((L/Lnom)*ee_expected_bin[i] + r * (L/Lnom)*ee_signal_bin[i]) )	
+		for i in range(len(mm_observed_bin)):
+			loglikelihood_mm += poisson.logpmf( mm_observed_bin[i] , mu= ((L/Lnom)*mm_expected_bin[i] + r * (L/Lnom)*mm_signal_bin[i]) )	
+		loglikelihood = loglikelihood_mm + loglikelihood_ee 
+		# Nuisances: Measured values are the parameters of the pdf
+		loglikelihood += norm.logpdf( L, loc=Lnom, scale=Lunc) 
+		return -2.*loglikelihood
+
+	def get_MLestimate(ee_observed_bin, ee_expected_bin, ee_signal_bin, mm_observed_bin, mm_expected_bin, mm_signal_bin, Lnom=139., Lunc=Lunc):
+		''' geturns the mu and L that minimizes the likelihood
+		'''
+		chi2_min = optimize.minimize( lambda x: getloglikelihood( x[0], x[1], ee_observed_bin, ee_expected_bin, ee_signal_bin, mm_observed_bin, mm_expected_bin, mm_signal_bin, Lnom=Lnom, Lunc=Lunc), [1., 139.], method = 'Nelder-Mead', options = {'ftol':.01, 'maxiter':100} )
+		if not(chi2_min['success']):
+		  print('Warning: Failed to find minimal chi2')
+		
+		muhat = chi2_min['x'][0] 
+		Lhat = chi2_min['x'][1] 
+
+		if muhat < 0:
+			muhat = 0
+
+		return muhat, Lhat
+
+	def get_condMLestimate(r, ee_observed_bin, ee_expected_bin, ee_signal_bin, mm_observed_bin, mm_expected_bin, mm_signal_bin, Lnom=139., Lunc=Lunc):
+		''' returns the L that miminmizes the likelihood for the fixed hypotheses r
+		'''
+		chi2_min = optimize.minimize( lambda x: getloglikelihood( r, x, ee_observed_bin, ee_expected_bin, ee_signal_bin, mm_observed_bin, mm_expected_bin, mm_signal_bin, Lnom=Lnom, Lunc=Lunc), 139., method = 'Nelder-Mead', options = {'ftol':.01, 'maxiter':100} )
+		if not(chi2_min['success']):
+		  print('Warning: Failed to find minimal chi2')
+		
+		Lhathat = chi2_min['x'][0] 
+
+		return Lhathat
+
+	
+	muhat_obs, Lhat_obs = get_MLestimate(ee_observed_bin, ee_expected_bin, ee_signal_bin, mm_observed_bin, mm_expected_bin, mm_signal_bin, Lnom=Lnom, Lunc=Lunc)
+	print 'Max Likelihood for mu and L: ', muhat_obs, Lhat_obs
+	Lhatr0_obs = get_condMLestimate(0., ee_observed_bin, ee_expected_bin, ee_signal_bin, mm_observed_bin, mm_expected_bin, mm_signal_bin, Lnom=Lnom, Lunc=Lunc)
+	Lhatr1_obs = get_condMLestimate(1., ee_observed_bin, ee_expected_bin, ee_signal_bin, mm_observed_bin, mm_expected_bin, mm_signal_bin, Lnom=Lnom, Lunc=Lunc)
+	print 'Lhat for background only: ', Lhatr0_obs
+	print 'Lhat for signal + background:', Lhatr1_obs
+
+	#
+	# observed test statistic
+	#
+	qobs = getloglikelihood( 1., Lhatr1_obs, ee_observed_bin, ee_expected_bin, ee_signal_bin, mm_observed_bin, mm_expected_bin, mm_signal_bin, Lnom=Lnom, Lunc=Lunc) - getloglikelihood( muhat_obs, Lhat_obs, ee_observed_bin, ee_expected_bin, ee_signal_bin, mm_observed_bin, mm_expected_bin, mm_signal_bin, Lnom=Lnom, Lunc=Lunc)
+
+	#
+	# sampling
+	#
+	def gettoydata( expectations_ee, expectations_mm ):
+		toydata_ee = []
+		for exp in expectations_ee:
+			toydata_ee.append(poisson.rvs(exp))
+		toydata_mm = []
+		for exp in expectations_mm:
+			toydata_mm.append(poisson.rvs(exp))
+		return toydata_ee, toydata_mm
+
+	def get_qlist( ee_expected_bin, ee_signal_bin, mm_expected_bin, mm_signal_bin, mu=0, L=139., N=100):
+		''' mu and L are used to generate data
+		    but for evaluating the teststatistic, new values are fitted - 
+		'''
+		q = []
+		for i in range(N):
+			if (np.log10(i+1) % 1) == 0:
+				print i+1   
+			toydata_ee, toydata_mm = gettoydata( [(L/Lnom)*b + mu*(L/Lnom)*s for b,s in zip(ee_expected_bin, ee_signal_bin) ] , [(L/Lnom)*b + mu*(L/Lnom)*s for b,s in zip(mm_expected_bin, mm_signal_bin) ] )
+			# get ML estimate and conditional exstimate
+			muhat_toy, Lhat_toy = get_MLestimate( toydata_ee, ee_expected_bin, ee_signal_bin, toydata_mm, mm_expected_bin, mm_signal_bin, Lnom=Lnom, Lunc=Lunc)
+			Lhathat_toy = get_condMLestimate(1., toydata_ee, ee_expected_bin, ee_signal_bin, toydata_mm, mm_expected_bin, mm_signal_bin, Lnom=Lnom, Lunc=Lunc)
+			#UNG
+			if muhat_toy > 1.:
+				q.append( 0.)
+			else:
+				# UNG: Here, always the tested hypotheses need s to be in the numerator!!! even for qb dist ( i want f(q_mu | mu=0), the first q_mu = hypothsis
+				q.append( getloglikelihood( 1., Lhathat_toy, toydata_ee, ee_expected_bin, ee_signal_bin, toydata_mm, mm_expected_bin, mm_signal_bin, Lnom=Lnom, Lunc=Lunc) - getloglikelihood( muhat_toy, Lhat_toy, toydata_ee , ee_expected_bin, ee_signal_bin, toydata_mm, mm_expected_bin, mm_signal_bin, Lnom=Lnom, Lunc=Lunc) )
+		return q
+
+	# sampled test statistic
+	qsb = get_qlist(ee_expected_bin, ee_signal_bin, mm_expected_bin, mm_signal_bin,  mu=1., L=Lhatr1_obs, N=N)
+	qb  = get_qlist(ee_expected_bin, ee_signal_bin, mm_expected_bin, mm_signal_bin,  mu=0., L=Lhatr0_obs, N=N)
+
+	#
+	# histo of sampled test statistik
+	#
+	# plot stuff
+	plotdirname = 'Teststatistik'
+	plot_directory = os.path.join( plotdir, plotdirname )
+	if not os.path.exists(plot_directory):
+    		os.makedirs(plot_directory) 
+	# prepare plot
+	numberofbins = 50 #eachside of qobs
+	spacing = max( qobs - min(qsb), max(qsb)-qobs, qobs - min(qb), max(qb)-qobs, )/(numberofbins)
+	binning = []
+	for i in range(-numberofbins,numberofbins+1):
+		binning.append( qobs + i*spacing)
+	qsb_hist = plt.hist( qsb, bins=binning, density = True, label = 'S+B', log=True, alpha=0.5 ,color='r' )
+	qb_hist = plt.hist( qb, bins=binning, density = True,  label = 'B', log=True   , alpha=0.5 ,color='b' )
+
+	#
+	# obtain CLs and q values: [-2sig, -sig, median, sig, 2sig, observed]
+	#
+	CLs_values, q_values = getCLs_values( qsb_hist, qb_hist, qobs, spacing, numberofbins)
+
+	#
+	# plot q_values, make pretty and save plot
+	#
+	plt.axvline( qobs, color = 'black', label=r'$q_{obs}$')
+	for q_value, tag in zip(q_values[:-1], [ 'r$q_{exp}^{2 \sigma}$', 'r$q_{exp}^{ \sigma}$', 'r$q_{exp}^{ med}$', r'$q_{exp}^{-\sigma}$', r'$q_{exp}^{-2 \sigma}$' ]):
+		plt.axvline( q_value, color = 'black', linestyle='dashed', label= tag )
+	plt.xlabel(r'$q_{obs}$')
+	plt.xlabel(r'$-2*\ln \frac{ \mathcal{L}(\mu=1, \hat{\hat{L}})}{ \mathcal{L}(\hat{\mu}, \hat{L})}$')
+
+	##
+	## plot asymptotic
+	##
+	#def asymptotic_b(x, asimov, testmu=1.):
+	#	# asimov evaluatat at testmu
+	#	sig = sqrt_safe( testmu**2/asimov )
+	#	result = 0
+	#	if x <= (testmu/sig)**2:
+	#		result += (1/2.) * (1/sqrt_safe(2*np.pi)) * (1/sqrt_safe(x)) * np.exp( -(1/2.)*(sqrt_safe(x)-testmu/sig)**2)
+	#	else:
+	#		result += 1/(sqrt_safe(2*np.pi)*(2*testmu/sig)) * np.exp( -(1/2.)*(x-(testmu**2/sig**2))**2/(2*testmu/sig)**2 ) 
+	#	if x==0:
+	#		return result + norm.cdf( -testmu/sig )
+	#	else:
+	#		return result
+
+	#def asymptotic_sb(x, asimov, testmu=1.):
+	#	# asimov evaluatat at testmu
+	#	sig = sqrt_safe( testmu**2/asimov )
+	#	result = 0
+	#	if x <= (testmu/sig)**2:
+	#		result += (1/2.) * (1/sqrt_safe(2*np.pi)) * (1/sqrt_safe(x)) * np.exp( -(x/2.) )
+	#	else:
+	#		result += 1/(sqrt_safe(2*np.pi)*(2*testmu/sig)) * np.exp( -(1/2.)*(x+(testmu**2/sig**2))**2/(2*testmu/sig)**2 ) 
+	#	if x==0:
+	#		return result +1/2.
+	#	else:
+	#		return result
+
+	#qasimov_b = getloglikelihood( 1., Lhatr1_obs, ee_observed_bin, ee_expected_bin, ee_signal_bin, mm_observed_bin, mm_expected_bin, mm_signal_bin, Lnom=Lnom, Lunc=Lunc) - getloglikelihood( muhat_obs, Lhat_obs, ee_observed_bin, ee_expected_bin, ee_signal_bin, mm_observed_bin, mm_expected_bin, mm_signal_bin, Lnom=Lnom, Lunc=Lunc)
+
+
+	#qlist = np.linspace( binning[0], binning[-1],1000)
+	#plt.plot( qlist, [ asymptotic_b(q, chi2_Asimov(1.) ) for q in qlist], label ='Asym. B', color='b')
+	#plt.plot( qlist, [ asymptotic_sb(q,chi2_Asimov(1.) ) for q in qlist], label ='Asym. S+B', color='r')
+	plt.legend()
+
 	CLs_obs_str = "%.3f" % CLs_values[-1]
 	CLs_exp_str = "%.3f" % CLs_values[2]
 	#plt.title( 'CLs=' + CLs_str + ' - N ' + str(N) + ' / CLs_asym=' + CLs_asym_str )
@@ -312,36 +554,11 @@ def CLsZpeed_sampling( Zp_model,  searchwindow=[-3.,3.], withint = True, plotnam
 
 	return CLs_values
 
-	# OLD
-	#
-	# Evaluate CLs vals
-	#
-	# asymptotic
-	#psb_asym = quad(asymptotic_sb, qobs, binning[-1], args=(chi2_Asimov(1.)) )
-	#oneminuspb_asym = quad(asymptotic_b, qobs,binning[-1], args=(chi2_Asimov(1.)) )
-	#CLs_asym = psb_asym[0]/oneminuspb_asym[0]
-	## python sampling
-	#CLs = psb_val/oneminuspb_val
-	##print 'psb_val:' , psb_val
-	##print 'oneminuspb_val:' , oneminuspb_val
-	##print 'CLs: ', CLs
-	#CLs_str = "%.3f" % CLs
-	## Zpeed
-	#CLs_asym_str = "%.3f" % CLs_asym
-	#Zpeedresult_str = "%.3f" % Zpeedresult
-	#plt.title( 'CLs=' + CLs_str + ' - N ' + str(N) + ' / CLs_asym=' + CLs_asym_str + ' / ' + 'ZPEED=' + Zpeedresult_str)
-	#if plotname != None:
-	#	plt.savefig( os.path.join( plot_directory, Zp_model['name'] + '_' + plotname + '_' + str(N) + '.pdf' ) )
-	#	print 'Teststatistik saved as ', os.path.join( plot_directory, Zp_model['name'] + '_' + plotname + '_' + str(N) + '.pdf' )
-	#plt.clf()
-
-	#return {'CLspython:':CLs, 'CLspython_asym:':CLs_asym, 'Zpeedresult(noweights)':Zpeedresult}
-
 
 #
 # CLs Ratio variants
 #
-def CLsRatio_withexpected( Zp_model,  searchwindow=[-3.,3.], withint = True ):
+def CLsRatio_withexpected( Zp_model,  searchwindow=[-3.,3.], withint = True , variant = None):
 
 	#
 	# get counts
@@ -404,6 +621,22 @@ def CLsRatio_withexpected( Zp_model,  searchwindow=[-3.,3.], withint = True ):
 		# this way, the asyptotic works
 		uncert_b.append(y_obs[i] * np.sqrt( 1./(ee_observed_bin[i]) + 1./(mm_observed_bin[i])) ) 
 
+	if variant=='rev':
+		for i in range(len(y_obs)):
+			y_obs[i] = 1./y_obs[i]
+		for i in range(len(y_splusb)):
+			y_splusb[i] = 1./y_splusb[i]
+		for i in range(len(y_obs)):
+			y_b[i] = 1./y_b[i]
+
+	if variant=='alb':
+		for i in range(len(y_obs)):
+			y_obs[i] = y_obs[i]/y_b[i]
+		for i in range(len(y_splusb)):
+			y_splusb[i] = y_splusb[i]/y_b[i]
+		for i in range(len(y_obs)):
+			y_b[i] = y_b[i]/y_b[i] #st, it is 1.
+
 	print 'this are the ratios'
 	print 'y_obs:', y_obs
 	print 'y_splusb:', y_splusb
@@ -444,18 +677,16 @@ def CLsRatio_withexpected( Zp_model,  searchwindow=[-3.,3.], withint = True ):
 	q_exp = [ x * scale_b + loc_b for x in quantiles ]
   	CLs = [0.] * 5
 	for i in range(len(CLs)):
-		#CLs[i]=(1. - norm.cdf( (q_exp[i] + loc_sb)/ scale_sb  ))/( norm.cdf( (q_exp[i] + loc_b )/ scale_b))
-		CLs[i]=( 1. - norm.cdf( (q_exp[i] + loc_b )/ scale_b))/(1. - norm.cdf( (q_exp[i] + loc_sb)/ scale_sb  ))
-		#print ( 1. - norm.cdf( (q_exp[i] + loc_b )/ scale_b)), (1. - norm.cdf( (q_exp[i] + loc_sb)/ scale_sb  ))
+		CLs[i]=(1.- norm.cdf( (q_exp[i] - loc_sb)/ scale_sb  ))/( 1. - norm.cdf( (q_exp[i] - loc_b )/ scale_b))
 	xvals = q_exp
 
 	# observed
-	CLs.append( ( 1. - norm.cdf( (qobs + loc_b )/ scale_b))/(1. - norm.cdf( (qobs + loc_sb)/ scale_sb  )))
+	CLs.append( ( 1. - norm.cdf( (qobs - loc_sb )/ scale_sb))/(1. - norm.cdf( (qobs - loc_b)/ scale_b  )))
 	xvals.append( qobs )
 
 	return CLs #xvals
 
-def CLsRatio_sampling( Zp_model,  searchwindow=[-3.,3.], withint = True, plotname= None, plotdirectory = None, N=10**2, hilumi=False ):
+def CLsRatio_sampling( Zp_model,  searchwindow=[-3.,3.], withint = True, plotname= None, plotdirectory = None, N=10**2, variant=None ):
 	# use plotname to save plot in Teststatistik directory
 	# if None grab variable plotdirname (defined in onemass exclusion plot) to save them in subdirectory there 
 	if plotdirectory==None:
@@ -529,6 +760,22 @@ def CLsRatio_sampling( Zp_model,  searchwindow=[-3.,3.], withint = True, plotnam
 		#uncert_b.append(y_b[i] * np.sqrt( 1./(ee_expected_bin[i]+0.*ee_signal_bin[i]) + 1./(mm_expected_bin[i]+0.*mm_signal_bin[i])) ) 
 		# this way, the asyptotic works
 		uncert_b.append(y_obs[i] * np.sqrt( 1./(ee_observed_bin[i]) + 1./(mm_observed_bin[i])) ) 
+
+	if variant=='rev':
+		for i in range(len(y_obs)):
+			y_obs[i] = 1./y_obs[i]
+		for i in range(len(y_splusb)):
+			y_splusb[i] = 1./y_splusb[i]
+		for i in range(len(y_obs)):
+			y_b[i] = 1./y_b[i]
+
+	if variant=='alb':
+		for i in range(len(y_obs)):
+			y_obs[i] = y_obs[i]/y_b[i]
+		for i in range(len(y_splusb)):
+			y_splusb[i] = y_splusb[i]/y_b[i]
+		for i in range(len(y_obs)):
+			y_b[i] = y_b[i]/y_b[i] #st, it is 1.
 
 	print 'this are the ratios'
 	print 'y_obs:', y_obs
@@ -641,14 +888,35 @@ def CLsRatio_sampling( Zp_model,  searchwindow=[-3.,3.], withint = True, plotnam
 	plt.plot( qlist, [ asymptotic_sb(q, qasimov_b ) for q in qlist], label ='Asym. S+B', color='r')
 	plt.legend()
 
-	psb_asym = quad(asymptotic_sb, qobs, binning[-1], args=(qasimov_sb ) )
-	oneminuspb_asym = quad(asymptotic_b, qobs,binning[-1], args=(qasimov_b ) )
-	CLs_asym = psb_asym[0]/oneminuspb_asym[0]
-	CLs_asym_str = "%.3f" % CLs_asym
+	# replaced by copy of withexpected, see below
+	#psb_asym = quad(asymptotic_sb, qobs, binning[-1], args=(qasimov_sb ) )
+	#oneminuspb_asym = quad(asymptotic_b, qobs,binning[-1], args=(qasimov_b ) )
+	#CLs_asym = psb_asym[0]/oneminuspb_asym[0]
+	#CLs_asym_str = "%.3f" % CLs_asym
+	#plt.title( 'CLs=' + CLs_obs_str + ' - N ' + str(N) + ' / CLs_asym=' + CLs_asym_str )
+
+	# copied from with expected to get median significance
+	sig_sb_old = np.sqrt(1./ abs(qasimov_sb) ) 
+	loc_sb = -1./sig_sb_old**2 
+	scale_sb = 2./sig_sb_old 
+
+	sig_b_old = np.sqrt(1./ abs(qasimov_b) ) 
+	loc_b = 1./sig_b_old**2 
+	scale_b = 2./sig_b_old 
+
+	# expected
+	quantiles = [-2.,-1.,0.,1.,2.]
+	q_exp = [ x * scale_b + loc_b for x in quantiles ]
+  	CLs = [0.] * 5
+	for i in range(len(CLs)):
+		CLs[i]=(1.- norm.cdf( (q_exp[i] - loc_sb)/ scale_sb  ))/( 1. - norm.cdf( (q_exp[i] - loc_b )/ scale_b))
+	CLs_asym_obs = (1.- norm.cdf( (qobs - loc_sb)/ scale_sb  ))/( 1. - norm.cdf( (qobs - loc_b )/ scale_b))
+
+	CLs_asym_obs_str = "%.3f" % CLs_asym_obs
+	CLs_asym_exp_str = "%.3f" % CLs[2]
 	CLs_obs_str = "%.3f" % CLs_values[-1]
 	CLs_exp_str = "%.3f" % CLs_values[2]
-	plt.title( 'CLs=' + CLs_obs_str + ' - N ' + str(N) + ' / CLs_asym=' + CLs_asym_str )
-	#plt.title( 'CLs_obs=' + CLs_obs_str + ' / CLs_exp=' + CLs_exp_str + ' / N ' + str(N) )
+	plt.title( 'Sampling: CLs_obs=' + CLs_obs_str + ' / CLs_exp=' + CLs_exp_str + ' / N ' + str(N) + '\n' + 'Asymptotic: CLs_obs=' + CLs_asym_obs_str + ' / CLs_exp=' + CLs_asym_exp_str )
 	plt.savefig( filename )
 	print 'Teststatistik saved as ', filename
 	plt.clf()
@@ -1430,9 +1698,10 @@ if __name__ == "__main__":
 	argParser = argparse.ArgumentParser(description = "Argument parser")
 	#argParser.add_argument('--tag',       		default='Test' ,  help='Tag for files', )
 	argParser.add_argument('--powN',      type=int, default=2,  help='power of 10 for toydata', )
-	argParser.add_argument('--ge',      type=float, default=0.4,  help='ge coupling', )
-	argParser.add_argument('--gm',      type=float, default=0.6,  help='gm coupling', )
-	argParser.add_argument('--M',       type=float, default=500.,  help='Resonance mass', )
+	# defaultvalues s.t CLs approx 0.05 - asympotics works perfect
+	argParser.add_argument('--ge',      type=float, default=0.1,  help='ge coupling', )
+	argParser.add_argument('--gm',      type=float, default=1.0,  help='gm coupling', )
+	argParser.add_argument('--M',       type=float, default=1000.,  help='Resonance mass', )
 	args = argParser.parse_args()
 
 	plotdirectory = os.path.join(plotdir, 'Teststatistik')
@@ -1452,6 +1721,13 @@ if __name__ == "__main__":
 	print Zp_model
 
 	#
+	# Uncert
+	#
+	#print 'CLsZpeed_uncert: ', CLsZpeed_uncert( Zp_model,  searchwindow=[-3.,3.], withint = False, plotname= None, plotdirectory=None, N=10**args.powN, Lunc = 0.03 )
+	#print 'CLsZpeed_sampling: ', CLsZpeed_sampling( Zp_model,  searchwindow=[-3.,3.], withint = False, plotname= None, plotdirectory=None, 	N=10**args.powN)
+	#print 'CLsZpeed_withexpected: ', CLsZpeed_withexpected( Zp_model,  searchwindow=[-3.,3.], withint = False )
+
+	#
 	# Searches in mll
 	#
 	##print 'Compare CLs values: rembember CLsPython without weight --> therefore differences (especially if smaller 3 widht)'
@@ -1459,19 +1735,26 @@ if __name__ == "__main__":
 	#print 'CLsZpeed_withexpected: ', CLsZpeed_withexpected( Zp_model,  searchwindow=[-3.,3.], withint = False )
 	## ZPEED Sampling
 	##start_time = time.clock()
-	#print 'CLsZpeed_sampling:', CLsZpeed_sampling( Zp_model,  searchwindow= [-3.,3.], withint = False, plotname= None , plotdirectory=plotdirectory, N =10**args.powN )
+	print 'CLsZpeed_sampling:', CLsZpeed_sampling( Zp_model,  searchwindow= [-3.,3.], withint = False, plotname= None , plotdirectory=plotdirectory, N =10**args.powN )
 	##end_time = time.clock()
 	##print 'Duration CLsZpeed_sampling in min for 10^x ' + str(args.powN) + ': ' + str((end_time-start_time)/60.) 
 
 	#
 	# Searches in ratio
 	#
-	print 'CLsRatio_withexpected: ', CLsRatio_withexpected( Zp_model,  searchwindow=[-3.,3.], withint = False )
+	variant = None # 'rev' or 'alb'
+	#print 'CLsRatio_withexpected: ', CLsRatio_withexpected( Zp_model,  searchwindow=[-3.,3.], withint = False, variant = variant )
 	# Ratio Sampling
 	#start_time = time.clock()
-	print 'CLsRatio_sampling: ', CLsRatio_sampling( Zp_model, searchwindow= [-3.,3.], withint = False, plotname= None , plotdirectory=plotdirectory, N =10**args.powN )
+	#print 'CLsRatio_sampling: ', CLsRatio_sampling( Zp_model, searchwindow= [-3.,3.], withint = False, plotname= None , plotdirectory=plotdirectory, N =10**args.powN, variant = variant )
 	#end_time = time.clock()
 	#print 'Duration CLsRatio_sampling in min for 10^x ' + str(args.powN) + ': ' + str((end_time-start_time)/60.) 
+
+	#
+	# just one bin
+	#
+	#print 'CLsZpeed_withexpected: ', CLsZpeed_withexpected( Zp_model,  searchwindow=[0.,0.2], withint = False )
+	#print 'CLsZpeed_sampling: ', CLsZpeed_sampling( Zp_model,  searchwindow=[0.,0.2], withint = False, plotname= None, plotdirectory=None, 	N=10**args.powN)
 
 	#
 	#old implementations:
